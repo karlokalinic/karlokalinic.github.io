@@ -33,3 +33,25 @@ If you want to maintain your docs in the `docs` directory of an existing project
 [Jekyll]: https://jekyllrb.com
 [GitHub Pages / Actions workflow]: https://github.blog/changelog/2022-07-27-github-pages-custom-github-actions-workflows-beta/
 [use this template]: https://github.com/just-the-docs/just-the-docs-template/generate
+
+---
+layout: default
+title: Home
+nav_order: 1
+---
+
+# RPG World Builder
+
+- [About](about.md)
+- [World Overview](world.md)
+- [Regions](regions.md)
+- [Factions](factions.md)
+- [Characters](characters.md)
+- [Locations](locations.md)
+- [Items](items.md)
+- [Quests](quests.md)
+- [Bestiary](bestiary.md)
+- [Magic](magic.md)
+- [History & Timeline](history.md)
+- [Magic](magic.md)
+- [History & Timeline](history.md)
