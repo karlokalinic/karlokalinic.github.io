@@ -1,14 +1,51 @@
-title: Just the Docs Template
-description: A starter template for a Jeykll site using the Just the Docs theme!
+title: "RPG Worldbuilding Docs"
+description: "Fantazija · Sci-Fi · Horror"
+url: "https://karlokalinic.github.io"
 theme: just-the-docs
 
-url: https://just-the-docs.github.io
+logo: "/assets/images/logo.svg"        # Site logo[12]
+favicon_ico: "/assets/images/favicon.ico" # Favicon[12]
 
-aux_links:
-  Template Repository: https://github.com/just-the-docs/just-the-docs-template
+color_scheme: neo                      # custom paleta (neo.scss)[52]
+callouts_opacity: 0.25                 # poluprozirne pozadine[64]
 
-nav:
-  - title: "Home"
-    url: /
-  - title: "About"
-    url: /about
+search_enabled: true                   # globalna pretraga[12]
+search:
+  heading_level: 3
+  previews: 5
+  tokenizer_separator: /[\s/]+/        # podržava „dark-elf” upite[12]
+
+mermaid:                                # dijagrami[12]
+  version: "10.9.0"
+
+aux_links:                              # gornji desni linkovi[12]
+  "Repo on GitHub": "https://github.com/karlokalinic/karlokalinic.github.io"
+
+nav_external_links:                     # linkovi u sidebaru[16]
+  - title: "World Anvil"
+    url: "https://www.worldanvil.com"
+    opens_in_new_tab: true
+
+footer_content: "©️ 2025 Karlo Kalinić — CC-BY-SA"
+
+heading_anchors: true                   # #link ikone[12]
+
+google_analytics: UA-XXXXXXXXX-X        # GA kod[12]
+
+collections_dir: _collections
+collections:                            # registracija Jekyll zbirki[54]
+  fantasy:
+    output: true
+  scifi:
+    output: true
+  horror:
+    output: true
+
+just_the_docs:                          # naziv i search opcije u navigaciji[54]
+  collections:
+    fantasy:
+      name: "Fantasy"
+    scifi:
+      name: "Sci-Fi"
+    horror:
+      name: "Horror"
