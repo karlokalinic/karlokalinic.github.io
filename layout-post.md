@@ -62,3 +62,7 @@ function generateLoot() {
   color: #5e3c1b;
 }
 </style>
+
+<!--
+Note: This file is not responsible for navigation or theming. Issues may lie in the navigation and theme picker code on other pages (e.g., index.md and layout-home.md).
+-->
