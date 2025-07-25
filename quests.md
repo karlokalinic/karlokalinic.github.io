@@ -1,8 +1,3 @@
----
-layout: default
-title: Quests
-nav_order: 10
----
 
 
 <header>

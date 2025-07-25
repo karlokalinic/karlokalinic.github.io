@@ -4,11 +4,7 @@ nav_order: 4
 ---
 
 
-<header>
-  <h1>World Overview</h1>
-  <nav aria-label="Main navigation">
-    <ul class="nav-list">
-      <li><a href="index.md">Home</a></li>
+
       <li><a href="about.md">About</a></li>
       <li><a href="regions.md">Regions</a></li>
       <li><a href="factions.md">Factions</a></li>

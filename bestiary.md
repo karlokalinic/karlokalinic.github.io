@@ -4,11 +4,7 @@ nav_order: 11
 ---
 
 
-<header>
-  <h1>Bestiary</h1>
-  <nav aria-label="Main navigation">
-    <ul class="nav-list">
-      <li><a href="index.md">Home</a></li>
+
       <li><a href="about.md">About</a></li>
       <li><a href="world.md">World Overview</a></li>
       <li><a href="regions.md">Regions</a></li>

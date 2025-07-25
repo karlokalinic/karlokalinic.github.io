@@ -50,11 +50,6 @@ nav_order: 6
       </select>
     </div>
   </section>
-</main>
-
-<script>
-const themes = {
-  classic: {
     '--bg': '#f4efe6',
     '--fg': '#2d1b00',
     '--accent': '#bfa76f',

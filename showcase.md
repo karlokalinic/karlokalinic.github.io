@@ -3,11 +3,6 @@ layout: default
 nav_order: 2
 ---
 
-<header>
-  <h1>World Showcase</h1>
-  <nav aria-label="Main navigation">
-    <ul class="nav-list">
-      <li><a href="index.md">Home</a></li>
       <li><a href="about.md">About</a></li>
       <li><a href="world.md">World Overview</a></li>
       <li><a href="regions.md">Regions</a></li>

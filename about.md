@@ -23,11 +23,7 @@ nav_order: 3
       <li><a href="history.md">History & Timeline</a></li>
     </ul>
   </nav>
-</header>
 
-<main>
-  <section>
-    <h2>About This Site</h2>
     <p>Welcome to the RPG World Builder! This site is designed to help you create, organize, and expand your own tabletop or digital RPG setting. Each section provides a template and guidance for building out the details of your world, from its geography and history to its characters, factions, and magical systems.</p>
     <p>Use the navigation links to explore each section and start building your world. Whether you're a game master, writer, or worldbuilding enthusiast, this toolkit will help you bring your imagination to life.</p>
   </section>
