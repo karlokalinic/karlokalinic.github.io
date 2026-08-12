@@ -14,6 +14,11 @@ public static class SelfUpdateService
 {
     private const string ApplySwitch = "--apply-update";
 
+    private static readonly JsonSerializerOptions ManifestJsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
     public static bool IsApplyUpdateMode(string[] args) =>
         args.Length >= 5 &&
         string.Equals(args[0], ApplySwitch, StringComparison.OrdinalIgnoreCase);
@@ -162,7 +167,8 @@ public static class SelfUpdateService
 
             using var reader = new StreamReader(entry.Open());
             var manifest = JsonSerializer.Deserialize<AppUpdateManifest>(
-                reader.ReadToEnd());
+                reader.ReadToEnd(),
+                ManifestJsonOptions);
 
             if (manifest is null ||
                 string.IsNullOrWhiteSpace(manifest.Version) ||
