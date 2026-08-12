@@ -1,0 +1,102 @@
+<Window x:Class="KarloDiskShell.FeatureCenterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="KARLOLEGEND — Features"
+        Width="780"
+        Height="560"
+        MinWidth="620"
+        MinHeight="420"
+        Background="#101010"
+        Foreground="#F5F5F5"
+        WindowStartupLocation="CenterOwner">
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Foreground" Value="#F5F5F5"/>
+            <Setter Property="Background" Value="#222222"/>
+            <Setter Property="BorderBrush" Value="#404040"/>
+            <Setter Property="Padding" Value="12,8"/>
+            <Setter Property="Margin" Value="6,0,0,0"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,14">
+            <TextBlock Text="FEATURE CENTER"
+                       Foreground="#FFD800"
+                       FontWeight="Bold"
+                       FontSize="22"/>
+            <TextBlock Text="Built-in capabilities and optional local packages."
+                       Foreground="#A5A5A5"
+                       Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <ListBox x:Name="FeatureList"
+                 Grid.Row="1"
+                 Background="#151515"
+                 BorderBrush="#303030"
+                 Foreground="#F5F5F5"
+                 BorderThickness="1"
+                 Padding="8">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="#2D2D2D"
+                            BorderThickness="0,0,0,1"
+                            Padding="10">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <DockPanel>
+                                <TextBlock Text="{Binding Name}"
+                                           FontWeight="SemiBold"
+                                           FontSize="15"
+                                           Foreground="#F5F5F5"/>
+                                <TextBlock Text="{Binding State}"
+                                           Foreground="#FFD800"
+                                           HorizontalAlignment="Right"/>
+                            </DockPanel>
+
+                            <TextBlock Grid.Row="1"
+                                       Text="{Binding Description}"
+                                       Foreground="#A0A0A0"
+                                       TextWrapping="Wrap"
+                                       Margin="0,4,0,0"/>
+
+                            <TextBlock Grid.Row="2"
+                                       Text="{Binding VersionText}"
+                                       Foreground="#777777"
+                                       FontFamily="Consolas"
+                                       Margin="0,5,0,0"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <DockPanel Grid.Row="2" Margin="0,14,0,0">
+            <TextBlock x:Name="ResultText"
+                       Foreground="#A5A5A5"
+                       VerticalAlignment="Center"
+                       TextWrapping="Wrap"/>
+
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                <Button Content="Refresh"
+                        Click="RefreshButton_Click"/>
+                <Button Content="Install / Update Selected"
+                        Click="InstallButton_Click"/>
+                <Button Content="Close"
+                        Click="CloseButton_Click"/>
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</Window>

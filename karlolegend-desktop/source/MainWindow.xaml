@@ -1,0 +1,159 @@
+<Window x:Class="KarloDiskShell.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:models="clr-namespace:KarloDiskShell.Models"
+        Title="KARLOLEGEND"
+        Width="1200"
+        Height="760"
+        MinWidth="720"
+        MinHeight="480"
+        Background="#101010"
+        Foreground="#F5F5F5"
+        WindowStartupLocation="CenterScreen"
+        KeyDown="Window_KeyDown">
+
+    <Window.Resources>
+        <Style x:Key="ToolbarButton" TargetType="Button">
+            <Setter Property="Foreground" Value="#F5F5F5"/>
+            <Setter Property="Background" Value="#222222"/>
+            <Setter Property="BorderBrush" Value="#383838"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="11,7"/>
+            <Setter Property="Margin" Value="0,0,7,0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+        <Style TargetType="ListBoxItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#F5F5F5"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="7"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#2A2A00"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#202020"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0"
+                Background="#171717"
+                BorderBrush="#2B2B2B"
+                BorderThickness="0,0,0,1"
+                Padding="12">
+            <DockPanel LastChildFill="True">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <Button x:Name="BackButton"
+                            Content="←"
+                            ToolTip="Back"
+                            Click="BackButton_Click"
+                            Style="{StaticResource ToolbarButton}"/>
+                    <Button Content="↑"
+                            ToolTip="Up"
+                            Click="UpButton_Click"
+                            Style="{StaticResource ToolbarButton}"/>
+                    <Button Content="K:"
+                            ToolTip="Root"
+                            Click="HomeButton_Click"
+                            Style="{StaticResource ToolbarButton}"/>
+                    <Button Content="↻"
+                            ToolTip="Refresh"
+                            Click="RefreshButton_Click"
+                            Style="{StaticResource ToolbarButton}"/>
+                    <Button Content="Features"
+                            ToolTip="Feature Center"
+                            Click="FeaturesButton_Click"
+                            Style="{StaticResource ToolbarButton}"/>
+                    <Button x:Name="UpdateButton"
+                            Content="Updates"
+                            ToolTip="Check for updates"
+                            Click="UpdateButton_Click"
+                            Style="{StaticResource ToolbarButton}"/>
+                </StackPanel>
+
+                <Border Background="#0D0D0D"
+                        BorderBrush="#333333"
+                        BorderThickness="1"
+                        CornerRadius="3"
+                        Padding="12,8">
+                    <TextBlock x:Name="AddressText"
+                               FontFamily="Consolas"
+                               FontSize="14"
+                               Foreground="#FFD800"
+                               TextTrimming="CharacterEllipsis"/>
+                </Border>
+            </DockPanel>
+        </Border>
+
+        <ListBox x:Name="ItemsList"
+                 Grid.Row="1"
+                 Background="#101010"
+                 BorderThickness="0"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 MouseDoubleClick="ItemsList_MouseDoubleClick">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type models:FileSystemItem}">
+                    <Grid Width="128" Height="116">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="70"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Image Source="{Binding Icon}"
+                               Width="52"
+                               Height="52"
+                               Stretch="Uniform"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding Name}"
+                                   TextAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   TextTrimming="CharacterEllipsis"
+                                   MaxHeight="40"
+                                   Margin="4,3,4,0"
+                                   Foreground="#F5F5F5"
+                                   FontSize="13"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Border Grid.Row="2"
+                Background="#171717"
+                BorderBrush="#2B2B2B"
+                BorderThickness="0,1,0,0"
+                Padding="12,7">
+            <DockPanel>
+                <TextBlock Text="KARLOLEGEND"
+                           Foreground="#FFD800"
+                           FontWeight="SemiBold"
+                           DockPanel.Dock="Left"/>
+                <TextBlock x:Name="StatusText"
+                           Foreground="#9A9A9A"
+                           HorizontalAlignment="Right"/>
+            </DockPanel>
+        </Border>
+    </Grid>
+</Window>

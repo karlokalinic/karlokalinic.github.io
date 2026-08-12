@@ -1,0 +1,7 @@
+{
+  "id": "terminal",
+  "name": "Integrated Terminal",
+  "version": "0.1.0",
+  "description": "Terminal integration.",
+  "minAppVersion": "0.2.0"
+}
