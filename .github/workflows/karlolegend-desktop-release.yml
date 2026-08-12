@@ -62,16 +62,19 @@ jobs:
           $update = "karlolegend-desktop/build/KARLOLEGEND-v$env:VERSION.karloupdate"
           $notes = "karlolegend-desktop/build/RELEASE-NOTES.md"
 
+          if (Test-Path $packageRoot) { Remove-Item $packageRoot -Recurse -Force }
           New-Item -ItemType Directory -Force -Path $packageRoot | Out-Null
           Copy-Item $exe "$packageRoot/KARLOLEGEND.exe" -Force
 
           $sha256 = (Get-FileHash $exe -Algorithm SHA256).Hash
 
+          # Keep exact PascalCase keys for backward compatibility with the
+          # original v0.2 updater, whose System.Text.Json options were case-sensitive.
           $manifest = [ordered]@{
-            version = $env:VERSION
-            file = "KARLOLEGEND.exe"
-            sha256 = $sha256
-            notes = "KARLOLEGEND Desktop v$env:VERSION. See CHANGELOG.md in source for details."
+            Version = $env:VERSION
+            File = "KARLOLEGEND.exe"
+            Sha256 = $sha256
+            Notes = "KARLOLEGEND Desktop v$env:VERSION. See CHANGELOG.md in source for details."
           }
 
           $manifest |
