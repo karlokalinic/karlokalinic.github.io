@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.1 — 2026-08-13
+
+### Fixed / hardened
+
+- `K:\KARLOLEGEND.exe` is hidden even when the shell is being rendered by a development process launched from C: with `--root K:\`.
+- Remote update discovery no longer trusts the repository-wide `releases/latest` pointer. It scans stable releases and selects the highest semantic version that actually contains a `.karloupdate` asset, so unrelated releases in the shared public repository cannot hijack the update channel.
+
 ## 0.3.0 — 2026-08-13
 
 ### Fixed / changed

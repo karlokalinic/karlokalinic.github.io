@@ -9,8 +9,8 @@ namespace KarloDiskShell.Services;
 
 public sealed class RemoteUpdateService
 {
-    private const string LatestReleaseApi =
-        "https://api.github.com/repos/karlokalinic/karlokalinic.github.io/releases/latest";
+    private const string ReleasesApi =
+        "https://api.github.com/repos/karlokalinic/karlokalinic.github.io/releases?per_page=30";
 
     private readonly KarloEnvironmentService _environment;
 
@@ -35,85 +35,112 @@ public sealed class RemoteUpdateService
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
 
-            using var response = await client.GetAsync(LatestReleaseApi, cancellationToken);
+            using var response = await client.GetAsync(ReleasesApi, cancellationToken);
             response.EnsureSuccessStatusCode();
 
             await using var stream = await response.Content.ReadAsStreamAsync(cancellationToken);
             using var document = await JsonDocument.ParseAsync(stream, cancellationToken: cancellationToken);
 
-            var root = document.RootElement;
-            var tag = root.TryGetProperty("tag_name", out var tagElement)
-                ? tagElement.GetString() ?? ""
-                : "";
+            if (document.RootElement.ValueKind != JsonValueKind.Array)
+            {
+                return new RemoteUpdateResult(
+                    false,
+                    false,
+                    false,
+                    "",
+                    "The update service returned an unexpected response.");
+            }
 
-            var remoteVersion = ParseVersion(tag.TrimStart('v', 'V'));
             var currentVersion = CurrentVersion();
+            ReleaseCandidate? bestCandidate = null;
 
-            if (remoteVersion <= currentVersion)
+            foreach (var release in document.RootElement.EnumerateArray())
             {
-                return new RemoteUpdateResult(
-                    true,
-                    false,
-                    false,
-                    remoteVersion.ToString(3),
-                    "KARLOLEGEND is up to date.");
-            }
+                if (release.TryGetProperty("draft", out var draftElement) &&
+                    draftElement.ValueKind == JsonValueKind.True)
+                {
+                    continue;
+                }
 
-            if (!root.TryGetProperty("assets", out var assetsElement) ||
-                assetsElement.ValueKind != JsonValueKind.Array)
-            {
-                return new RemoteUpdateResult(
-                    false,
-                    true,
-                    false,
-                    remoteVersion.ToString(3),
-                    "The release has no downloadable assets.");
-            }
+                if (release.TryGetProperty("prerelease", out var prereleaseElement) &&
+                    prereleaseElement.ValueKind == JsonValueKind.True)
+                {
+                    continue;
+                }
 
-            string? assetName = null;
-            string? assetUrl = null;
+                var tag = release.TryGetProperty("tag_name", out var tagElement)
+                    ? tagElement.GetString() ?? ""
+                    : "";
 
-            foreach (var asset in assetsElement.EnumerateArray())
-            {
-                var name = asset.TryGetProperty("name", out var nameElement)
-                    ? nameElement.GetString()
-                    : null;
-
-                var url = asset.TryGetProperty("browser_download_url", out var urlElement)
-                    ? urlElement.GetString()
-                    : null;
-
-                if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(url))
+                var version = ParseVersion(tag.TrimStart('v', 'V'));
+                if (version <= currentVersion)
                     continue;
 
-                if (name.EndsWith(".karloupdate", StringComparison.OrdinalIgnoreCase))
+                if (!release.TryGetProperty("assets", out var assetsElement) ||
+                    assetsElement.ValueKind != JsonValueKind.Array)
                 {
+                    continue;
+                }
+
+                string? assetName = null;
+                string? assetUrl = null;
+
+                foreach (var asset in assetsElement.EnumerateArray())
+                {
+                    var name = asset.TryGetProperty("name", out var nameElement)
+                        ? nameElement.GetString()
+                        : null;
+
+                    var url = asset.TryGetProperty("browser_download_url", out var urlElement)
+                        ? urlElement.GetString()
+                        : null;
+
+                    if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(url))
+                        continue;
+
+                    if (!name.EndsWith(".karloupdate", StringComparison.OrdinalIgnoreCase))
+                        continue;
+
                     assetName = name;
                     assetUrl = url;
                     break;
                 }
+
+                if (assetName is null || assetUrl is null)
+                    continue;
+
+                if (bestCandidate is null || version > bestCandidate.Version)
+                {
+                    bestCandidate = new ReleaseCandidate(
+                        version,
+                        assetName,
+                        assetUrl);
+                }
             }
 
-            if (assetName is null || assetUrl is null)
+            if (bestCandidate is null)
             {
                 return new RemoteUpdateResult(
-                    false,
                     true,
                     false,
-                    remoteVersion.ToString(3),
-                    "A newer release exists, but it has no .karloupdate package.");
+                    false,
+                    currentVersion.ToString(3),
+                    "KARLOLEGEND is up to date.");
             }
 
             Directory.CreateDirectory(_environment.UpdateInboxDirectory);
 
-            var destination = Path.Combine(_environment.UpdateInboxDirectory, assetName);
+            var destination = Path.Combine(
+                _environment.UpdateInboxDirectory,
+                bestCandidate.AssetName);
+
             if (File.Exists(destination))
             {
                 return new RemoteUpdateResult(
                     true,
                     true,
                     false,
-                    remoteVersion.ToString(3),
+                    bestCandidate.Version.ToString(3),
                     "Update package is already downloaded.");
             }
 
@@ -125,7 +152,7 @@ public sealed class RemoteUpdateService
                     File.Delete(temporary);
 
                 using var downloadResponse = await client.GetAsync(
-                    assetUrl,
+                    bestCandidate.AssetUrl,
                     HttpCompletionOption.ResponseHeadersRead,
                     cancellationToken);
 
@@ -163,8 +190,8 @@ public sealed class RemoteUpdateService
                 true,
                 true,
                 true,
-                remoteVersion.ToString(3),
-                $"KARLOLEGEND {remoteVersion.ToString(3)} downloaded.");
+                bestCandidate.Version.ToString(3),
+                $"KARLOLEGEND {bestCandidate.Version.ToString(3)} downloaded.");
         }
         catch (OperationCanceledException)
         {
@@ -196,4 +223,9 @@ public sealed class RemoteUpdateService
         Version.TryParse(value, out var parsed)
             ? parsed
             : new Version(0, 0, 0);
+
+    private sealed record ReleaseCandidate(
+        Version Version,
+        string AssetName,
+        string AssetUrl);
 }

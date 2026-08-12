@@ -181,23 +181,34 @@ public partial class MainWindow : Window
         if (HiddenInfrastructureNames.Contains(name))
             return false;
 
-        var currentExe = Environment.ProcessPath;
-
-        if (!string.IsNullOrWhiteSpace(currentExe))
+        try
         {
-            try
+            var fullPath = Path.GetFullPath(path);
+
+            // Hide the deployed shell even when this is a development run from C:\
+            // rendering K:\ through --root. The running-process check below also
+            // covers a production executable that has been renamed.
+            var canonicalShellPath = Path.Combine(_root, "KARLOLEGEND.exe");
+            if (string.Equals(
+                    fullPath,
+                    Path.GetFullPath(canonicalShellPath),
+                    StringComparison.OrdinalIgnoreCase))
             {
-                if (string.Equals(
-                        Path.GetFullPath(path),
-                        Path.GetFullPath(currentExe),
-                        StringComparison.OrdinalIgnoreCase))
-                {
-                    return false;
-                }
+                return false;
             }
-            catch
+
+            var currentExe = Environment.ProcessPath;
+            if (!string.IsNullOrWhiteSpace(currentExe) &&
+                string.Equals(
+                    fullPath,
+                    Path.GetFullPath(currentExe),
+                    StringComparison.OrdinalIgnoreCase))
             {
+                return false;
             }
+        }
+        catch
+        {
         }
 
         return true;

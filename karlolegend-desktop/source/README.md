@@ -1,6 +1,6 @@
 # KARLOLEGEND Desktop
 
-Current source version: **0.3.0**
+Current source version: **0.3.1**
 
 KARLOLEGEND Desktop is a native Windows shell-like application that renders a real disk as an icon desktop. It is not a VM, WSL environment, browser app, remote desktop, or security sandbox.
 
@@ -79,7 +79,7 @@ The shell deliberately hides:
 
 ## Update channel
 
-Production v0.3+ checks the latest public GitHub Release for:
+Production v0.3+ scans public GitHub Releases for the newest stable release that actually contains a `.karloupdate` asset in:
 
     karlokalinic/karlokalinic.github.io
 

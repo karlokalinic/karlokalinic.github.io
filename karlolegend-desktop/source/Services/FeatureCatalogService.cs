@@ -16,7 +16,7 @@ public sealed class FeatureCatalogService
             Id = "core.desktop",
             Name = "Desktop Shell",
             Description = "Filesystem desktop, navigation, launch, Windows Shell icons and live refresh.",
-            BuiltInVersion = "0.3.0",
+            BuiltInVersion = "0.3.1",
             IsBuiltIn = true
         },
         new FeatureDefinition
@@ -24,7 +24,7 @@ public sealed class FeatureCatalogService
             Id = "core.updates",
             Name = "Update Engine",
             Description = "Discovers local .karloupdate packages and can replace the running EXE safely after restart.",
-            BuiltInVersion = "0.3.0",
+            BuiltInVersion = "0.3.1",
             IsBuiltIn = true
         },
         new FeatureDefinition

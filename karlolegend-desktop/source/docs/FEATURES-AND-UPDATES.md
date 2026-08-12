@@ -121,9 +121,11 @@ This keeps the application native and offline-capable even if online update disc
 
 ## Remote release channel (v0.3+)
 
-Production builds query:
+Production builds query the release list:
 
-    https://api.github.com/repos/karlokalinic/karlokalinic.github.io/releases/latest
+    https://api.github.com/repos/karlokalinic/karlokalinic.github.io/releases?per_page=30
+
+They ignore drafts/prereleases and select the highest newer semantic version that contains a `.karloupdate` asset.
 
 The application does not require a GitHub login because the release channel is public.
 
