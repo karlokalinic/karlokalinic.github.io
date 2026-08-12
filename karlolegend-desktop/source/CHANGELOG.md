@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.2 — 2026-08-13
+
+### Fixed
+
+- Fixed the v0.2 bootstrap failure where `.karloupdate` packages were silently ignored because the package manifest used lowercase JSON keys while the original `System.Text.Json` deserializer expected exact PascalCase property names.
+- Future update-package manifests are emitted with exact `Version`, `File`, `Sha256`, and `Notes` keys so v0.2 can parse them.
+- The current updater also parses update manifests case-insensitively so future package generators cannot reproduce the same casing failure.
+
 ## 0.3.1 — 2026-08-13
 
 ### Fixed / hardened
