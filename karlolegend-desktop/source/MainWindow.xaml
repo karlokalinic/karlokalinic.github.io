@@ -50,7 +50,8 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0"
+        <Border x:Name="TopBar"
+                Grid.Row="0"
                 Background="#171717"
                 BorderBrush="#2B2B2B"
                 BorderThickness="0,0,0,1"
@@ -83,6 +84,10 @@
                             ToolTip="Check for updates"
                             Click="UpdateButton_Click"
                             Style="{StaticResource ToolbarButton}"/>
+                    <Button Content="Desktop"
+                            ToolTip="Toggle desktop mode (F11)"
+                            Click="DesktopModeButton_Click"
+                            Style="{StaticResource ToolbarButton}"/>
                 </StackPanel>
 
                 <Border Background="#0D0D0D"
@@ -99,12 +104,33 @@
             </DockPanel>
         </Border>
 
+        <Image x:Name="WallpaperImage"
+               Grid.Row="1"
+               Stretch="UniformToFill"
+               Opacity="0.92"
+               IsHitTestVisible="False"/>
+
+        <Border Grid.Row="1"
+                Background="#42000000"
+                IsHitTestVisible="False"/>
+
         <ListBox x:Name="ItemsList"
                  Grid.Row="1"
-                 Background="#101010"
+                 Background="Transparent"
                  BorderThickness="0"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  MouseDoubleClick="ItemsList_MouseDoubleClick">
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="New Folder" Click="NewFolderMenuItem_Click"/>
+                    <Separator/>
+                    <MenuItem Header="Set Wallpaper…" Click="SetWallpaperMenuItem_Click"/>
+                    <MenuItem Header="Clear Wallpaper" Click="ClearWallpaperMenuItem_Click"/>
+                    <Separator/>
+                    <MenuItem Header="Open Current Folder in Explorer" Click="OpenExplorerMenuItem_Click"/>
+                    <MenuItem Header="Refresh" Click="RefreshMenuItem_Click"/>
+                </ContextMenu>
+            </ListBox.ContextMenu>
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel IsItemsHost="True"/>
@@ -140,7 +166,8 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Border Grid.Row="2"
+        <Border x:Name="StatusBar"
+                Grid.Row="2"
                 Background="#171717"
                 BorderBrush="#2B2B2B"
                 BorderThickness="0,1,0,0"
