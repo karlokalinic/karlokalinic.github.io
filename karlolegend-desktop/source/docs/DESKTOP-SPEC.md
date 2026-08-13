@@ -74,62 +74,69 @@ Browser profile/cache data belongs under:
 
 not beside the executable.
 
-## Desktop appearance
+## Desktop appearance and layout
 
-v0.4 foundation:
+Implemented in the v0.4 line:
 - wallpaper;
 - full desktop mode;
-- icon surface;
-- right-click desktop actions.
+- Canvas-based icon surface;
+- free mouse positioning of icons;
+- persistent X/Y coordinates keyed by canonical filesystem path;
+- initial Windows-like top-to-bottom column placement for unseen items;
+- right-click desktop actions;
+- right-click item actions;
+- native rename dialog;
+- Delete sends the selected file/folder to the Windows recycle bin;
+- F2 rename;
+- F11 chrome-free desktop mode.
 
-Next implementation order:
-1. free icon positioning;
-2. persist icon coordinates keyed by canonical full path;
-3. snap-to-grid option;
-4. icon scale;
-5. selection rectangle;
-6. drag/drop file operations;
-7. rename;
-8. recycle-bin delete;
-9. create text/HTML/project items;
-10. per-folder layout state.
+The filesystem still determines what exists. Coordinates do not create shortcuts or proxy files.
 
-## Layout state schema target
+## Layout state
 
-`K:\.karlo\state\desktop.json` evolves toward:
+`K:\.karlo\state\desktop.json` uses presentation-only state similar to:
 
 ```json
 {
   "schema": 2,
-  "wallpaperPath": "K:\\Assets\\wallpaper.png",
-  "iconSize": 64,
-  "snapToGrid": true,
-  "layouts": {
-    "K:\\": {
-      "K:\\Projects": { "x": 40, "y": 50 },
-      "K:\\Writing": { "x": 40, "y": 150 }
-    }
+  "wallpaperPath": "K:\\.karlo\\state\\wallpaper\\desktop.jpg",
+  "openHtmlInsideKarlolegend": true,
+  "snapToGrid": false,
+  "iconSize": 52,
+  "iconPositions": {
+    "K:\\PROJECTS": { "x": 16, "y": 16 },
+    "K:\\WRITING": { "x": 16, "y": 136 }
   }
 }
 ```
 
-Coordinates are presentation state. Renaming or moving a filesystem item should migrate or discard its old coordinate entry safely; it must never affect the underlying file operation.
+Coordinate keys are normalized canonical paths. Rename migrates the stored coordinate to the renamed filesystem path. Delete removes the corresponding coordinate entry.
 
-## Desktop interaction target
+Presentation-state persistence must never be allowed to block ordinary filesystem navigation.
+
+## Desktop interaction — current
 
 - double-click: open;
 - single-click: select;
-- Ctrl/Shift: multi-select;
-- F2: rename;
-- Delete: move to volume recycle bin;
-- Shift+Delete: permanent delete with explicit confirmation;
-- Ctrl+N: new folder/item palette;
+- mouse drag item: move desktop icon;
+- Enter: open selected item;
+- F2: rename selected item;
+- Delete: send selected item to recycle bin with confirmation;
 - F5: refresh;
-- F11: chrome-free desktop;
-- right-click background: desktop actions;
-- right-click item: file actions;
-- drag background/item: icon layout;
-- drag external files onto desktop: copy/move prompt.
+- F11: enter/leave chrome-free desktop;
+- right-click background: create folder, wallpaper, Explorer, refresh;
+- right-click item: open, open externally, rename, recycle-bin delete.
+
+## Desktop interaction — next
+
+1. snap-to-grid UI toggle and icon scale UI;
+2. multi-selection and rubber-band selection;
+3. drag/drop file operations;
+4. create-item palette for text/HTML/project templates;
+5. per-directory layout profiles beyond global canonical-path coordinates;
+6. keyboard spatial navigation;
+7. Shift+Delete permanent-delete path with stronger confirmation;
+8. desktop sorting/auto-arrange as optional commands, never mandatory layout.
 
 ## Non-negotiable failure mode
 
