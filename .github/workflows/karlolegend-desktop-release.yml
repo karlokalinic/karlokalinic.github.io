@@ -68,10 +68,19 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           $tag = "v$env:VERSION"
+
+          # A missing release is expected and `gh release view` reports that with
+          # native exit code 1. Capture it explicitly so PowerShell/GitHub Actions
+          # does not mistake the expected negative lookup for a failed step.
           gh release view $tag *> $null
-          if ($LASTEXITCODE -eq 0) {
+          $releaseExists = ($LASTEXITCODE -eq 0)
+          $global:LASTEXITCODE = 0
+
+          if ($releaseExists) {
             throw "Release $tag already exists. Bump the application version; published releases are immutable by policy."
           }
+
+          exit 0
 
       - name: Publish self-contained Windows EXE
         shell: pwsh
