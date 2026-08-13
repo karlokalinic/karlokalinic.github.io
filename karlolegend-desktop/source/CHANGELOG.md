@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.4.0 — 2026-08-13
+
+### Added
+
+- Internal `.html` / `.htm` viewer hosted inside KARLOLEGEND with Microsoft WebView2.
+- Local K: content is exposed to the embedded renderer through the private `https://karlo.local/` virtual host instead of navigating raw `file://` URLs.
+- WebView2 profile/cache state is contained under `K:\.karlo\state\webview2`.
+- Desktop wallpaper support with wallpaper imported into hidden KARLOLEGEND state instead of depending on an arbitrary external source path.
+- Desktop background context actions for New Folder, wallpaper, Explorer and refresh.
+- Chrome-free F11/Desktop mode that hides the normal toolbar and status bar.
+- Previous executable backup at `K:\.karlo\updates\backup\KARLOLEGEND.previous.exe` before live updater replacement.
+- Compact multi-agent repository context for Codex, Claude, GitHub Copilot and other repository-aware agents.
+- Concrete `DESKTOP-SPEC.md` and `UPDATE-PLAN.md` documents.
+
+### Changed
+
+- Supported content can now be owned by KARLOLEGEND presentation instead of always being delegated to Windows Shell associations. HTML is the first internally-owned content type; unsupported files still fall back to Windows.
+- The desktop is now treated as presentation state layered over the real filesystem. User files remain ordinary filesystem objects; KARLOLEGEND-only appearance state belongs under `.karlo\state`.
+- Update architecture now explicitly reserves previous-build recovery and documents the next hardening steps: channel manifest, schema versioning, health signal, rollback history and release signing.
+
 ## 0.3.2 — 2026-08-13
 
 ### Fixed
