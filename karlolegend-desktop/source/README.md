@@ -1,6 +1,6 @@
 # KARLOLEGEND Desktop
 
-Current source version: **0.3.1**
+Current source version: **0.4.0**
 
 KARLOLEGEND Desktop is a native Windows shell-like application that renders a real disk as an icon desktop. It is not a VM, WSL environment, browser app, remote desktop, or security sandbox.
 
@@ -33,7 +33,7 @@ Then:
 
     Copy-Item .\publish\KARLOLEGEND.exe "K:\KARLOLEGEND.exe" -Force
 
-## v0.3 behavior
+## v0.3 foundation
 
 - exactly one KARLOLEGEND instance per Windows user session;
 - a second launch restores/focuses the existing window and exits;
@@ -46,7 +46,6 @@ Then:
 - ordinary file/EXE opening through Windows associations;
 - Back / Up / Root / Refresh;
 - F5 refresh;
-- F11 fullscreen;
 - live filesystem refresh;
 - Feature Center;
 - local `.karlofeature` package foundation;
@@ -54,6 +53,24 @@ Then:
 - automatic internet update discovery from the public KARLOLEGEND GitHub release channel;
 - automatic `.karloupdate` download into the hidden inbox;
 - update install/restart happens inside the app.
+
+## v0.4 desktop behavior
+
+- `KARLOLEGEND.exe`, `.karlo`, `$RECYCLE.BIN`, and `System Volume Information` are infrastructure and are not rendered;
+- F11 enters chrome-free desktop mode;
+- right-click the desktop surface for New Folder, wallpaper, Explorer and refresh actions;
+- selected wallpaper is imported into hidden K: app state so the desktop does not depend on an external C: file;
+- `.html` and `.htm` open in the internal KARLOLEGEND WebView2 viewer;
+- unsupported file types continue to open through normal Windows associations;
+- one previous executable is preserved before an update replaces the live shell.
+
+The HTML renderer keeps WebView2 state under:
+
+    K:\.karlo\state\webview2\
+
+The desktop appearance state lives at:
+
+    K:\.karlo\state\desktop.json
 
 ## Windows infrastructure folders
 
@@ -74,6 +91,7 @@ The shell deliberately hides:
         packages\inbox\
         updates\inbox\
         updates\staged\
+        updates\backup\
         vcs\
         temp\
 
@@ -83,7 +101,7 @@ Production v0.3+ scans public GitHub Releases for the newest stable release that
 
     karlokalinic/karlokalinic.github.io
 
-It looks for a `.karloupdate` release asset, downloads it itself, then hands it to the local update engine.
+It downloads the package itself and hands it to the local update engine.
 
 The update package contains:
 
@@ -92,12 +110,18 @@ The update package contains:
 
 The manifest includes the expected SHA-256 of the executable. The staged executable is verified before replacement.
 
+The current transport is intentionally not the final updater design. See `docs/UPDATE-PLAN.md` for stable-channel metadata, health checks, rollback and signing.
+
 ## Bootstrap boundary
 
-v0.2 had only a **local inbox updater**. It had no network discovery/downloader.
+v0.2 had only a local inbox updater. It had no network discovery/downloader.
 
-That means v0.2 cannot discover v0.3 on the internet retroactively. One transition from v0.2 to v0.3 must still be delivered manually or placed into its existing `.karlo\updates\inbox`.
+The v0.2 -> v0.3 bootstrap also exposed a JSON-manifest casing compatibility bug; v0.3.2 fixed both the release schema and the current deserializer so future packages cannot repeat that exact failure.
 
-Once v0.3 is installed, future ordinary application updates can be discovered, downloaded, installed and restarted from inside KARLOLEGEND itself.
+Once v0.3.2+ is installed, future ordinary application updates can be discovered, downloaded, installed and restarted from inside KARLOLEGEND itself.
 
-See `docs\FEATURES-AND-UPDATES.md`.
+See:
+- `docs/DESKTOP-SPEC.md`
+- `docs/UPDATE-PLAN.md`
+- `docs/FEATURES-AND-UPDATES.md`
+- `docs/DEVLOG.md`
