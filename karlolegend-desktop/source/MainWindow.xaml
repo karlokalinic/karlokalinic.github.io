@@ -46,10 +46,6 @@
                     </ContextMenu>
                 </Setter.Value>
             </Setter>
-            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DesktopItem_PreviewMouseLeftButtonDown"/>
-            <EventSetter Event="PreviewMouseMove" Handler="DesktopItem_PreviewMouseMove"/>
-            <EventSetter Event="PreviewMouseLeftButtonUp" Handler="DesktopItem_PreviewMouseLeftButtonUp"/>
-            <EventSetter Event="PreviewMouseRightButtonDown" Handler="DesktopItem_PreviewMouseRightButtonDown"/>
             <Style.Triggers>
                 <Trigger Property="IsSelected" Value="True">
                     <Setter Property="Background" Value="#4A4A1700"/>
@@ -143,7 +139,11 @@
                  ItemContainerStyle="{StaticResource DesktopItemStyle}"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                 MouseDoubleClick="ItemsList_MouseDoubleClick">
+                 MouseDoubleClick="ItemsList_MouseDoubleClick"
+                 PreviewMouseLeftButtonDown="ItemsList_PreviewMouseLeftButtonDown"
+                 PreviewMouseMove="ItemsList_PreviewMouseMove"
+                 PreviewMouseLeftButtonUp="ItemsList_PreviewMouseLeftButtonUp"
+                 PreviewMouseRightButtonDown="ItemsList_PreviewMouseRightButtonDown">
             <ListBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="New Folder" Click="NewFolderMenuItem_Click"/>
