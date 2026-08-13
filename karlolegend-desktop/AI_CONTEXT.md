@@ -26,6 +26,15 @@ Never render:
 - Multiple child document/tool windows may exist inside that one process.
 - Unknown file types open through normal Windows Shell associations.
 
+## Current v0.4 desktop
+- Canvas-based movable filesystem icons.
+- X/Y positions persist in `.karlo\state\desktop.json` keyed by canonical path.
+- F2/native dialog renames real files/folders and migrates the stored layout key.
+- Delete sends the selected real item to the Windows recycle bin and removes its layout entry.
+- Wallpaper is imported into hidden K: state.
+- F11 gives a chrome-free desktop.
+- Terminal launcher opens Windows PowerShell in the current directory.
+
 ## Content ownership
 Current:
 - folder -> internal navigation
@@ -40,23 +49,23 @@ WebView2 is an embedded renderer only.
 Local K: content maps to `https://karlo.local/`.
 WebView2 profile/cache belongs under `K:\.karlo\state\webview2`.
 
-## Desktop direction
-The app must feel like a desktop, not a themed File Explorer.
+## Desktop next
 Priority:
-1. free icon positioning;
-2. persistent coordinates;
-3. snap/grid + icon scale;
-4. rename/delete/create;
-5. drag/drop;
-6. internal viewers;
-7. project/version-control surfaces.
+1. snap/grid + icon scale UI;
+2. multi-select + rubber-band selection;
+3. drag/drop file operations;
+4. create-item palette;
+5. internal Markdown/text/image viewers;
+6. project/version-control surfaces.
 
-Wallpaper/UI state belongs in `.karlo\state`, never mixed with user files.
+Presentation state belongs in `.karlo\state`, never mixed with user files.
 
 ## Updates
 Current transport: GitHub Releases.
 Current package: `.karloupdate`.
 Current safeguards: version comparison, staged extraction, executable SHA-256, temporary updater, restart, previous-EXE backup.
+
+Normal source changes run Windows CI. Releases are explicit through `karlolegend-desktop/release.json`; do not silently overwrite an already-published semantic version.
 
 Do not break compatibility casually. Update manifests are API contracts.
 
