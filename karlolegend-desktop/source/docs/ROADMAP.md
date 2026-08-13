@@ -1,4 +1,4 @@
-# Roadmap
+# KARLOLEGEND Desktop Roadmap
 
 ## 0.2 — foundation
 - compile fix;
@@ -13,44 +13,64 @@
 - single-instance enforcement;
 - hide shell executable and Windows volume infrastructure;
 - automatic GitHub Release discovery/download;
-- in-app install/restart.
+- in-app install/restart;
+- bootstrap/update manifest compatibility fix.
 
-## 0.4 — desktop becomes a desktop
+## 0.4 — desktop ownership
+- internal HTML viewer;
+- WebView2 state contained in `.karlo`;
+- wallpaper;
+- desktop context menu;
+- chrome-free F11 mode;
+- updater previous-version backup;
+- cross-agent repository context;
+- concrete desktop and update specifications.
+
+## 0.5 — desktop interaction
 - free icon positioning;
 - persistent icon coordinates;
-- drag/drop;
+- snap-to-grid;
+- icon scale;
+- multi-selection and selection rectangle;
 - rename;
-- right-click shell actions;
-- create folder/file;
-- wallpaper;
-- per-directory view state.
+- recycle-bin delete;
+- drag/drop;
+- create-item palette;
+- internal image + Markdown viewers;
+- per-directory presentation state.
 
-## 0.5 — local version control
-- detect Git;
-- repository registration;
-- status;
+## 0.6 — local version control
+- Git detection/bootstrap;
+- local repository registry;
+- status surface;
+- stage/unstage;
 - commit;
-- history;
+- timeline;
 - diff;
-- branch/tag basics;
-- restore.
+- branches and tags;
+- restore;
+- optional backup remote.
 
-## 0.6 — feature runtime
-- stable feature API contract;
-- module lifecycle;
-- feature permissions/capabilities;
-- signature verification;
-- enable/disable without deleting packages.
+## 0.7 — update hardening
+- stable channel manifest;
+- updater/package schema versions;
+- post-update health check;
+- automatic rollback;
+- append-only update history;
+- release signatures;
+- clear stable/preview channels.
 
-## 0.7 — update catalog
-- optional remote catalog;
-- download to local inbox;
-- package hash/signature validation;
-- release channels;
-- rollback.
+## 0.8 — feature runtime
+- stable feature API;
+- capability manifest;
+- install/enable/disable/update;
+- signature/trust verification;
+- feature crash isolation where practical.
 
 ## 1.0
 - shell is stable enough to be the default KARLOLEGEND workspace UI;
 - source remains independent on C:;
 - deployed app and state remain on K:;
-- user data remains standard filesystem data.
+- user data remains standard filesystem data;
+- supported content types feel native inside KARLOLEGEND without trapping the underlying files;
+- updates are recoverable and do not require manual release downloads.
