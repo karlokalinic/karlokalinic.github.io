@@ -96,6 +96,10 @@
                             ToolTip="Feature Center"
                             Click="FeaturesButton_Click"
                             Style="{StaticResource ToolbarButton}"/>
+                    <Button Content="Terminal"
+                            ToolTip="Open Windows PowerShell in the current directory"
+                            Click="TerminalButton_Click"
+                            Style="{StaticResource ToolbarButton}"/>
                     <Button x:Name="UpdateButton"
                             Content="Updates"
                             ToolTip="Check for updates"
