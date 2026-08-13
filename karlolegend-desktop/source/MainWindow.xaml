@@ -24,20 +24,37 @@
             <Setter Property="Cursor" Value="Hand"/>
         </Style>
 
-        <Style TargetType="ListBoxItem">
+        <Style x:Key="DesktopItemStyle" TargetType="ListBoxItem">
+            <Setter Property="Canvas.Left" Value="{Binding X}"/>
+            <Setter Property="Canvas.Top" Value="{Binding Y}"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="#F5F5F5"/>
             <Setter Property="Padding" Value="0"/>
-            <Setter Property="Margin" Value="7"/>
+            <Setter Property="Margin" Value="0"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="VerticalContentAlignment" Value="Stretch"/>
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Cursor" Value="Arrow"/>
+            <Setter Property="ContextMenu">
+                <Setter.Value>
+                    <ContextMenu Opened="ItemContextMenu_Opened">
+                        <MenuItem Header="Open" Click="OpenItemMenuItem_Click"/>
+                        <MenuItem Header="Open Externally" Click="OpenExternalMenuItem_Click"/>
+                        <Separator/>
+                        <MenuItem Header="Rename" Click="RenameItemMenuItem_Click"/>
+                        <MenuItem Header="Delete to Recycle Bin" Click="DeleteItemMenuItem_Click"/>
+                    </ContextMenu>
+                </Setter.Value>
+            </Setter>
+            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DesktopItem_PreviewMouseLeftButtonDown"/>
+            <EventSetter Event="PreviewMouseMove" Handler="DesktopItem_PreviewMouseMove"/>
+            <EventSetter Event="PreviewMouseLeftButtonUp" Handler="DesktopItem_PreviewMouseLeftButtonUp"/>
             <Style.Triggers>
                 <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="#2A2A00"/>
+                    <Setter Property="Background" Value="#4A4A1700"/>
                 </Trigger>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#202020"/>
+                    <Setter Property="Background" Value="#32000000"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -118,7 +135,9 @@
                  Grid.Row="1"
                  Background="Transparent"
                  BorderThickness="0"
+                 ItemContainerStyle="{StaticResource DesktopItemStyle}"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                  MouseDoubleClick="ItemsList_MouseDoubleClick">
             <ListBox.ContextMenu>
                 <ContextMenu>
@@ -131,9 +150,10 @@
                     <MenuItem Header="Refresh" Click="RefreshMenuItem_Click"/>
                 </ContextMenu>
             </ListBox.ContextMenu>
+
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel IsItemsHost="True"/>
+                    <Canvas IsItemsHost="True"/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
 
@@ -160,7 +180,13 @@
                                    MaxHeight="40"
                                    Margin="4,3,4,0"
                                    Foreground="#F5F5F5"
-                                   FontSize="13"/>
+                                   FontSize="13">
+                            <TextBlock.Effect>
+                                <DropShadowEffect BlurRadius="2"
+                                                  ShadowDepth="1"
+                                                  Opacity="0.9"/>
+                            </TextBlock.Effect>
+                        </TextBlock>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
