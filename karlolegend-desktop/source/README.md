@@ -2,7 +2,7 @@
 
 Current source version: **0.4.0**
 
-KARLOLEGEND Desktop is a native Windows shell-like application that renders a real disk as an icon desktop. It is not a VM, WSL environment, browser app, remote desktop, or security sandbox.
+KARLOLEGEND Desktop is a native Windows personal workspace shell that renders a real disk as a desktop. It is not a VM, WSL environment, browser app, remote desktop, or security sandbox.
 
 The filesystem is the data model.
 
@@ -33,60 +33,62 @@ Then:
 
     Copy-Item .\publish\KARLOLEGEND.exe "K:\KARLOLEGEND.exe" -Force
 
-## v0.3 foundation
+The CI/release pipeline enforces the intended deployment contract: the publish result must contain exactly one deployable file, `KARLOLEGEND.exe`.
 
-- exactly one KARLOLEGEND instance per Windows user session;
+## Current desktop behavior
+
+- exactly one normal KARLOLEGEND process per Windows user session;
 - a second launch restores/focuses the existing window and exits;
-- the running `KARLOLEGEND.exe` does not render itself as a desktop icon;
-- `System Volume Information` is hidden from the shell;
-- `$RECYCLE.BIN` is hidden from the shell;
-- `.karlo` remains hidden application infrastructure;
+- `KARLOLEGEND.exe`, `System Volume Information`, `$RECYCLE.BIN`, and `.karlo` do not render as desktop content;
 - real Windows Shell icons;
-- folder navigation;
-- ordinary file/EXE opening through Windows associations;
-- Back / Up / Root / Refresh;
+- Canvas-based desktop surface;
+- drag icons freely and retain persistent X/Y coordinates across refreshes/restarts;
+- new filesystem items receive an initial top-to-bottom desktop position;
+- folder navigation remains inside KARLOLEGEND;
+- `.html` / `.htm` open in an internal WebView2 viewer;
+- unsupported files and EXEs use normal Windows associations;
+- item context menu: Open, Open Externally, Rename, Delete to Recycle Bin;
+- F2 rename;
+- Delete sends the selected item to the Windows Recycle Bin after confirmation;
+- desktop background menu: New Folder, wallpaper, Explorer, refresh;
+- wallpaper is copied into hidden K: state so the desktop does not depend on a C: source file;
+- Terminal button opens Windows PowerShell in the current KARLOLEGEND directory;
 - F5 refresh;
+- F11 / Desktop enters chrome-free desktop mode;
 - live filesystem refresh;
-- Feature Center;
-- local `.karlofeature` package foundation;
-- local `.karloupdate` staging/replacement engine;
-- automatic internet update discovery from the public KARLOLEGEND GitHub release channel;
-- automatic `.karloupdate` download into the hidden inbox;
-- update install/restart happens inside the app.
+- Feature Center reports actual built-in capabilities and planned optional modules.
 
-## v0.4 desktop behavior
+## HTML inside KARLOLEGEND
 
-- `KARLOLEGEND.exe`, `.karlo`, `$RECYCLE.BIN`, and `System Volume Information` are infrastructure and are not rendered;
-- F11 enters chrome-free desktop mode;
-- right-click the desktop surface for New Folder, wallpaper, Explorer and refresh actions;
-- selected wallpaper is imported into hidden K: app state so the desktop does not depend on an external C: file;
-- `.html` and `.htm` open in the internal KARLOLEGEND WebView2 viewer;
-- unsupported file types continue to open through normal Windows associations;
-- one previous executable is preserved before an update replaces the live shell.
+The app remains native WPF. WebView2 is only an embedded content renderer.
 
-The HTML renderer keeps WebView2 state under:
+Local K: content is mapped to:
+
+    https://karlo.local/
+
+so HTML can use relative CSS/JS/image assets under a normal origin.
+
+WebView2 state lives under:
 
     K:\.karlo\state\webview2\
 
-The desktop appearance state lives at:
+The viewer includes an explicit External action if the same HTML should be opened using the normal Windows browser association.
+
+## Desktop state
+
+Presentation state lives under:
 
     K:\.karlo\state\desktop.json
 
-## Windows infrastructure folders
-
-The shell deliberately hides:
-
-    System Volume Information
-    $RECYCLE.BIN
-    KARLOLEGEND.exe
-    .karlo
-
-`$RECYCLE.BIN` is not physically the same directory as the one on C:. Windows maintains recycle-bin storage on each eligible volume, while the normal Recycle Bin UI presents an aggregated view.
+It stores things such as wallpaper and icon coordinates. This state controls how files look on the desktop; it never determines whether the files exist.
 
 ## Internal layout
 
     K:\.karlo\
         state\
+            desktop.json
+            wallpaper\
+            webview2\
         features\
         packages\inbox\
         updates\inbox\
@@ -95,33 +97,33 @@ The shell deliberately hides:
         vcs\
         temp\
 
-## Update channel
+## Updates
 
-Production v0.3+ scans public GitHub Releases for the newest stable release that actually contains a `.karloupdate` asset in:
+Production v0.3.2+ can discover stable KARLOLEGEND GitHub releases, download a `.karloupdate` package itself, hand it to the local update engine, verify the staged replacement executable by SHA-256, replace the live EXE and restart.
 
-    karlokalinic/karlokalinic.github.io
+v0.4 additionally preserves the previous live executable at:
 
-It downloads the package itself and hands it to the local update engine.
+    K:\.karlo\updates\backup\KARLOLEGEND.previous.exe
 
-The update package contains:
+before replacement.
 
-    manifest.json
-    KARLOLEGEND.exe
+Release creation is now explicit through `karlolegend-desktop/release.json`; ordinary source commits run CI but do not silently overwrite an already-published semantic version.
 
-The manifest includes the expected SHA-256 of the executable. The staged executable is verified before replacement.
+The current updater is not the final trust/recovery design. See `docs/UPDATE-PLAN.md` for channel metadata, schema versions, health checks, automatic rollback, update history and signing.
 
-The current transport is intentionally not the final updater design. See `docs/UPDATE-PLAN.md` for stable-channel metadata, health checks, rollback and signing.
+## Agent context
 
-## Bootstrap boundary
+Repository-aware agents should start from:
 
-v0.2 had only a local inbox updater. It had no network discovery/downloader.
+    karlolegend-desktop/AI_CONTEXT.md
+    karlolegend-desktop/AGENTS.md
 
-The v0.2 -> v0.3 bootstrap also exposed a JSON-manifest casing compatibility bug; v0.3.2 fixed both the release schema and the current deserializer so future packages cannot repeat that exact failure.
-
-Once v0.3.2+ is installed, future ordinary application updates can be discovered, downloaded, installed and restarted from inside KARLOLEGEND itself.
+and load detailed files from `source/docs/` only when relevant.
 
 See:
 - `docs/DESKTOP-SPEC.md`
 - `docs/UPDATE-PLAN.md`
 - `docs/FEATURES-AND-UPDATES.md`
+- `docs/VERSION-CONTROL.md`
 - `docs/DEVLOG.md`
+- `docs/ROADMAP.md`
