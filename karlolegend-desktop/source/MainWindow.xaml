@@ -37,7 +37,7 @@
             <Setter Property="Cursor" Value="Arrow"/>
             <Setter Property="ContextMenu">
                 <Setter.Value>
-                    <ContextMenu Opened="ItemContextMenu_Opened">
+                    <ContextMenu>
                         <MenuItem Header="Open" Click="OpenItemMenuItem_Click"/>
                         <MenuItem Header="Open Externally" Click="OpenExternalMenuItem_Click"/>
                         <Separator/>
@@ -49,6 +49,7 @@
             <EventSetter Event="PreviewMouseLeftButtonDown" Handler="DesktopItem_PreviewMouseLeftButtonDown"/>
             <EventSetter Event="PreviewMouseMove" Handler="DesktopItem_PreviewMouseMove"/>
             <EventSetter Event="PreviewMouseLeftButtonUp" Handler="DesktopItem_PreviewMouseLeftButtonUp"/>
+            <EventSetter Event="PreviewMouseRightButtonDown" Handler="DesktopItem_PreviewMouseRightButtonDown"/>
             <Style.Triggers>
                 <Trigger Property="IsSelected" Value="True">
                     <Setter Property="Background" Value="#4A4A1700"/>
