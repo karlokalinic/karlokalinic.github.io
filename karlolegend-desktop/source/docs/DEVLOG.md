@@ -381,3 +381,30 @@ After that correction, v0.4.0 passed the release gate:
 - the stable GitHub Release was published.
 
 This is the desired release philosophy going forward: ordinary commits prove themselves in CI; a version becomes an installable product only through an explicit release request.
+
+---
+
+## Entry 018 — The updater locks its own completed download
+**Date:** 2026-08-13
+
+The first real update check after the v0.4 release exposed a Windows sharing violation:
+
+    Update check failed: The process cannot access the file because it is being used by another process.
+
+The failure was inside `RemoteUpdateService`, not the updater replacement process.
+
+The downloader wrote the release asset to:
+
+    <destination>.download
+
+using an `await using var FileStream`, then immediately attempted:
+
+    File.Move(temporary, destination, overwrite: true)
+
+The declaration-style `await using` kept the output stream alive for the remainder of the enclosing block, so Windows still held an exclusive handle (`FileShare.None`) at the exact moment KARLOLEGEND attempted to rename the completed temporary file into the update inbox.
+
+The fix is deliberately structural rather than timing-based: the network input and output streams now live in explicit nested `await using (...)` scopes. Both streams are disposed before `File.Move` executes. No sleep/retry is used to hide an ownership error.
+
+The application version is bumped to `0.4.1` because this is a shipped updater transport defect.
+
+A practical consequence remains: a binary containing the broken downloader cannot download its own fix. The recovery path for affected installations is therefore a one-time bootstrap of the corrected executable/update package; once `0.4.1` is running, normal network self-update can resume.
