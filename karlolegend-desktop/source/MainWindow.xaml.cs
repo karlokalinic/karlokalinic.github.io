@@ -1,10 +1,12 @@
 using KarloDiskShell.Models;
 using KarloDiskShell.Services;
+using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace KarloDiskShell;
@@ -23,6 +25,8 @@ public partial class MainWindow : Window
     private readonly KarloEnvironmentService _environment;
     private readonly FeatureCatalogService _featureCatalog;
     private readonly RemoteUpdateService _remoteUpdateService;
+    private readonly DesktopSettingsService _desktopSettingsService;
+    private readonly DesktopSettings _desktopSettings;
 
     private string _currentPath;
 
@@ -51,6 +55,9 @@ public partial class MainWindow : Window
 
         _featureCatalog = new FeatureCatalogService(_environment);
         _remoteUpdateService = new RemoteUpdateService(_environment);
+        _desktopSettingsService = new DesktopSettingsService(_environment);
+        _desktopSettings = _desktopSettingsService.Load();
+        ApplyWallpaper();
 
         ItemsList.ItemsSource = _items;
 
@@ -224,6 +231,24 @@ public partial class MainWindow : Window
 
         try
         {
+            var extension = Path.GetExtension(item.FullPath);
+
+            if (_desktopSettings.OpenHtmlInsideKarlolegend &&
+                (string.Equals(extension, ".html", StringComparison.OrdinalIgnoreCase) ||
+                 string.Equals(extension, ".htm", StringComparison.OrdinalIgnoreCase)))
+            {
+                var viewer = new HtmlViewerWindow(
+                    _root,
+                    _environment.WebViewDataDirectory,
+                    item.FullPath)
+                {
+                    Owner = this
+                };
+
+                viewer.Show();
+                return;
+            }
+
             Process.Start(new ProcessStartInfo
             {
                 FileName = item.FullPath,
@@ -271,6 +296,119 @@ public partial class MainWindow : Window
 
     private void RefreshButton_Click(object sender, RoutedEventArgs e) =>
         RefreshCurrentDirectory();
+
+    private void DesktopModeButton_Click(object sender, RoutedEventArgs e) =>
+        ToggleFullscreen();
+
+    private void NewFolderMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            var baseName = "New Folder";
+            var candidate = Path.Combine(_currentPath, baseName);
+            var suffix = 2;
+
+            while (Directory.Exists(candidate) || File.Exists(candidate))
+            {
+                candidate = Path.Combine(_currentPath, $"{baseName} ({suffix})");
+                suffix++;
+            }
+
+            Directory.CreateDirectory(candidate);
+            RefreshCurrentDirectory();
+        }
+        catch (Exception ex)
+        {
+            ShowError("Could not create folder.", ex);
+        }
+    }
+
+    private void SetWallpaperMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        var dialog = new OpenFileDialog
+        {
+            Title = "Choose KARLOLEGEND desktop wallpaper",
+            Filter = "Images|*.png;*.jpg;*.jpeg;*.bmp|All files|*.*",
+            CheckFileExists = true,
+            Multiselect = false
+        };
+
+        if (dialog.ShowDialog(this) != true)
+            return;
+
+        try
+        {
+            var wallpaperDirectory = Path.Combine(
+                _environment.StateDirectory,
+                "wallpaper");
+
+            Directory.CreateDirectory(wallpaperDirectory);
+
+            var extension = Path.GetExtension(dialog.FileName);
+            var importedPath = Path.Combine(
+                wallpaperDirectory,
+                "desktop" + extension);
+
+            File.Copy(dialog.FileName, importedPath, overwrite: true);
+
+            _desktopSettings.WallpaperPath = importedPath;
+            _desktopSettingsService.Save(_desktopSettings);
+            ApplyWallpaper();
+        }
+        catch (Exception ex)
+        {
+            ShowError("Could not import wallpaper.", ex);
+        }
+    }
+
+    private void ClearWallpaperMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        _desktopSettings.WallpaperPath = "";
+        _desktopSettingsService.Save(_desktopSettings);
+        WallpaperImage.Source = null;
+    }
+
+    private void OpenExplorerMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        var startInfo = new ProcessStartInfo
+        {
+            FileName = "explorer.exe",
+            UseShellExecute = true
+        };
+
+        startInfo.ArgumentList.Add(_currentPath);
+        Process.Start(startInfo);
+    }
+
+    private void RefreshMenuItem_Click(object sender, RoutedEventArgs e) =>
+        RefreshCurrentDirectory();
+
+    private void ApplyWallpaper()
+    {
+        WallpaperImage.Source = null;
+
+        if (string.IsNullOrWhiteSpace(_desktopSettings.WallpaperPath) ||
+            !File.Exists(_desktopSettings.WallpaperPath))
+        {
+            return;
+        }
+
+        try
+        {
+            var bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.UriSource = new Uri(_desktopSettings.WallpaperPath, UriKind.Absolute);
+            bitmap.EndInit();
+            bitmap.Freeze();
+
+            WallpaperImage.Source = bitmap;
+        }
+        catch
+        {
+            WallpaperImage.Source = null;
+        }
+    }
 
     private void FeaturesButton_Click(object sender, RoutedEventArgs e)
     {
@@ -454,6 +592,8 @@ public partial class MainWindow : Window
             _previousWindowState = WindowState;
             _previousResizeMode = ResizeMode;
 
+            TopBar.Visibility = Visibility.Collapsed;
+            StatusBar.Visibility = Visibility.Collapsed;
             WindowStyle = WindowStyle.None;
             ResizeMode = ResizeMode.NoResize;
             WindowState = WindowState.Maximized;
@@ -464,6 +604,8 @@ public partial class MainWindow : Window
             WindowStyle = _previousWindowStyle;
             ResizeMode = _previousResizeMode;
             WindowState = _previousWindowState;
+            TopBar.Visibility = Visibility.Visible;
+            StatusBar.Visibility = Visibility.Visible;
             _isFullscreen = false;
         }
     }
