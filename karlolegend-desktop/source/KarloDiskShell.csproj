@@ -25,4 +25,14 @@
     <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.4078.44" />
   </ItemGroup>
 
+  <!-- WebView2 ships IntelliSense/reference XML files beside the published app.
+       They are documentation, not runtime dependencies. Remove them after publish
+       so the K: deployment contract remains exactly one visible executable. -->
+  <Target Name="RemovePublishedDocumentationFiles" AfterTargets="Publish">
+    <ItemGroup>
+      <PublishedDocumentationFiles Include="$(PublishDir)*.xml" />
+    </ItemGroup>
+    <Delete Files="@(PublishedDocumentationFiles)" />
+  </Target>
+
 </Project>
