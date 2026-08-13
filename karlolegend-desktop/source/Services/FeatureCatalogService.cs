@@ -9,6 +9,9 @@ public sealed class FeatureCatalogService
 {
     private readonly KarloEnvironmentService _environment;
 
+    private static readonly string BuiltInAppVersion =
+        (typeof(FeatureCatalogService).Assembly.GetName().Version ?? new Version(0, 0, 0)).ToString(3);
+
     private static readonly FeatureDefinition[] Catalog =
     [
         new FeatureDefinition
@@ -16,7 +19,7 @@ public sealed class FeatureCatalogService
             Id = "core.desktop",
             Name = "Desktop Shell",
             Description = "Filesystem desktop, movable persistent icons, navigation, rename, recycle-bin delete, Windows Shell icons and live refresh.",
-            BuiltInVersion = "0.4.0",
+            BuiltInVersion = BuiltInAppVersion,
             IsBuiltIn = true
         },
         new FeatureDefinition
@@ -24,7 +27,7 @@ public sealed class FeatureCatalogService
             Id = "core.html",
             Name = "Internal HTML Viewer",
             Description = "Opens local HTML/HTM inside KARLOLEGEND through an embedded WebView2 renderer and the karlo.local virtual origin.",
-            BuiltInVersion = "0.4.0",
+            BuiltInVersion = BuiltInAppVersion,
             IsBuiltIn = true
         },
         new FeatureDefinition
@@ -32,7 +35,7 @@ public sealed class FeatureCatalogService
             Id = "core.appearance",
             Name = "Desktop Appearance",
             Description = "Wallpaper, chrome-free desktop mode and persistent desktop presentation state.",
-            BuiltInVersion = "0.4.0",
+            BuiltInVersion = BuiltInAppVersion,
             IsBuiltIn = true
         },
         new FeatureDefinition
@@ -40,7 +43,7 @@ public sealed class FeatureCatalogService
             Id = "terminal",
             Name = "Integrated Terminal Launcher",
             Description = "Opens Windows PowerShell directly in the current KARLOLEGEND directory.",
-            BuiltInVersion = "0.4.0",
+            BuiltInVersion = BuiltInAppVersion,
             IsBuiltIn = true
         },
         new FeatureDefinition
@@ -48,7 +51,7 @@ public sealed class FeatureCatalogService
             Id = "core.updates",
             Name = "Update Engine",
             Description = "Discovers online .karloupdate releases, verifies the staged executable, preserves the previous build, replaces the live EXE and restarts.",
-            BuiltInVersion = "0.4.0",
+            BuiltInVersion = BuiltInAppVersion,
             IsBuiltIn = true
         },
         new FeatureDefinition
