@@ -1,10 +1,12 @@
 using KarloDiskShell.Models;
 using KarloDiskShell.Services;
 using Microsoft.Win32;
+using Microsoft.VisualBasic.FileIO;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -13,6 +15,13 @@ namespace KarloDiskShell;
 
 public partial class MainWindow : Window
 {
+    private const double DesktopItemWidth = 128;
+    private const double DesktopItemHeight = 116;
+    private const double DefaultColumnStep = 138;
+    private const double DefaultRowStep = 120;
+    private const double DesktopMargin = 16;
+    private const double SnapStep = 16;
+
     private static readonly HashSet<string> HiddenInfrastructureNames =
         new(StringComparer.OrdinalIgnoreCase)
         {
@@ -36,6 +45,12 @@ public partial class MainWindow : Window
     private FileSystemWatcher? _watcher;
     private readonly DispatcherTimer _refreshDebounce;
     private bool _isCheckingUpdates;
+
+    private ListBoxItem? _dragContainer;
+    private FileSystemItem? _dragItem;
+    private Point _dragStartPointer;
+    private Point _dragStartItem;
+    private bool _dragMoved;
 
     private WindowStyle _previousWindowStyle;
     private WindowState _previousWindowState;
@@ -149,12 +164,19 @@ public partial class MainWindow : Window
                     path.TrimEnd(Path.DirectorySeparatorChar))
             })
             .OrderByDescending(x => x.IsDirectory)
-            .ThenBy(x => x.Name, StringComparer.CurrentCultureIgnoreCase);
+            .ThenBy(x => x.Name, StringComparer.CurrentCultureIgnoreCase)
+            .ToArray();
 
-        foreach (var entry in ordered)
+        var settingsChanged = false;
+
+        for (var index = 0; index < ordered.Length; index++)
         {
+            var entry = ordered[index];
+
             try
             {
+                var position = GetOrCreateIconPosition(entry.Path, index, ref settingsChanged);
+
                 _items.Add(new FileSystemItem
                 {
                     Name = string.IsNullOrWhiteSpace(entry.Name)
@@ -162,7 +184,9 @@ public partial class MainWindow : Window
                         : entry.Name,
                     FullPath = entry.Path,
                     IsDirectory = entry.IsDirectory,
-                    Icon = ShellIconService.GetIcon(entry.Path)
+                    Icon = ShellIconService.GetIcon(entry.Path),
+                    X = position.X,
+                    Y = position.Y
                 });
             }
             catch
@@ -171,10 +195,46 @@ public partial class MainWindow : Window
             }
         }
 
+        if (settingsChanged)
+            TrySaveDesktopSettings();
+
         var folderCount = _items.Count(x => x.IsDirectory);
         var fileCount = _items.Count - folderCount;
 
         StatusText.Text = $"{folderCount} folders  •  {fileCount} files";
+    }
+
+    private DesktopIconPosition GetOrCreateIconPosition(
+        string path,
+        int index,
+        ref bool settingsChanged)
+    {
+        var key = LayoutKey(path);
+
+        if (_desktopSettings.IconPositions.TryGetValue(key, out var existing))
+            return existing;
+
+        var availableHeight = ItemsList.ActualHeight;
+        if (availableHeight < DesktopItemHeight + DesktopMargin * 2)
+            availableHeight = 620;
+
+        var rows = Math.Max(
+            1,
+            (int)Math.Floor(
+                (availableHeight - DesktopMargin * 2) / DefaultRowStep));
+
+        var row = index % rows;
+        var column = index / rows;
+
+        var created = new DesktopIconPosition
+        {
+            X = DesktopMargin + column * DefaultColumnStep,
+            Y = DesktopMargin + row * DefaultRowStep
+        };
+
+        _desktopSettings.IconPositions[key] = created;
+        settingsChanged = true;
+        return created;
     }
 
     private bool ShouldRenderPath(string path)
@@ -249,13 +309,7 @@ public partial class MainWindow : Window
                 return;
             }
 
-            Process.Start(new ProcessStartInfo
-            {
-                FileName = item.FullPath,
-                UseShellExecute = true,
-                WorkingDirectory = Path.GetDirectoryName(item.FullPath)
-                                   ?? _currentPath
-            });
+            OpenExternally(item);
         }
         catch (Exception ex)
         {
@@ -263,10 +317,277 @@ public partial class MainWindow : Window
         }
     }
 
+    private void OpenExternally(FileSystemItem item)
+    {
+        Process.Start(new ProcessStartInfo
+        {
+            FileName = item.FullPath,
+            UseShellExecute = true,
+            WorkingDirectory = item.IsDirectory
+                ? item.FullPath
+                : Path.GetDirectoryName(item.FullPath) ?? _currentPath
+        });
+    }
+
     private void ItemsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        if (_dragMoved)
+            return;
+
+        if (ItemsList.SelectedItem is FileSystemItem item)
+            OpenItem(item);
+    }
+
+    private void DesktopItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (sender is not ListBoxItem container ||
+            container.DataContext is not FileSystemItem item)
+        {
+            return;
+        }
+
+        ItemsList.SelectedItem = item;
+        _dragContainer = container;
+        _dragItem = item;
+        _dragStartPointer = e.GetPosition(ItemsList);
+        _dragStartItem = new Point(item.X, item.Y);
+        _dragMoved = false;
+
+        container.CaptureMouse();
+    }
+
+    private void DesktopItem_PreviewMouseMove(object sender, MouseEventArgs e)
+    {
+        if (_dragItem is null ||
+            _dragContainer is null ||
+            e.LeftButton != MouseButtonState.Pressed)
+        {
+            return;
+        }
+
+        var pointer = e.GetPosition(ItemsList);
+        var deltaX = pointer.X - _dragStartPointer.X;
+        var deltaY = pointer.Y - _dragStartPointer.Y;
+
+        if (!_dragMoved &&
+            Math.Abs(deltaX) < SystemParameters.MinimumHorizontalDragDistance &&
+            Math.Abs(deltaY) < SystemParameters.MinimumVerticalDragDistance)
+        {
+            return;
+        }
+
+        _dragMoved = true;
+
+        var maxX = Math.Max(0, ItemsList.ActualWidth - DesktopItemWidth);
+        var maxY = Math.Max(0, ItemsList.ActualHeight - DesktopItemHeight);
+
+        _dragItem.X = Math.Clamp(_dragStartItem.X + deltaX, 0, maxX);
+        _dragItem.Y = Math.Clamp(_dragStartItem.Y + deltaY, 0, maxY);
+
+        e.Handled = true;
+    }
+
+    private void DesktopItem_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        if (_dragContainer is null || _dragItem is null)
+            return;
+
+        if (_dragMoved)
+        {
+            if (_desktopSettings.SnapToGrid)
+            {
+                _dragItem.X = Math.Round(_dragItem.X / SnapStep) * SnapStep;
+                _dragItem.Y = Math.Round(_dragItem.Y / SnapStep) * SnapStep;
+            }
+
+            SaveIconPosition(_dragItem);
+            e.Handled = true;
+        }
+
+        if (_dragContainer.IsMouseCaptured)
+            _dragContainer.ReleaseMouseCapture();
+
+        _dragContainer = null;
+        _dragItem = null;
+    }
+
+    private void ItemContextMenu_Opened(object sender, RoutedEventArgs e)
+    {
+        if (sender is ContextMenu menu &&
+            menu.PlacementTarget is ListBoxItem container &&
+            container.DataContext is FileSystemItem item)
+        {
+            ItemsList.SelectedItem = item;
+        }
+    }
+
+    private void OpenItemMenuItem_Click(object sender, RoutedEventArgs e)
     {
         if (ItemsList.SelectedItem is FileSystemItem item)
             OpenItem(item);
+    }
+
+    private void OpenExternalMenuItem_Click(object sender, RoutedEventArgs e)
+    {
+        if (ItemsList.SelectedItem is not FileSystemItem item)
+            return;
+
+        try
+        {
+            OpenExternally(item);
+        }
+        catch (Exception ex)
+        {
+            ShowError($"Could not open externally:\n{item.Name}", ex);
+        }
+    }
+
+    private void RenameItemMenuItem_Click(object sender, RoutedEventArgs e) =>
+        RenameSelectedItem();
+
+    private void DeleteItemMenuItem_Click(object sender, RoutedEventArgs e) =>
+        DeleteSelectedItemToRecycleBin();
+
+    private void RenameSelectedItem()
+    {
+        if (ItemsList.SelectedItem is not FileSystemItem item)
+            return;
+
+        var dialog = new RenameItemWindow(item.Name)
+        {
+            Owner = this
+        };
+
+        if (dialog.ShowDialog() != true)
+            return;
+
+        var newName = dialog.NewName;
+
+        if (string.IsNullOrWhiteSpace(newName) ||
+            newName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+        {
+            MessageBox.Show(
+                this,
+                "The new name is empty or contains characters Windows does not allow in file names.",
+                "KARLOLEGEND Rename",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+            return;
+        }
+
+        var parent = Path.GetDirectoryName(item.FullPath);
+        if (string.IsNullOrWhiteSpace(parent))
+            return;
+
+        var targetPath = Path.Combine(parent, newName);
+
+        if (string.Equals(item.FullPath, targetPath, StringComparison.OrdinalIgnoreCase))
+            return;
+
+        if (File.Exists(targetPath) || Directory.Exists(targetPath))
+        {
+            MessageBox.Show(
+                this,
+                "An item with that name already exists.",
+                "KARLOLEGEND Rename",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+            return;
+        }
+
+        try
+        {
+            if (item.IsDirectory)
+                Directory.Move(item.FullPath, targetPath);
+            else
+                File.Move(item.FullPath, targetPath);
+
+            MoveIconPosition(item.FullPath, targetPath);
+            RefreshCurrentDirectory();
+        }
+        catch (Exception ex)
+        {
+            ShowError("Could not rename the item.", ex);
+        }
+    }
+
+    private void DeleteSelectedItemToRecycleBin()
+    {
+        if (ItemsList.SelectedItem is not FileSystemItem item)
+            return;
+
+        var response = MessageBox.Show(
+            this,
+            $"Move '{item.Name}' to the Windows Recycle Bin?",
+            "KARLOLEGEND Delete",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Warning);
+
+        if (response != MessageBoxResult.Yes)
+            return;
+
+        try
+        {
+            if (item.IsDirectory)
+            {
+                Microsoft.VisualBasic.FileIO.FileSystem.DeleteDirectory(
+                    item.FullPath,
+                    UIOption.OnlyErrorDialogs,
+                    RecycleOption.SendToRecycleBin);
+            }
+            else
+            {
+                Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
+                    item.FullPath,
+                    UIOption.OnlyErrorDialogs,
+                    RecycleOption.SendToRecycleBin);
+            }
+
+            _desktopSettings.IconPositions.Remove(LayoutKey(item.FullPath));
+            TrySaveDesktopSettings();
+            RefreshCurrentDirectory();
+        }
+        catch (Exception ex)
+        {
+            ShowError("Could not move the item to the Recycle Bin.", ex);
+        }
+    }
+
+    private void SaveIconPosition(FileSystemItem item)
+    {
+        _desktopSettings.IconPositions[LayoutKey(item.FullPath)] = new DesktopIconPosition
+        {
+            X = item.X,
+            Y = item.Y
+        };
+
+        TrySaveDesktopSettings();
+    }
+
+    private void MoveIconPosition(string oldPath, string newPath)
+    {
+        var oldKey = LayoutKey(oldPath);
+        var newKey = LayoutKey(newPath);
+
+        if (_desktopSettings.IconPositions.Remove(oldKey, out var position))
+            _desktopSettings.IconPositions[newKey] = position;
+
+        TrySaveDesktopSettings();
+    }
+
+    private static string LayoutKey(string path) =>
+        Path.GetFullPath(path).ToUpperInvariant();
+
+    private void TrySaveDesktopSettings()
+    {
+        try
+        {
+            _desktopSettingsService.Save(_desktopSettings);
+        }
+        catch
+        {
+            // Presentation-state persistence must never break file navigation.
+        }
     }
 
     private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -364,7 +685,7 @@ public partial class MainWindow : Window
     private void ClearWallpaperMenuItem_Click(object sender, RoutedEventArgs e)
     {
         _desktopSettings.WallpaperPath = "";
-        _desktopSettingsService.Save(_desktopSettings);
+        TrySaveDesktopSettings();
         WallpaperImage.Source = null;
     }
 
@@ -558,6 +879,16 @@ public partial class MainWindow : Window
     {
         switch (e.Key)
         {
+            case Key.F2:
+                RenameSelectedItem();
+                e.Handled = true;
+                break;
+
+            case Key.Delete:
+                DeleteSelectedItemToRecycleBin();
+                e.Handled = true;
+                break;
+
             case Key.F5:
                 RefreshCurrentDirectory();
                 e.Handled = true;
