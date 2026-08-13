@@ -158,17 +158,26 @@ public sealed class RemoteUpdateService
 
                 downloadResponse.EnsureSuccessStatusCode();
 
-                await using var input = await downloadResponse.Content.ReadAsStreamAsync(cancellationToken);
-                await using var output = new FileStream(
-                    temporary,
-                    FileMode.Create,
-                    FileAccess.Write,
-                    FileShare.None,
-                    bufferSize: 1024 * 128,
-                    useAsync: true);
-
-                await input.CopyToAsync(output, cancellationToken);
-                await output.FlushAsync(cancellationToken);
+                // The temporary download must be fully closed before File.Move.
+                // Keeping an `await using var output` alive until the end of this
+                // try block leaves Windows holding the file handle while the move
+                // is attempted and produces ERROR_SHARING_VIOLATION / "file is
+                // being used by another process". Deliberate nested scopes make
+                // disposal happen before the atomic rename into the update inbox.
+                await using (var input = await downloadResponse.Content.ReadAsStreamAsync(cancellationToken))
+                {
+                    await using (var output = new FileStream(
+                                     temporary,
+                                     FileMode.Create,
+                                     FileAccess.Write,
+                                     FileShare.None,
+                                     bufferSize: 1024 * 128,
+                                     useAsync: true))
+                    {
+                        await input.CopyToAsync(output, cancellationToken);
+                        await output.FlushAsync(cancellationToken);
+                    }
+                }
 
                 File.Move(temporary, destination, overwrite: true);
             }
