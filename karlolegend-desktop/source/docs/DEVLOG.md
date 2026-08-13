@@ -281,7 +281,7 @@ Rule:
 
 v0.4 introduces persisted desktop settings and wallpaper. Selected wallpaper is imported into hidden K: state so the visual environment does not accidentally depend on a file that later disappears from C:.
 
-The next major step is replacing WrapPanel-style icon layout with free-positioned, persistent desktop coordinates without creating fake shortcut files.
+The icon surface was subsequently converted from an auto-arranged WrapPanel into a Canvas: filesystem items can be moved directly, their X/Y coordinates persist, and rename/delete operations update the presentation-state keys without creating fake shortcut files.
 
 ---
 
@@ -326,3 +326,58 @@ The repository therefore gained a compact context hierarchy:
 `AI_CONTEXT.md` is intentionally short. It is the routing map, not another giant specification. Agents load deeper documents only when the task requires them.
 
 This is treated as product engineering infrastructure: architecture and constraints should survive the chat/session/tool that happened to create them.
+
+---
+
+## Entry 015 — CI catches a WPF code-generation failure that source review did not
+**Date:** 2026-08-13
+
+The first v0.4 desktop-drag implementation used WPF `EventSetter` entries in the `ListBoxItem` style for pointer events.
+
+The XAML looked structurally valid, but the .NET 10 WPF build generated malformed `MainWindow.g.cs` in `IStyleConnector.Connect`: the generated switch body contained EventSetter construction without a corresponding `case`, producing compiler errors such as `CS1513` and `CS1022`.
+
+This is exactly the class of failure that static source inspection can miss because the invalid C# does not exist until WPF's build-time XAML generator runs.
+
+The CI workflow was temporarily enhanced to print the relevant generated-source range when compilation fails. The fix removed style-level EventSetters and routes the pointer events from the `ListBox` itself to the appropriate `ListBoxItem` by walking the visual tree.
+
+The next CI run compiled with zero warnings and zero errors.
+
+Design rule reinforced:
+
+> Generated-framework code is part of the build surface. CI is not ceremony; it is an additional compiler/runtime observer.
+
+---
+
+## Entry 016 — “Single EXE” is tested, not assumed
+**Date:** 2026-08-13
+
+Adding WebView2 preserved a working single-file application binary, but the publish directory also contained three WebView2 XML documentation files.
+
+They were not runtime dependencies; they were IntelliSense/reference documentation copied beside the executable. Nevertheless, the new CI contract correctly failed because the deployment promise was explicit:
+
+    K:\KARLOLEGEND.exe
+
+with no visible runtime debris beside it.
+
+The project now deletes published XML documentation after the publish target. CI then verifies the entire publish directory and fails unless exactly one file remains: `KARLOLEGEND.exe`.
+
+The corrected Windows CI passed both compilation and publish smoke testing before release.
+
+---
+
+## Entry 017 — v0.4 becomes the first explicit release-gated desktop build
+**Date:** 2026-08-13
+
+The release workflow itself exposed another small but important automation bug: probing for a nonexistent GitHub Release with `gh release view` correctly returned native exit code 1, but the first workflow version allowed that expected negative lookup to become the step's final process exit code.
+
+The workflow now captures the negative lookup as data, resets the native exit state, and only fails when the release actually exists.
+
+After that correction, v0.4.0 passed the release gate:
+- explicit release request matched the project version;
+- no existing release was overwritten;
+- self-contained Windows publish succeeded;
+- single-EXE deployment contract passed;
+- `.karloupdate` package was created;
+- the stable GitHub Release was published.
+
+This is the desired release philosophy going forward: ordinary commits prove themselves in CI; a version becomes an installable product only through an explicit release request.
