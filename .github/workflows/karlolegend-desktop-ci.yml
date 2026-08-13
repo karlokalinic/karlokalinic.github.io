@@ -42,7 +42,23 @@ jobs:
         run: dotnet restore "karlolegend-desktop/source/KarloDiskShell.csproj"
 
       - name: Build
-        run: dotnet build "karlolegend-desktop/source/KarloDiskShell.csproj" -c Release --no-restore
+        shell: pwsh
+        run: |
+          dotnet build "karlolegend-desktop/source/KarloDiskShell.csproj" -c Release --no-restore
+          $exit = $LASTEXITCODE
+
+          if ($exit -ne 0) {
+            Write-Host "--- WPF generated-source diagnostics ---"
+            $generated = Get-ChildItem "karlolegend-desktop/source/obj" -Recurse -Filter "MainWindow.g.cs" -ErrorAction SilentlyContinue | Select-Object -First 1
+            if ($generated) {
+              Write-Host "Generated file: $($generated.FullName)"
+              $lines = Get-Content $generated.FullName
+              for ($i = 280; $i -lt [Math]::Min($lines.Count, 380); $i++) {
+                Write-Host (("{0,4}: " -f ($i + 1)) + $lines[$i])
+              }
+            }
+            exit $exit
+          }
 
       - name: Publish smoke test
         shell: pwsh
