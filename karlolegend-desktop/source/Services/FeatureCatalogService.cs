@@ -15,39 +15,47 @@ public sealed class FeatureCatalogService
         {
             Id = "core.desktop",
             Name = "Desktop Shell",
-            Description = "Filesystem desktop, navigation, launch, Windows Shell icons and live refresh.",
-            BuiltInVersion = "0.3.1",
+            Description = "Filesystem desktop, movable persistent icons, navigation, rename, recycle-bin delete, Windows Shell icons and live refresh.",
+            BuiltInVersion = "0.4.0",
+            IsBuiltIn = true
+        },
+        new FeatureDefinition
+        {
+            Id = "core.html",
+            Name = "Internal HTML Viewer",
+            Description = "Opens local HTML/HTM inside KARLOLEGEND through an embedded WebView2 renderer and the karlo.local virtual origin.",
+            BuiltInVersion = "0.4.0",
+            IsBuiltIn = true
+        },
+        new FeatureDefinition
+        {
+            Id = "core.appearance",
+            Name = "Desktop Appearance",
+            Description = "Wallpaper, chrome-free desktop mode and persistent desktop presentation state.",
+            BuiltInVersion = "0.4.0",
+            IsBuiltIn = true
+        },
+        new FeatureDefinition
+        {
+            Id = "terminal",
+            Name = "Integrated Terminal Launcher",
+            Description = "Opens Windows PowerShell directly in the current KARLOLEGEND directory.",
+            BuiltInVersion = "0.4.0",
             IsBuiltIn = true
         },
         new FeatureDefinition
         {
             Id = "core.updates",
             Name = "Update Engine",
-            Description = "Discovers local .karloupdate packages and can replace the running EXE safely after restart.",
-            BuiltInVersion = "0.3.1",
+            Description = "Discovers online .karloupdate releases, verifies the staged executable, preserves the previous build, replaces the live EXE and restarts.",
+            BuiltInVersion = "0.4.0",
             IsBuiltIn = true
         },
         new FeatureDefinition
         {
             Id = "version-control",
             Name = "Local Version Control",
-            Description = "Git-backed local history UI: repositories, changes, commits, branches, tags, diffs and restore.",
-            BuiltInVersion = "",
-            IsBuiltIn = false
-        },
-        new FeatureDefinition
-        {
-            Id = "terminal",
-            Name = "Integrated Terminal",
-            Description = "Terminal opened directly in the current KARLOLEGEND directory.",
-            BuiltInVersion = "",
-            IsBuiltIn = false
-        },
-        new FeatureDefinition
-        {
-            Id = "themes",
-            Name = "Desktop Themes",
-            Description = "Wallpaper, icon layout, folder-specific visual profiles and appearance packs.",
+            Description = "Planned Git-backed local history UI: repositories, changes, commits, branches, tags, diffs and restore.",
             BuiltInVersion = "",
             IsBuiltIn = false
         }
@@ -96,7 +104,7 @@ public sealed class FeatureCatalogService
                     InstalledVersion = "Not installed",
                     AvailableVersion = availableVersion,
                     State = string.IsNullOrWhiteSpace(availableVersion)
-                        ? "Not installed"
+                        ? "Planned / not installed"
                         : "Ready to install",
                     CanInstallOrUpdate = !string.IsNullOrWhiteSpace(availableVersion)
                 };
@@ -227,7 +235,8 @@ public sealed class FeatureCatalogService
 
                 using var reader = new StreamReader(entry.Open());
                 var manifest = JsonSerializer.Deserialize<FeaturePackageManifest>(
-                    reader.ReadToEnd());
+                    reader.ReadToEnd(),
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
                 if (manifest is null ||
                     string.IsNullOrWhiteSpace(manifest.Id) ||
