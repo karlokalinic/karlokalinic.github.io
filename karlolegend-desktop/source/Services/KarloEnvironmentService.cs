@@ -12,6 +12,8 @@ public sealed class KarloEnvironmentService
     public string PackageInboxDirectory => Path.Combine(InternalRoot, "packages", "inbox");
     public string UpdateInboxDirectory => Path.Combine(InternalRoot, "updates", "inbox");
     public string UpdateStagingDirectory => Path.Combine(InternalRoot, "updates", "staged");
+    public string UpdateBackupDirectory => Path.Combine(InternalRoot, "updates", "backup");
+    public string WebViewDataDirectory => Path.Combine(StateDirectory, "webview2");
     public string VersionControlDirectory => Path.Combine(InternalRoot, "vcs");
     public string TempDirectory => Path.Combine(InternalRoot, "temp");
 
@@ -29,6 +31,8 @@ public sealed class KarloEnvironmentService
         Directory.CreateDirectory(PackageInboxDirectory);
         Directory.CreateDirectory(UpdateInboxDirectory);
         Directory.CreateDirectory(UpdateStagingDirectory);
+        Directory.CreateDirectory(UpdateBackupDirectory);
+        Directory.CreateDirectory(WebViewDataDirectory);
         Directory.CreateDirectory(VersionControlDirectory);
         Directory.CreateDirectory(TempDirectory);
 
