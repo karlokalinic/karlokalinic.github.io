@@ -8,17 +8,25 @@
 - Local K: content is exposed to the embedded renderer through the private `https://karlo.local/` virtual host instead of navigating raw `file://` URLs.
 - WebView2 profile/cache state is contained under `K:\.karlo\state\webview2`.
 - Desktop wallpaper support with wallpaper imported into hidden KARLOLEGEND state instead of depending on an arbitrary external source path.
+- Canvas-based desktop icons that can be freely dragged and keep persistent X/Y positions across refreshes and restarts.
+- Initial top-to-bottom desktop placement for newly discovered filesystem objects.
 - Desktop background context actions for New Folder, wallpaper, Explorer and refresh.
+- Item context actions for Open, Open Externally, Rename and Delete to Recycle Bin.
+- F2 rename with a native KARLOLEGEND rename dialog.
+- Delete sends the selected filesystem item to the Windows recycle bin after confirmation.
 - Chrome-free F11/Desktop mode that hides the normal toolbar and status bar.
 - Previous executable backup at `K:\.karlo\updates\backup\KARLOLEGEND.previous.exe` before live updater replacement.
 - Compact multi-agent repository context for Codex, Claude, GitHub Copilot and other repository-aware agents.
 - Concrete `DESKTOP-SPEC.md` and `UPDATE-PLAN.md` documents.
+- Separate Windows CI and explicit release workflows.
 
 ### Changed
 
 - Supported content can now be owned by KARLOLEGEND presentation instead of always being delegated to Windows Shell associations. HTML is the first internally-owned content type; unsupported files still fall back to Windows.
-- The desktop is now treated as presentation state layered over the real filesystem. User files remain ordinary filesystem objects; KARLOLEGEND-only appearance state belongs under `.karlo\state`.
+- The desktop is now treated as presentation state layered over the real filesystem. User files remain ordinary filesystem objects; KARLOLEGEND-only appearance and icon-layout state belongs under `.karlo\state`.
+- Rename migrates the stored icon coordinate to the renamed path; recycle-bin delete removes its stored coordinate.
 - Update architecture now explicitly reserves previous-build recovery and documents the next hardening steps: channel manifest, schema versioning, health signal, rollback history and release signing.
+- Release creation is explicit rather than treating every source commit as a new binary release; an existing semantic version is not silently overwritten.
 
 ## 0.3.2 — 2026-08-13
 
@@ -43,7 +51,7 @@
 - `System Volume Information` is filtered from the desktop.
 - `$RECYCLE.BIN` is filtered from the desktop.
 - Application instances are limited to one per Windows user session.
-- A second launch attempts to restore/focus the existing KARLOLEGEND window and then exits.
+- A second launch attempts to restore/focus the existing window and then exits.
 - Updater argument passing now uses `ProcessStartInfo.ArgumentList` instead of hand-built command-line quoting.
 
 ### Added
