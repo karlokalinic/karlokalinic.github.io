@@ -91,6 +91,22 @@ public static class SelfUpdateService
                 // Parent already exited.
             }
 
+            var targetDirectory = Path.GetDirectoryName(targetExe)
+                ?? throw new InvalidOperationException("Target executable directory is unavailable.");
+
+            var backupDirectory = Path.Combine(
+                targetDirectory,
+                ".karlo",
+                "updates",
+                "backup");
+
+            Directory.CreateDirectory(backupDirectory);
+
+            var backupExe = Path.Combine(backupDirectory, "KARLOLEGEND.previous.exe");
+
+            if (File.Exists(targetExe))
+                File.Copy(targetExe, backupExe, overwrite: true);
+
             var copied = false;
             Exception? lastError = null;
 
@@ -109,7 +125,19 @@ public static class SelfUpdateService
             }
 
             if (!copied)
+            {
+                try
+                {
+                    if (File.Exists(backupExe))
+                        File.Copy(backupExe, targetExe, overwrite: true);
+                }
+                catch
+                {
+                    // Preserve the original replacement error below.
+                }
+
                 throw new IOException("Could not replace the application executable.", lastError);
+            }
 
             try
             {
