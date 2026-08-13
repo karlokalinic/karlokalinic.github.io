@@ -22,22 +22,26 @@
 - wallpaper;
 - desktop context menu;
 - chrome-free F11 mode;
-- updater previous-version backup;
-- cross-agent repository context;
-- concrete desktop and update specifications.
-
-## 0.5 — desktop interaction
 - free icon positioning;
 - persistent icon coordinates;
-- snap-to-grid;
-- icon scale;
-- multi-selection and selection rectangle;
-- rename;
+- native rename;
 - recycle-bin delete;
-- drag/drop;
+- item context actions;
+- updater previous-version backup;
+- cross-agent repository context;
+- concrete desktop/update specifications;
+- separate CI and explicit release pipeline.
+
+## 0.5 — desktop interaction depth
+- snap-to-grid UI toggle;
+- icon scale UI;
+- multi-selection and rubber-band selection;
+- keyboard spatial navigation;
+- drag/drop file operations;
 - create-item palette;
-- internal image + Markdown viewers;
-- per-directory presentation state.
+- internal image + Markdown/text viewers;
+- per-directory presentation profiles;
+- optional auto-arrange/sort commands.
 
 ## 0.6 — local version control
 - Git detection/bootstrap;
