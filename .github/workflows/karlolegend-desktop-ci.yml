@@ -1,0 +1,67 @@
+name: KARLOLEGEND Desktop CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "karlolegend-desktop/source/**"
+      - "karlolegend-desktop/AI_CONTEXT.md"
+      - "karlolegend-desktop/AGENTS.md"
+      - ".github/instructions/karlolegend-desktop.instructions.md"
+      - ".github/workflows/karlolegend-desktop-ci.yml"
+  pull_request:
+    paths:
+      - "karlolegend-desktop/source/**"
+      - "karlolegend-desktop/AI_CONTEXT.md"
+      - "karlolegend-desktop/AGENTS.md"
+      - ".github/instructions/karlolegend-desktop.instructions.md"
+      - ".github/workflows/karlolegend-desktop-ci.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: karlolegend-desktop-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  windows-build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: Restore
+        run: dotnet restore "karlolegend-desktop/source/KarloDiskShell.csproj"
+
+      - name: Build
+        run: dotnet build "karlolegend-desktop/source/KarloDiskShell.csproj" -c Release --no-restore
+
+      - name: Publish smoke test
+        shell: pwsh
+        run: |
+          $publish = "karlolegend-desktop/build/ci-publish"
+          dotnet publish "karlolegend-desktop/source/KarloDiskShell.csproj" `
+            -c Release `
+            -r win-x64 `
+            --self-contained true `
+            --no-restore `
+            -o $publish
+
+          $exe = "$publish/KARLOLEGEND.exe"
+          if (!(Test-Path $exe)) {
+            throw "Publish completed without KARLOLEGEND.exe"
+          }
+
+          $publishedFiles = @(Get-ChildItem $publish -File -Recurse)
+          if ($publishedFiles.Count -ne 1 -or $publishedFiles[0].Name -ne "KARLOLEGEND.exe") {
+            $publishedFiles | ForEach-Object { Write-Host "Published: $($_.FullName)" }
+            throw "Single-file deployment contract broken: publish output must contain only KARLOLEGEND.exe"
+          }
