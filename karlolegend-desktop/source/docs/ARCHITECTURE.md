@@ -42,9 +42,15 @@ A production machine does not require source code, Visual Studio, the .NET SDK, 
 
 ## 3. Bootstrap and root resolution
 
-Canonical clean install from Command Prompt opened at `K:\`:
+Canonical clean install from PowerShell already opened at `PS K:\>`:
 
-    powershell -NoProfile -ExecutionPolicy Bypass -Command "iex (irm 'https://raw.githubusercontent.com/karlokalinic/karlokalinic.github.io/main/karlolegend-desktop/install.ps1')"
+    & ([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/karlokalinic/karlokalinic.github.io/main/karlolegend-desktop/install.ps1').Content))
+
+Equivalent from Command Prompt opened at `K:\>`:
+
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/karlokalinic/karlokalinic.github.io/main/karlolegend-desktop/install.ps1').Content))"
+
+`iex (irm '.../install.ps1')` is intentionally not the deployment contract because the installer contains a script-level `[CmdletBinding()]` / `param(...)` block. Remote content is parsed as a real script block before invocation.
 
 The bootstrap resolves the latest stable GitHub Release, downloads the exact `KARLOLEGEND.exe` asset, validates release size/SHA-256 metadata when available, and removes its temporary download.
 
