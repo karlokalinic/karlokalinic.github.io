@@ -6,6 +6,8 @@ on:
       - main
     paths:
       - "karlolegend-desktop/source/**"
+      - "karlolegend-desktop/install.ps1"
+      - "karlolegend-desktop/README.md"
       - "karlolegend-desktop/AI_CONTEXT.md"
       - "karlolegend-desktop/AGENTS.md"
       - ".github/instructions/karlolegend-desktop.instructions.md"
@@ -13,6 +15,8 @@ on:
   pull_request:
     paths:
       - "karlolegend-desktop/source/**"
+      - "karlolegend-desktop/install.ps1"
+      - "karlolegend-desktop/README.md"
       - "karlolegend-desktop/AI_CONTEXT.md"
       - "karlolegend-desktop/AGENTS.md"
       - ".github/instructions/karlolegend-desktop.instructions.md"
@@ -32,6 +36,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Validate bootstrap with Windows PowerShell
+        shell: powershell
+        run: |
+          $tokens = $null
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path "karlolegend-desktop/install.ps1"),
+            [ref]$tokens,
+            [ref]$errors
+          ) | Out-Null
+
+          if ($errors.Count -gt 0) {
+            $errors | ForEach-Object { Write-Error $_.Message }
+            throw "karlolegend-desktop/install.ps1 contains Windows PowerShell syntax errors"
+          }
 
       - name: Setup .NET 10
         uses: actions/setup-dotnet@v4
