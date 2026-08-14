@@ -5,9 +5,12 @@ Read `AI_CONTEXT.md` first. It is intentionally short and should be enough for m
 Source root: `karlolegend-desktop/source/`
 
 Build/release:
+- Canonical source/build lives in GitHub; never require a fixed local `C:` source path.
 - Target: `net10.0-windows`, WPF, `win-x64`.
 - Publish: self-contained, single-file.
-- Source changes trigger `.github/workflows/karlolegend-desktop-release.yml`.
+- Ordinary source changes trigger `.github/workflows/karlolegend-desktop-ci.yml` only.
+- Stable release creation is explicit: `karlolegend-desktop/release.json` must match the project version and then `.github/workflows/karlolegend-desktop-release.yml` creates the immutable versioned release assets.
+- `karlolegend-desktop/install.ps1` is the canonical zero-source production bootstrap and must keep working from Windows PowerShell.
 - Do not claim a build is valid until CI/publish succeeds.
 
 Code rules:
