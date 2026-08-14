@@ -15,6 +15,10 @@ function Fail([string]$Message) {
     throw "KARLOLEGEND bootstrap: $Message"
 }
 
+$target = $null
+$temporary = $null
+$backup = $null
+
 try {
     if ($env:OS -ne 'Windows_NT') {
         Fail 'Windows is required.'
@@ -31,9 +35,9 @@ try {
     $Destination = (Resolve-Path -LiteralPath $Destination).Path
     $target = Join-Path $Destination $assetName
     $temporary = Join-Path $Destination '.KARLOLEGEND.exe.download'
+    $backup = Join-Path $Destination '.KARLOLEGEND.exe.bootstrap-backup'
 
-    # Windows PowerShell 5.1 on older installations may otherwise negotiate an
-    # obsolete TLS version when talking to GitHub.
+    # Windows PowerShell 5.1 can otherwise negotiate an obsolete TLS version.
     try {
         [Net.ServicePointManager]::SecurityProtocol =
             [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
@@ -55,7 +59,10 @@ try {
         Fail 'GitHub latest release is not a stable release.'
     }
 
-    $asset = @($release.assets) | Where-Object { $_.name -eq $assetName } | Select-Object -First 1
+    $asset = @($release.assets) |
+        Where-Object { $_.name -eq $assetName } |
+        Select-Object -First 1
+
     if ($null -eq $asset) {
         Fail "Latest release '$($release.tag_name)' does not contain $assetName."
     }
@@ -69,7 +76,11 @@ try {
     }
 
     Write-Host "Downloading $($release.tag_name) -> $target"
-    Invoke-WebRequest -Uri $asset.browser_download_url -Headers @{ 'User-Agent' = 'KARLOLEGEND-Bootstrap' } -OutFile $temporary
+    Invoke-WebRequest `
+        -Uri $asset.browser_download_url `
+        -Headers @{ 'User-Agent' = 'KARLOLEGEND-Bootstrap' } `
+        -UseBasicParsing `
+        -OutFile $temporary
 
     $download = Get-Item -LiteralPath $temporary
     if ($asset.size -and $download.Length -ne [int64]$asset.size) {
@@ -93,24 +104,35 @@ try {
         Write-Warning 'GitHub did not expose an asset digest; HTTPS transport succeeded but no release digest was available to compare.'
     }
 
-    # Do not silently terminate a running app. A locked target produces a clear
-    # failure instead of leaving a half-installed executable.
+    if (Test-Path -LiteralPath $backup) {
+        Remove-Item -LiteralPath $backup -Force
+    }
+
+    # Preserve an existing executable until the verified replacement is in hand.
+    # Moving a running EXE fails cleanly instead of killing the process or leaving
+    # the installation without a recoverable executable.
     if (Test-Path -LiteralPath $target) {
         try {
-            Remove-Item -LiteralPath $target -Force
+            Move-Item -LiteralPath $target -Destination $backup -Force
         }
         catch {
             Fail "$assetName is in use. Close KARLOLEGEND and run the bootstrap command again."
         }
     }
 
-    Move-Item -LiteralPath $temporary -Destination $target -Force
+    try {
+        Move-Item -LiteralPath $temporary -Destination $target -Force
+    }
+    catch {
+        if ((-not (Test-Path -LiteralPath $target)) -and (Test-Path -LiteralPath $backup)) {
+            Move-Item -LiteralPath $backup -Destination $target -Force -ErrorAction SilentlyContinue
+        }
 
-    $finalFiles = @(Get-ChildItem -LiteralPath $Destination -File -Force | Where-Object {
-        $_.Name -like '.KARLOLEGEND.exe.download'
-    })
-    foreach ($file in $finalFiles) {
-        Remove-Item -LiteralPath $file.FullName -Force -ErrorAction SilentlyContinue
+        throw
+    }
+
+    if (Test-Path -LiteralPath $backup) {
+        Remove-Item -LiteralPath $backup -Force
     }
 
     Write-Host ''
@@ -123,8 +145,14 @@ try {
     }
 }
 catch {
-    if (Test-Path -LiteralPath (Join-Path $Destination '.KARLOLEGEND.exe.download')) {
-        Remove-Item -LiteralPath (Join-Path $Destination '.KARLOLEGEND.exe.download') -Force -ErrorAction SilentlyContinue
+    if ($temporary -and (Test-Path -LiteralPath $temporary)) {
+        Remove-Item -LiteralPath $temporary -Force -ErrorAction SilentlyContinue
+    }
+
+    if ($backup -and $target -and
+        (Test-Path -LiteralPath $backup) -and
+        (-not (Test-Path -LiteralPath $target))) {
+        Move-Item -LiteralPath $backup -Destination $target -Force -ErrorAction SilentlyContinue
     }
 
     Write-Error $_
