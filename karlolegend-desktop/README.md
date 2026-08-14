@@ -17,13 +17,21 @@ A production machine does **not** need a source checkout, Visual Studio, the .NE
 
 ## Clean install from K:\
 
-Open Command Prompt, switch to `K:\`, then run:
+### From PowerShell already opened at `PS K:\>`
 
-```cmd
-powershell -NoProfile -ExecutionPolicy Bypass -Command "iex (irm 'https://raw.githubusercontent.com/karlokalinic/karlokalinic.github.io/main/karlolegend-desktop/install.ps1')"
+```powershell
+& ([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/karlokalinic/karlokalinic.github.io/main/karlolegend-desktop/install.ps1').Content))
 ```
 
-The bootstrap resolves the latest stable GitHub Release, downloads the exact `KARLOLEGEND.exe` asset into the current directory, checks the release asset size and SHA-256 digest when GitHub exposes it, atomically installs it, and removes its temporary download.
+### From Command Prompt opened at `K:\>`
+
+```cmd
+powershell -NoProfile -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/karlokalinic/karlokalinic.github.io/main/karlolegend-desktop/install.ps1').Content))"
+```
+
+Do not use `iex (irm '.../install.ps1')` for this installer. `install.ps1` is an advanced PowerShell script with a script-level `[CmdletBinding()]` / `param(...)` block; it must be parsed as a script block (or executed as a `.ps1` file), not injected as an `Invoke-Expression` expression.
+
+The bootstrap resolves the latest stable GitHub Release, downloads the exact `KARLOLEGEND.exe` asset into the current directory, checks the release asset size and SHA-256 digest when GitHub exposes it, safely replaces an older executable with rollback protection, and removes its temporary download.
 
 On an otherwise empty `K:\`, the visible deployment result is exactly:
 
@@ -33,7 +41,7 @@ K:\KARLOLEGEND.exe
 
 KARLOLEGEND creates hidden/private runtime state under `K:\.karlo\` only after it runs.
 
-For a minimal direct download without the bootstrap verification logic:
+For the absolute minimum direct download without bootstrap verification logic:
 
 ```cmd
 curl.exe -fL --retry 3 -o KARLOLEGEND.exe https://github.com/karlokalinic/karlokalinic.github.io/releases/latest/download/KARLOLEGEND.exe
