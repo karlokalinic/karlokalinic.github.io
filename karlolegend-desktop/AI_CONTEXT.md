@@ -6,10 +6,19 @@ A native Windows personal desktop/workspace shell that renders the real filesyst
 It is **not** a VM, alternate OS, security sandbox, remote desktop, Electron app, or database-backed virtual filesystem.
 
 ## Territory
-- Source/build: `C:\KARLOLEGEND-DESKTOP-SOURCE\`
-- Deployed runtime: `K:\KARLOLEGEND.exe`
-- User world: normal files/folders under `K:\`
-- Internal app state: `K:\.karlo\` (hidden from the shell)
+- Canonical source/build: GitHub repository `karlokalinic/karlokalinic.github.io`, path `karlolegend-desktop/source/`.
+- Local source checkout: optional; may live anywhere and must never be assumed to exist on `C:`.
+- Deployed runtime: `K:\KARLOLEGEND.exe`.
+- User world: normal files/folders under `K:\`.
+- Internal app state: `K:\.karlo\` (hidden from the shell).
+
+## Deployment contract
+- Production builds are created on GitHub Actions.
+- A production machine does not need Visual Studio, the .NET SDK, NuGet caches, or a source checkout.
+- `karlolegend-desktop/install.ps1` is the canonical zero-source bootstrap.
+- Running the bootstrap from `K:\` resolves the latest stable GitHub Release, downloads the exact `KARLOLEGEND.exe` asset, validates size/SHA-256 metadata when GitHub exposes it, and leaves no bootstrap file behind.
+- Visible clean-install result at the K: root: exactly `K:\KARLOLEGEND.exe`.
+- The release publish job must fail if its deployable output contains anything other than that one EXE.
 
 ## Core invariant
 The filesystem is canonical. If KARLOLEGEND is deleted, user files must remain understandable and usable in Explorer.
@@ -67,8 +76,6 @@ Current safeguards: version comparison, staged extraction, executable SHA-256, t
 
 Normal source changes run Windows CI. Releases are explicit through `karlolegend-desktop/release.json`; do not silently overwrite an already-published semantic version.
 
-Do not break compatibility casually. Update manifests are API contracts.
-
 Target hardening:
 stable channel manifest -> package schema -> signature -> stage -> backup -> swap -> startup health signal -> automatic rollback -> append-only update history.
 
@@ -94,6 +101,7 @@ Only load deeper context when relevant:
 ## Definition of done for code changes
 - source compiles in Windows CI;
 - publish step succeeds;
+- bootstrap script remains syntactically valid in Windows PowerShell;
 - behavior change documented;
 - no user content is trapped in app-owned state;
 - K: root remains clean;
