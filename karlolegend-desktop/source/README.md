@@ -23,9 +23,15 @@ When the production EXE runs from K:\ it automatically uses K:\ as its root.
 
 ## Zero-source production install
 
-From Command Prompt opened at `K:\`:
+From PowerShell already opened at `PS K:\>`:
 
-    powershell -NoProfile -ExecutionPolicy Bypass -Command "iex (irm 'https://raw.githubusercontent.com/karlokalinic/karlokalinic.github.io/main/karlolegend-desktop/install.ps1')"
+    & ([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/karlokalinic/karlokalinic.github.io/main/karlolegend-desktop/install.ps1').Content))
+
+From Command Prompt opened at `K:\>`:
+
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://raw.githubusercontent.com/karlokalinic/karlokalinic.github.io/main/karlolegend-desktop/install.ps1').Content))"
+
+Do not use `iex (irm '.../install.ps1')`: the installer has a script-level `[CmdletBinding()]` / `param(...)` block and must be parsed as a script block or executed as a `.ps1` file.
 
 This resolves the latest stable GitHub Release, downloads `KARLOLEGEND.exe`, validates its release metadata/digest when available, and leaves the executable in the current directory. No source checkout or .NET SDK is required on the production machine.
 
