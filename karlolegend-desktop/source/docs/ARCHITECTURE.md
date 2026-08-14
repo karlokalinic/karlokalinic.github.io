@@ -17,9 +17,14 @@ The shell itself is native WPF/.NET. Embedded web technology is allowed only as 
 
 ## 2. Deployment boundary
 
-Development:
+Canonical source/build:
 
-    C:\KARLOLEGEND-DESKTOP-SOURCE\
+    GitHub repository: karlokalinic/karlokalinic.github.io
+    Source path:       karlolegend-desktop/source/
+
+Local development checkout:
+
+    optional; may live anywhere
 
 Runtime:
 
@@ -33,9 +38,17 @@ Internal app data:
 
     K:\.karlo\...
 
-## 3. Root resolution
+A production machine does not require source code, Visual Studio, the .NET SDK, NuGet caches, or a permanent KARLOLEGEND directory on `C:`. GitHub Actions owns the canonical production build.
 
-Production build:
+## 3. Bootstrap and root resolution
+
+Canonical clean install from Command Prompt opened at `K:\`:
+
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "iex (irm 'https://raw.githubusercontent.com/karlokalinic/karlokalinic.github.io/main/karlolegend-desktop/install.ps1')"
+
+The bootstrap resolves the latest stable GitHub Release, downloads the exact `KARLOLEGEND.exe` asset, validates release size/SHA-256 metadata when available, and removes its temporary download.
+
+Production root resolution:
 
 1. Determine the directory containing the running executable.
 2. Determine that directory's drive root.
@@ -49,7 +62,7 @@ Development override:
 
     dotnet run -- --root "K:\"
 
-The override exists so source can stay on C: while rendering K:.
+The override exists so an optional source checkout can live anywhere while rendering K:.
 
 ## 4. Runtime/UI architecture
 
@@ -133,7 +146,30 @@ Examples of presentation state:
 
 This state belongs under `.karlo\state` and must never be required to recover the user's files.
 
-## 8. Update architecture
+## 8. Build and release architecture
+
+Ordinary source changes:
+
+    push / pull request
+      -> Windows CI
+      -> restore
+      -> build
+      -> self-contained win-x64 publish smoke test
+      -> assert exactly one deployable file: KARLOLEGEND.exe
+
+Stable release creation is explicit:
+
+    project Version == release.json Version
+      -> GitHub Actions release workflow
+      -> self-contained single-file publish
+      -> .karloupdate package + manifest/SHA-256
+      -> GitHub Release assets
+          KARLOLEGEND.exe
+          KARLOLEGEND-vX.Y.Z.karloupdate
+
+Already-published semantic versions are not overwritten.
+
+## 9. Update architecture
 
 Network discovery/download and local replacement are separate layers.
 
@@ -151,7 +187,7 @@ Current sequence:
 
 The final design adds a stable-channel manifest, schema versions, signed metadata/packages, a post-update health signal and automatic rollback. See `docs/UPDATE-PLAN.md`.
 
-## 9. Cross-agent documentation
+## 10. Cross-agent documentation
 
 `karlolegend-desktop/AI_CONTEXT.md` is the compact canonical onboarding document for repository-aware coding agents.
 
@@ -159,7 +195,7 @@ It intentionally points to deeper documents instead of duplicating them. Scoped 
 
 Detailed documentation remains the system of record under `source/docs/`.
 
-## 10. Failure principle
+## 11. Failure principle
 
 The application is a view over the filesystem, not the owner of the filesystem.
 
