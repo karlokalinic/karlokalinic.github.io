@@ -1,6 +1,6 @@
 # KARLOLEGEND Desktop
 
-Current source version: **0.4.0**
+Current source version: **0.4.1**
 
 KARLOLEGEND Desktop is a native Windows personal workspace shell that renders a real disk as a desktop. It is not a VM, WSL environment, browser app, remote desktop, or security sandbox.
 
@@ -8,9 +8,12 @@ The filesystem is the data model.
 
 ## Source vs deployed app
 
-Source:
+Canonical source:
 
-    C:\KARLOLEGEND-DESKTOP-SOURCE\
+    GitHub: karlokalinic/karlokalinic.github.io
+    Path:   karlolegend-desktop/source/
+
+A local source checkout is optional and may live anywhere. `C:\KARLOLEGEND-DESKTOP-SOURCE\` is not a runtime requirement and is not part of the deployment contract.
 
 Production executable:
 
@@ -18,14 +21,27 @@ Production executable:
 
 When the production EXE runs from K:\ it automatically uses K:\ as its root.
 
-## Development test
+## Zero-source production install
 
-    cd C:\KARLOLEGEND-DESKTOP-SOURCE
+From Command Prompt opened at `K:\`:
+
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "iex (irm 'https://raw.githubusercontent.com/karlokalinic/karlokalinic.github.io/main/karlolegend-desktop/install.ps1')"
+
+This resolves the latest stable GitHub Release, downloads `KARLOLEGEND.exe`, validates its release metadata/digest when available, and leaves the executable in the current directory. No source checkout or .NET SDK is required on the production machine.
+
+A minimal direct download is also valid:
+
+    curl.exe -fL --retry 3 -o KARLOLEGEND.exe https://github.com/karlokalinic/karlokalinic.github.io/releases/latest/download/KARLOLEGEND.exe
+
+## Optional local development
+
+From any local checkout of `karlolegend-desktop/source/`:
+
     dotnet run -- --root "K:\"
 
 Development `--root` mode intentionally disables self-update so the Debug executable cannot replace itself or the production build.
 
-## Publish
+## Optional local publish
 
     dotnet publish .\KarloDiskShell.csproj -c Release -r win-x64 --self-contained true -o .\publish
 
@@ -33,7 +49,7 @@ Then:
 
     Copy-Item .\publish\KARLOLEGEND.exe "K:\KARLOLEGEND.exe" -Force
 
-The CI/release pipeline enforces the intended deployment contract: the publish result must contain exactly one deployable file, `KARLOLEGEND.exe`.
+GitHub CI/release remains the canonical production build path. The publish contract is strict: the deployable output must contain exactly one file, `KARLOLEGEND.exe`.
 
 ## Current desktop behavior
 
@@ -107,7 +123,7 @@ v0.4 additionally preserves the previous live executable at:
 
 before replacement.
 
-Release creation is now explicit through `karlolegend-desktop/release.json`; ordinary source commits run CI but do not silently overwrite an already-published semantic version.
+Release creation is explicit through `karlolegend-desktop/release.json`; ordinary source commits run CI but do not silently overwrite an already-published semantic version.
 
 The current updater is not the final trust/recovery design. See `docs/UPDATE-PLAN.md` for channel metadata, schema versions, health checks, automatic rollback, update history and signing.
 
