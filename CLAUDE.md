@@ -8,4 +8,4 @@ Before editing `karlolegend-desktop/**`, read:
 - `karlolegend-desktop/AI_CONTEXT.md`
 - `karlolegend-desktop/AGENTS.md`
 
-Prefer small coherent commits, preserve the filesystem-first design, and validate the Windows release workflow after source changes.
+Prefer small coherent commits, preserve the filesystem-first design, and validate the Windows CI/publish contract after source changes. Stable release creation is explicit through `karlolegend-desktop/release.json`; do not trigger or overwrite a release merely because source changed.
