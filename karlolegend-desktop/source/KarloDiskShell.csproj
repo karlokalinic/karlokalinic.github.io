@@ -10,7 +10,7 @@
 
     <AssemblyName>KARLOLEGEND</AssemblyName>
     <RootNamespace>KarloDiskShell</RootNamespace>
-    <Version>0.4.1</Version>
+    <Version>0.4.2</Version>
 
     <!-- Final deployment goal: one Windows x64 EXE at K:\KARLOLEGEND.exe -->
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
