@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>0.0.0 — Kućni krizni test</title>
+<style>
+:root{color-scheme:dark;font-family:ui-monospace,Consolas,monospace}*{box-sizing:border-box}body{margin:0;background:#0b0b0a;color:#ecebe4}.wrap{width:min(1000px,calc(100% - 28px));margin:28px auto}.top{display:flex;justify-content:space-between;gap:16px;align-items:end;border-bottom:1px solid #34332e;padding-bottom:16px}.clock{font:900 58px Arial,sans-serif}.signal{color:#e4d23d}.stats{display:flex;gap:22px;flex-wrap:wrap;margin:18px 0}.items{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}.item{background:#141411;color:#ecebe4;border:1px solid #35342f;padding:16px;text-align:left;cursor:pointer;min-height:132px}.item:hover{border-color:#e4d23d}.item.on{background:#e4d23d;color:#090909;border-color:#e4d23d}.item b{display:block;font-size:16px;margin-bottom:7px}.item small{opacity:.7}.outcome{display:none;border:1px solid #35342f;padding:24px;margin-top:18px;background:#131310}.outcome.show{display:block}.outcome h2{font:900 34px Arial,sans-serif;margin-top:0}button#restart{padding:12px 16px;font-weight:900}a{color:#e4d23d}
+</style>
+</head>
+<body><main class="wrap">
+<div class="top"><div><div class="signal">BUILD 0.0.0 / SYSTEMS PROTOTYPE</div><h1>VODOOPSKRBA PADA. SKLONIŠTE SE ZATVARA.</h1><p>Ne možeš uzeti sve. Klikni stvari koje nosiš. Limit: 12 kg.</p></div><div class="clock" id="clock">50</div></div>
+<div class="stats"><span>TEŽINA <b id="weight">0.0</b>/12 kg</span><span>ODABRANO <b id="count">0</b></span><span>PRAVILO: nema vraćanja nakon isteka vremena</span></div>
+<section class="items" id="items"></section>
+<section class="outcome" id="outcome"><h2 id="verdict"></h2><p id="report"></p><p id="metrics"></p><button id="restart">PONOVI</button> · <a href="../../">NATRAG NA ARHIV</a></section>
+</main>
+<script>
+const items=[
+{id:'water',n:'6 L vode',w:6,survival:6,solidarity:0,institution:0,memory:0,d:'Teško. Dosadno. Neophodno.'},
+{id:'food',n:'Konzervirana hrana',w:3,survival:5,solidarity:0,institution:0,memory:0,d:'Tri dana kalorija i pet godina roka trajanja.'},
+{id:'radio',n:'Radio + baterije',w:1,survival:1,solidarity:0,institution:3,memory:0,d:'Informacija vrijedi samo ako vjeruješ izvoru.'},
+{id:'docs',n:'Dokumenti',w:.2,survival:0,solidarity:0,institution:6,memory:0,d:'Papir kojim dokazuješ da si osoba.'},
+{id:'meds',n:'Bakini lijekovi',w:.8,survival:1,solidarity:4,institution:0,memory:1,d:'Nisu tvoji. Zato zauzimaju više mjesta nego što piše na vagi.'},
+{id:'insulin',n:'Susjedov inzulin',w:.5,survival:0,solidarity:7,institution:0,memory:0,d:'Čovjek s trećeg kata nije obitelj. Za sada.'},
+{id:'tools',n:'Alat',w:2,survival:4,solidarity:1,institution:0,memory:0,d:'Kvar postaje katastrofa kad nemaš čime otvoriti ploču.'},
+{id:'blanket',n:'Debela deka',w:1.5,survival:3,solidarity:1,institution:0,memory:1,d:'Toplina se može podijeliti. Kvadratura manje.'},
+{id:'power',n:'Powerbank',w:.4,survival:1,solidarity:0,institution:2,memory:0,d:'Dvadeset tisuća miliampera civilizacije.'},
+{id:'cash',n:'Gotovina',w:.1,survival:1,solidarity:0,institution:2,memory:0,d:'Vrijedi dok se svi slažemo da vrijedi.'},
+{id:'smokes',n:'Cigarete',w:.2,survival:0,solidarity:1,institution:0,memory:1,d:'Loša navika može postati odlična valuta.'},
+{id:'photo',n:'Obiteljska fotografija',w:.1,survival:0,solidarity:0,institution:0,memory:7,d:'Potpuno beskorisna. Zato je problem.'},
+{id:'key',n:'Rezervni ključ susjede',w:.1,survival:1,solidarity:4,institution:0,memory:0,d:'Predmet težine deset grama i obveze težine jedne osobe.'}
+];
+let chosen=new Set(),seconds=50,timer;
+const $=q=>document.querySelector(q);
+function render(){ $('#items').innerHTML=items.map(x=>`<button class="item ${chosen.has(x.id)?'on':''}" data-id="${x.id}"><b>${x.n}</b><small>${x.w} kg</small><p>${x.d}</p></button>`).join(''); update(); }
+function update(){const picked=items.filter(x=>chosen.has(x.id));$('#weight').textContent=picked.reduce((a,x)=>a+x.w,0).toFixed(1);$('#count').textContent=picked.length;}
+function toggle(id){const x=items.find(i=>i.id===id);const current=items.filter(i=>chosen.has(i.id)).reduce((a,i)=>a+i.w,0);if(chosen.has(id))chosen.delete(id);else if(current+x.w<=12)chosen.add(id);render();}
+function finish(){clearInterval(timer);document.querySelectorAll('.item').forEach(b=>b.disabled=true);const p=items.filter(x=>chosen.has(x.id));const sum=k=>p.reduce((a,x)=>a+x[k],0);const s=sum('survival'),so=sum('solidarity'),i=sum('institution'),m=sum('memory');let v='PREŽIVLJAVANJE KAO LOGISTIKA.';if(so>=8)v='NOSIO SI I TUĐI ŽIVOT.';else if(i>=8)v='VJEROVAO SI DA ĆE SUSTAV JOŠ POSTOJATI.';else if(m>=6)v='PONIO SI DOKAZ DA SI PRIJE KRIZE BIO NETKO.';else if(s<8)v='SPAKIRAO SI IDENTITET, ALI NE I DOVOLJNO ŽIVOTA.';$('#verdict').textContent=v;$('#report').textContent='Ovaj build nema pobjedu. Bilježi hijerarhiju: što si smatrao resursom, što obvezom, a što luksuzom.';$('#metrics').textContent=`OPSTANAK ${s} · SOLIDARNOST ${so} · INSTITUCIJE ${i} · SJEĆANJE ${m}`;$('#outcome').classList.add('show');}
+function start(){chosen.clear();seconds=50;$('#clock').textContent=seconds;$('#outcome').classList.remove('show');render();timer=setInterval(()=>{seconds--;$('#clock').textContent=seconds;if(seconds<=0)finish();},1000)}
+$('#items').addEventListener('click',e=>{const b=e.target.closest('[data-id]');if(b)toggle(b.dataset.id)});$('#restart').onclick=start;start();
+</script></body></html>

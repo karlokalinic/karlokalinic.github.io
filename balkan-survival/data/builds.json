@@ -1,0 +1,13 @@
+{
+  "builds": [
+    {
+      "version": "0.0.0",
+      "date": "2026-08-16",
+      "route": "./builds/0.0.0/",
+      "engine": "browser-js",
+      "kind": "systems-prototype",
+      "devlog": "./devlog/0000-kuca-nije-bunker.md",
+      "summary": "First playable proof: time pressure, weight, scarcity and social priority as one decision system."
+    }
+  ]
+}

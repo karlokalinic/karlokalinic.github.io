@@ -1,0 +1,8 @@
+{
+  "version": "0.0.0",
+  "channel": "production",
+  "label": "MAIN",
+  "route": "./builds/0.0.0/",
+  "status": "systems-prototype",
+  "promotedAt": "2026-08-16"
+}
