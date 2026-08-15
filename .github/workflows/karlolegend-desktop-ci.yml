@@ -80,10 +80,12 @@ jobs:
             exit $exit
           }
 
-      - name: Publish smoke test
+      - name: Publish single-file EXE
         shell: pwsh
         run: |
           $publish = "karlolegend-desktop/build/ci-publish"
+          if (Test-Path $publish) { Remove-Item $publish -Recurse -Force }
+
           dotnet publish "karlolegend-desktop/source/KarloDiskShell.csproj" `
             -c Release `
             -r win-x64 `
@@ -100,4 +102,28 @@ jobs:
           if ($publishedFiles.Count -ne 1 -or $publishedFiles[0].Name -ne "KARLOLEGEND.exe") {
             $publishedFiles | ForEach-Object { Write-Host "Published: $($_.FullName)" }
             throw "Single-file deployment contract broken: publish output must contain only KARLOLEGEND.exe"
+          }
+
+      - name: Runtime smoke test published EXE
+        shell: pwsh
+        run: |
+          $exe = Resolve-Path "karlolegend-desktop/build/ci-publish/KARLOLEGEND.exe"
+          $smokeRoot = Join-Path $env:RUNNER_TEMP "karlolegend-runtime-smoke"
+          if (Test-Path $smokeRoot) { Remove-Item $smokeRoot -Recurse -Force }
+          New-Item -ItemType Directory -Force -Path $smokeRoot | Out-Null
+
+          $arguments = @("--smoke-test", "--root", "`"$smokeRoot`"")
+          $process = Start-Process -FilePath $exe -ArgumentList $arguments -PassThru -Wait
+
+          if ($process.ExitCode -ne 0) {
+            $log = Join-Path $smokeRoot ".karlo/logs/startup.log"
+            if (Test-Path $log) {
+              Write-Host "--- KARLOLEGEND startup log ---"
+              Get-Content $log | Write-Host
+            }
+            throw "Published KARLOLEGEND.exe failed runtime smoke test with exit code $($process.ExitCode)"
+          }
+
+          if (!(Test-Path (Join-Path $smokeRoot ".karlo"))) {
+            throw "Runtime smoke test exited successfully but did not initialize KARLOLEGEND state"
           }
