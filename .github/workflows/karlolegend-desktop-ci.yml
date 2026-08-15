@@ -107,34 +107,43 @@ jobs:
       - name: Runtime smoke test published EXE
         shell: pwsh
         run: |
-          $exe = Resolve-Path "karlolegend-desktop/build/ci-publish/KARLOLEGEND.exe"
+          $publish = Resolve-Path "karlolegend-desktop/build/ci-publish"
+          $exe = Join-Path $publish "KARLOLEGEND.exe"
           $smokeRoot = Join-Path $env:RUNNER_TEMP "karlolegend-runtime-smoke"
           if (Test-Path $smokeRoot) { Remove-Item $smokeRoot -Recurse -Force }
           New-Item -ItemType Directory -Force -Path $smokeRoot | Out-Null
+
+          function Show-StartupLogs {
+            $candidates = @(
+              (Join-Path $smokeRoot ".karlo/logs/startup.log"),
+              (Join-Path $publish ".karlo/logs/startup.log"),
+              (Join-Path $env:LOCALAPPDATA "KARLOLEGEND/logs/startup.log")
+            )
+
+            foreach ($log in $candidates) {
+              if (Test-Path $log) {
+                Write-Host "--- KARLOLEGEND startup log: $log ---"
+                Get-Content $log | Write-Host
+              }
+            }
+          }
 
           $arguments = @("--smoke-test", "--root", "`"$smokeRoot`"")
           $process = Start-Process -FilePath $exe -ArgumentList $arguments -PassThru
 
           if (!$process.WaitForExit(20000)) {
             Stop-Process -Id $process.Id -Force -ErrorAction SilentlyContinue
-            $log = Join-Path $smokeRoot ".karlo/logs/startup.log"
-            if (Test-Path $log) {
-              Write-Host "--- KARLOLEGEND startup log ---"
-              Get-Content $log | Write-Host
-            }
+            Show-StartupLogs
             throw "Published KARLOLEGEND.exe did not complete runtime smoke test within 20 seconds"
           }
 
           $process.Refresh()
           if ($process.ExitCode -ne 0) {
-            $log = Join-Path $smokeRoot ".karlo/logs/startup.log"
-            if (Test-Path $log) {
-              Write-Host "--- KARLOLEGEND startup log ---"
-              Get-Content $log | Write-Host
-            }
+            Show-StartupLogs
             throw "Published KARLOLEGEND.exe failed runtime smoke test with exit code $($process.ExitCode)"
           }
 
           if (!(Test-Path (Join-Path $smokeRoot ".karlo"))) {
+            Show-StartupLogs
             throw "Runtime smoke test exited successfully but did not initialize KARLOLEGEND state"
           }
