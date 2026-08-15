@@ -35,17 +35,6 @@
             <Setter Property="VerticalContentAlignment" Value="Stretch"/>
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
             <Setter Property="Cursor" Value="Arrow"/>
-            <Setter Property="ContextMenu">
-                <Setter.Value>
-                    <ContextMenu>
-                        <MenuItem Header="Open" Click="OpenItemMenuItem_Click"/>
-                        <MenuItem Header="Open Externally" Click="OpenExternalMenuItem_Click"/>
-                        <Separator/>
-                        <MenuItem Header="Rename" Click="RenameItemMenuItem_Click"/>
-                        <MenuItem Header="Delete to Recycle Bin" Click="DeleteItemMenuItem_Click"/>
-                    </ContextMenu>
-                </Setter.Value>
-            </Setter>
             <Style.Triggers>
                 <Trigger Property="IsSelected" Value="True">
                     <Setter Property="Background" Value="#4A4A1700"/>
@@ -179,19 +168,13 @@
 
                         <TextBlock Grid.Row="1"
                                    Text="{Binding Name}"
+                                   Foreground="#F5F5F5"
+                                   FontSize="13"
                                    TextAlignment="Center"
                                    TextWrapping="Wrap"
                                    TextTrimming="CharacterEllipsis"
-                                   MaxHeight="40"
-                                   Margin="4,3,4,0"
-                                   Foreground="#F5F5F5"
-                                   FontSize="13">
-                            <TextBlock.Effect>
-                                <DropShadowEffect BlurRadius="2"
-                                                  ShadowDepth="1"
-                                                  Opacity="0.9"/>
-                            </TextBlock.Effect>
-                        </TextBlock>
+                                   MaxHeight="42"
+                                   Margin="4,0,4,0"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -202,14 +185,15 @@
                 Background="#171717"
                 BorderBrush="#2B2B2B"
                 BorderThickness="0,1,0,0"
-                Padding="12,7">
+                Padding="12,8">
             <DockPanel>
-                <TextBlock Text="KARLOLEGEND"
-                           Foreground="#FFD800"
-                           FontWeight="SemiBold"
-                           DockPanel.Dock="Left"/>
                 <TextBlock x:Name="StatusText"
-                           Foreground="#9A9A9A"
+                           Foreground="#BBBBBB"
+                           FontSize="12"
+                           DockPanel.Dock="Left"/>
+                <TextBlock Text="F2 rename  •  Delete recycle  •  F11 desktop"
+                           Foreground="#777777"
+                           FontSize="12"
                            HorizontalAlignment="Right"/>
             </DockPanel>
         </Border>
