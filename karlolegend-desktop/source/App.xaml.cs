@@ -9,6 +9,7 @@ namespace KarloDiskShell;
 public partial class App : Application
 {
     private SingleInstanceService? _singleInstance;
+    private bool _isSmokeTest;
 
     public App()
     {
@@ -19,6 +20,8 @@ public partial class App : Application
 
     private void Application_Startup(object sender, StartupEventArgs e)
     {
+        _isSmokeTest = HasArgument(e.Args, "--smoke-test");
+
         try
         {
             StartApplication(e.Args);
@@ -45,7 +48,7 @@ public partial class App : Application
         // CI/release runtime probe. This intentionally constructs the real WPF
         // main window from the published EXE, but disables networking/updating
         // and closes immediately after XAML/layout initialization succeeds.
-        if (HasArgument(args, "--smoke-test"))
+        if (_isSmokeTest)
         {
             var smokeWindow = new MainWindow(root, allowSelfUpdate: false);
             MainWindow = smokeWindow;
@@ -105,20 +108,24 @@ public partial class App : Application
     private void FailStartup(Exception exception)
     {
         var logPath = TryWriteCrashLog("STARTUP", exception);
-        var suffix = string.IsNullOrWhiteSpace(logPath)
-            ? string.Empty
-            : $"\n\nDiagnostic log:\n{logPath}";
 
-        try
+        if (!_isSmokeTest)
         {
-            MessageBox.Show(
-                $"KARLOLEGEND could not start.\n\n{exception.GetType().Name}: {exception.Message}{suffix}",
-                "KARLOLEGEND Startup Error",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
-        }
-        catch
-        {
+            var suffix = string.IsNullOrWhiteSpace(logPath)
+                ? string.Empty
+                : $"\n\nDiagnostic log:\n{logPath}";
+
+            try
+            {
+                MessageBox.Show(
+                    $"KARLOLEGEND could not start.\n\n{exception.GetType().Name}: {exception.Message}{suffix}",
+                    "KARLOLEGEND Startup Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+            catch
+            {
+            }
         }
 
         Shutdown(1);
@@ -128,17 +135,20 @@ public partial class App : Application
     {
         var logPath = TryWriteCrashLog("DISPATCHER", e.Exception);
 
-        try
+        if (!_isSmokeTest)
         {
-            MessageBox.Show(
-                $"KARLOLEGEND encountered a fatal UI error.\n\n{e.Exception.GetType().Name}: {e.Exception.Message}" +
-                (string.IsNullOrWhiteSpace(logPath) ? string.Empty : $"\n\nDiagnostic log:\n{logPath}"),
-                "KARLOLEGEND Error",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
-        }
-        catch
-        {
+            try
+            {
+                MessageBox.Show(
+                    $"KARLOLEGEND encountered a fatal UI error.\n\n{e.Exception.GetType().Name}: {e.Exception.Message}" +
+                    (string.IsNullOrWhiteSpace(logPath) ? string.Empty : $"\n\nDiagnostic log:\n{logPath}"),
+                    "KARLOLEGEND Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+            catch
+            {
+            }
         }
 
         e.Handled = true;
