@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="hr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>0.0.1 — Vrijeme nije neutralno</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<main class="shell">
+  <header class="topbar">
+    <div>
+      <div class="signal">BUILD 0.0.1 · TIME SYSTEMS PROTOTYPE</div>
+      <h1>VRIJEME NIJE NEUTRALNO.</h1>
+      <p class="lede">Vodovod možda pada večeras. Ti to znaš u 17:00. Problem: smjena ti završava u 17:20.</p>
+    </div>
+    <div class="clockbox">
+      <span id="availability">NA POSLU</span>
+      <strong id="clock">17:00</strong>
+    </div>
+  </header>
+
+  <section class="notice" id="notice">Svaka stvar koju radiš troši isto vrijeme u kojem se grad nastavlja mijenjati.</section>
+
+  <div class="layout">
+    <section class="column">
+      <div class="panel">
+        <div class="panel-head"><h2>RADNJE</h2><small>jedna po jedna · možeš prekinuti</small></div>
+        <div id="actions" class="actions"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h2>GRAD</h2><small>izvori se mogu proturječiti</small></div>
+        <div id="feed" class="feed"></div>
+      </div>
+    </section>
+
+    <aside class="column">
+      <div class="panel sticky">
+        <div class="panel-head"><h2>STANJE</h2><small id="worldState">pritisak normalan</small></div>
+        <div id="resources" class="resources"></div>
+
+        <div class="taskbox">
+          <span>AKTIVNA RADNJA</span>
+          <strong id="taskName">nema</strong>
+          <div class="bar"><i id="taskBar"></i></div>
+          <button id="cancelTask" disabled>PREKINI</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h2>RUN LOG</h2><button id="exportLog" class="textbutton">IZVEZI JSON</button></div>
+        <div id="runlog" class="runlog"></div>
+      </div>
+    </aside>
+  </div>
+
+  <section id="ending" class="ending" hidden>
+    <div class="signal">20:00 · PROZOR PRIPREME ZATVOREN</div>
+    <h2 id="endingTitle"></h2>
+    <p id="endingText"></p>
+    <div id="endingStats" class="endingstats"></div>
+    <button id="restart">PONOVI ISTI DAN</button>
+    <a href="../../">ARHIV</a>
+  </section>
+</main>
+<script src="./app.js"></script>
+</body>
+</html>

@@ -1,8 +1,8 @@
 {
-  "version": "0.0.0",
+  "version": "0.0.1",
   "channel": "production",
   "label": "MAIN",
-  "route": "./builds/0.0.0/",
-  "status": "systems-prototype",
+  "route": "./builds/0.0.1/",
+  "status": "time-systems-prototype",
   "promotedAt": "2026-08-16"
 }
