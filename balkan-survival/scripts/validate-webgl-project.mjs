@@ -36,7 +36,16 @@ for (const dependency of ['com.unity.modules.imgui', 'com.unity.modules.jsonseri
 }
 
 const build = read('Assets/Editor/SlegnuceBuild.cs');
-for (const token of ['BuildPipeline.BuildPlayer', 'BuildTarget.WebGL', 'BuildOptions.Development', 'PROJECT:Slegnuce', 'SlegnuceSelfTest.RunAll']) {
+for (const token of [
+  'BuildPipeline.BuildPlayer',
+  'BuildTarget.WebGL',
+  'BuildOptions.Development',
+  'PROJECT:Slegnuce',
+  'SlegnuceSelfTest.RunAll',
+  'PreExportCloud',
+  'WebGLCompressionFormat.Disabled',
+  '0.2.0-rc.',
+]) {
   if (!build.includes(token)) fail(`SlegnuceBuild.cs missing contract token: ${token}`);
 }
 
@@ -60,5 +69,52 @@ for (const token of ['-buildTarget WebGL', 'Slegnuce.Editor.SlegnuceBuild.BuildD
   if (!powerShell.includes(token)) fail(`build-web.ps1 missing: ${token}`);
 }
 
+const ubaPostBuild = read('cloud/uba-post-build.sh');
+for (const token of [
+  'OUTPUT_DIRECTORY',
+  'SLEGNUCE_VERCEL_PROJECT_PURPOSE',
+  'package-vercel-release.mjs',
+  'verify-vercel-preview.mjs',
+  'vercel@latest deploy',
+  '--prebuilt',
+  'Production was NOT changed',
+]) {
+  if (!ubaPostBuild.includes(token)) fail(`uba-post-build.sh missing cloud release contract token: ${token}`);
+}
+
+const promote = read('cloud/promote-vercel.sh');
+for (const token of [
+  'SLEGNUCE_RELEASE_APPROVED',
+  'SLEGNUCE_EXPECTED_DIGEST',
+  'verify-vercel-preview.mjs',
+  'vercel@latest promote',
+]) {
+  if (!promote.includes(token)) fail(`promote-vercel.sh missing production promotion token: ${token}`);
+}
+
+const cloudStatePath = path.join(root, 'data', 'cloud-release.json');
+if (!fs.existsSync(cloudStatePath)) fail('missing data/cloud-release.json');
+else {
+  try {
+    const cloudState = JSON.parse(fs.readFileSync(cloudStatePath, 'utf8'));
+    if (cloudState.schema !== 'slegnuce.cloud-release/1') fail('data/cloud-release.json schema mismatch');
+    if (cloudState.hosting?.productionMode !== 'promote-existing-preview-without-rebuild') {
+      fail('cloud release policy must promote an existing Preview without rebuild');
+    }
+  } catch (error) {
+    fail(`data/cloud-release.json is invalid JSON: ${error.message}`);
+  }
+}
+
+for (const relative of [
+  'docs/CLOUD_RELEASE.md',
+  'scripts/package-vercel-release.mjs',
+  'scripts/verify-vercel-preview.mjs',
+  'scripts/test-release-packager.mjs',
+]) {
+  const full = path.join(root, relative);
+  if (!fs.existsSync(full)) fail(`missing balkan-survival/${relative}`);
+}
+
 if (failed) process.exit(1);
-console.log('SLEGNUCE WEBGL PROJECT CONTRACT OK — Unity 6.3 LTS scaffold, build entrypoint, bridge and self-test are present.');
+console.log('SLEGNUCE WEBGL PROJECT CONTRACT OK — Unity 6.3 LTS buildability, UBA hooks, immutable Vercel Preview packaging and promote-without-rebuild policy are present.');

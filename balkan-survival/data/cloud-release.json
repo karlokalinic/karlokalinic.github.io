@@ -1,0 +1,26 @@
+{
+  "schema": "slegnuce.cloud-release/1",
+  "status": "source-prepared-awaiting-external-connection",
+  "nextVersionPattern": "0.2.0-rc.${UBA_BUILD_NUMBER}",
+  "unity": {
+    "provider": "Unity Build Automation",
+    "projectSubfolder": "balkan-survival/webgl",
+    "target": "WebGL",
+    "editorPin": "6000.3.16f1",
+    "preExportMethod": "Slegnuce.Editor.SlegnuceBuild.PreExportCloud",
+    "postBuildScript": "balkan-survival/webgl/cloud/uba-post-build.sh"
+  },
+  "hosting": {
+    "provider": "Vercel",
+    "projectPolicy": "dedicated-project-required",
+    "previewMode": "prebuilt-build-output-api",
+    "productionMode": "promote-existing-preview-without-rebuild"
+  },
+  "gates": {
+    "sourceContract": "automated-github-ci",
+    "unitySelfTest": "5/5-pre-export",
+    "publicStaticArtifact": "automated-post-deploy",
+    "browserRoundTrip": "pending-headless-automation",
+    "projectMainPromotion": "manual-explicit-production-json-change"
+  }
+}

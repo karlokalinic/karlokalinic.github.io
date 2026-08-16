@@ -29,6 +29,12 @@ namespace Slegnuce.Editor
             SlegnuceSelfTest.RunAll();
         }
 
+        [MenuItem("Slegnuće/Build/Prepare Cloud Build")]
+        public static void PrepareCloudBuildFromMenu()
+        {
+            PreExportCloud();
+        }
+
         [MenuItem("Slegnuće/Build/Development Web")]
         public static void BuildDevelopmentWebFromMenu()
         {
@@ -38,6 +44,28 @@ namespace Slegnuce.Editor
                 if (!switched) throw new BuildFailedException("Could not switch active build target to WebGL. Is Web Build Support installed?");
             }
             BuildDevelopmentWeb();
+        }
+
+        // Configure this exact method as Unity Build Automation's Pre-export method.
+        // UBA itself remains responsible for invoking the actual cloud WebGL build.
+        public static void PreExportCloud()
+        {
+            EnsurePrototypeScene();
+            SlegnuceSelfTest.RunAll();
+
+            string releaseVersion = ResolveCloudVersion();
+            ConfigureCommonPlayerSettings(releaseVersion);
+
+            PlayerSettings.WebGL.compressionFormat = WebGLCompressionFormat.Disabled;
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            Debug.Log(
+                "[SlegnuceBuild] CLOUD PRE-EXPORT PASS — version=" + releaseVersion +
+                ", target=" + EditorUserBuildSettings.activeBuildTarget +
+                ", commit=" + (Environment.GetEnvironmentVariable("GIT_COMMIT") ?? "unknown")
+            );
         }
 
         public static void BuildDevelopmentWeb()
@@ -54,11 +82,7 @@ namespace Slegnuce.Editor
 
             EnsurePrototypeScene();
             SlegnuceSelfTest.RunAll();
-
-            PlayerSettings.companyName = "KARLOLEGEND";
-            PlayerSettings.productName = "Slegnuće";
-            PlayerSettings.bundleVersion = ProductVersion;
-            PlayerSettings.WebGL.template = "PROJECT:Slegnuce";
+            ConfigureCommonPlayerSettings(ProductVersion);
 
             string output = Environment.GetEnvironmentVariable("SLEGNUCE_WEBGL_OUTPUT");
             if (string.IsNullOrWhiteSpace(output))
@@ -84,6 +108,24 @@ namespace Slegnuce.Editor
             }
 
             Debug.Log("[SlegnuceBuild] BUILD PASS — bytes=" + summary.totalSize + ", time=" + summary.totalTime + ", output=" + summary.outputPath);
+        }
+
+        private static void ConfigureCommonPlayerSettings(string version)
+        {
+            PlayerSettings.companyName = "KARLOLEGEND";
+            PlayerSettings.productName = "Slegnuće";
+            PlayerSettings.bundleVersion = version;
+            PlayerSettings.WebGL.template = "PROJECT:Slegnuce";
+        }
+
+        private static string ResolveCloudVersion()
+        {
+            string explicitVersion = Environment.GetEnvironmentVariable("SLEGNUCE_RELEASE_VERSION");
+            if (!string.IsNullOrWhiteSpace(explicitVersion)) return explicitVersion;
+
+            string buildNumber = Environment.GetEnvironmentVariable("BUILD_NUMBER");
+            if (string.IsNullOrWhiteSpace(buildNumber)) buildNumber = "0";
+            return "0.2.0-rc." + buildNumber;
         }
 
         private static void EnsurePrototypeScene()
