@@ -1,5 +1,6 @@
 using UnityEngine;
 using Slegnuce.Web;
+using Slegnuce.Presentation;
 
 namespace Slegnuce.Simulation
 {
@@ -28,9 +29,15 @@ namespace Slegnuce.Simulation
                 engine = new GameObject("RunEngine").AddComponent<RunEngine>();
             }
 
-            engine.SetBuild("unity-roundtrip-slice-0.1");
+            engine.SetBuild("unity-roundtrip-slice-0.2");
             engine.ConfigureScenarios(PrototypeScenarioFactory.CreateFirstSlice());
             engine.BindWebBridge(bridge);
+
+            ShelterPresentationController presentation = Object.FindFirstObjectByType<ShelterPresentationController>();
+            if (presentation != null)
+            {
+                presentation.Bind(engine);
+            }
 
             PrototypeShelterView view = Object.FindFirstObjectByType<PrototypeShelterView>();
             if (view == null)

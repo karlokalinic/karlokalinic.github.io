@@ -10,23 +10,31 @@ namespace Slegnuce.Simulation
         private GUIStyle bodyStyle;
         private GUIStyle smallStyle;
         private Vector2 scroll;
+        private bool visible;
 
         public void Bind(RunEngine value)
         {
             engine = value;
         }
 
+        private void Update()
+        {
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+            if (Input.GetKeyDown(KeyCode.F1)) visible = !visible;
+#endif
+        }
+
         private void OnGUI()
         {
-            if (engine == null || engine.State == null) return;
+            if (!visible || engine == null || engine.State == null) return;
             EnsureStyles();
 
             Rect area = new Rect(24, 24, Mathf.Min(760, Screen.width - 48), Screen.height - 48);
             GUILayout.BeginArea(area, GUI.skin.box);
             scroll = GUILayout.BeginScrollView(scroll);
 
-            GUILayout.Label("SLEGNUĆE · UNITY ROUND-TRIP SLICE", titleStyle);
-            GUILayout.Label("Ovo je development harness, ne finalni UI. Njegov posao je dokazati autoritet stanja, choice gating, serializaciju i browser restore prije art produkcije.", bodyStyle);
+            GUILayout.Label("SLEGNUĆE · DEVELOPMENT WITNESS", titleStyle);
+            GUILayout.Label("F1 skriva ovaj harness. Gameplay se sada izvodi kroz 2.5D world presentation; ovaj panel ostaje samo dijagnostički pogled na isti RunEngine state.", bodyStyle);
             GUILayout.Space(12);
 
             DrawState();

@@ -32,7 +32,12 @@ try {
 }
 if (!manifest.dependencies || typeof manifest.dependencies !== 'object') fail('Packages/manifest.json must contain dependencies');
 
-for (const dependency of ['com.unity.modules.imgui', 'com.unity.modules.jsonserialize']) {
+for (const dependency of [
+  'com.unity.modules.imgui',
+  'com.unity.modules.inputlegacy',
+  'com.unity.modules.jsonserialize',
+  'com.unity.modules.physics',
+]) {
   if (!manifest.dependencies?.[dependency]) fail(`manifest missing ${dependency}`);
 }
 
@@ -46,8 +51,27 @@ for (const token of [
   'PreExportCloud',
   'WebGLCompressionFormat.Disabled',
   '0.2.0-rc.',
+  'SHELTER_2_5D_PRESENTATION',
+  'SlegnuceCameraRig',
+  'ClickToMoveController',
+  'give_two_liters',
 ]) {
   if (!build.includes(token)) fail(`SlegnuceBuild.cs missing contract token: ${token}`);
+}
+
+const presentationContracts = [
+  ['Assets/Scripts/Presentation/SlegnuceCameraRig.cs', ['orthographic = false', 'fieldOfView']],
+  ['Assets/Scripts/Presentation/ShelterVisualRules.cs', ['reserveWaterVisible = state.water >= 7', 'state.neighborHelped']],
+  ['Assets/Scripts/Presentation/ShelterPresentationController.cs', ['StateChanged', 'ShelterVisualRules.Evaluate']],
+  ['Assets/Scripts/Presentation/CharacterPresentation.cs', ['CharacterVisualState', 'Relieved']],
+  ['Assets/Scripts/Interaction/ClickToMoveController.cs', ['Physics.Raycast', 'Input.GetMouseButtonDown']],
+  ['Assets/Scripts/Interaction/ScenarioInteractionBinding.cs', ['engine.CanChoose', 'engine.CommitChoice']],
+];
+for (const [relative, tokens] of presentationContracts) {
+  const source = read(relative);
+  for (const token of tokens) {
+    if (!source.includes(token)) fail(`${relative} missing presentation contract token: ${token}`);
+  }
 }
 
 const selfTest = read('Assets/Editor/SlegnuceSelfTest.cs');
@@ -152,4 +176,4 @@ else {
 }
 
 if (failed) process.exit(1);
-console.log('SLEGNUCE WEBGL PROJECT CONTRACT OK — Unity buildability, immutable Preview provenance, sequenced browser evidence, automated Playwright 12/12 gate and promote-without-rebuild policy are present.');
+console.log('SLEGNUCE WEBGL PROJECT CONTRACT OK — deterministic simulation/browser evidence remains intact and the generated 2.5D presentation layer is source-wired.');
