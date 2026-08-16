@@ -1,0 +1,17 @@
+# Cloudflare Pages / Workers Static Assets candidate headers for a future Unity Web deployment.
+# Keep the exact encoding rules aligned with the Compression Format selected in Unity.
+
+/Build/*.wasm
+  Content-Type: application/wasm
+  Cache-Control: public, max-age=31536000, immutable
+
+/Build/*.js
+  Content-Type: application/javascript
+  Cache-Control: public, max-age=31536000, immutable
+
+/Build/*.data
+  Cache-Control: public, max-age=31536000, immutable
+
+/Build/*.json
+  Content-Type: application/json
+  Cache-Control: public, max-age=3600

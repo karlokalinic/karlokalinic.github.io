@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="hr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#12120f">
+  <title>Slegnuće 0.1.1 — Nauči sustav, ne tipke</title>
+  <link rel="stylesheet" href="../0.1.0/style.css">
+  <link rel="stylesheet" href="./polish.css">
+</head>
+<body>
+<div class="grain"></div>
+<section id="intro" class="intro">
+  <div class="intro-photo"></div><div class="intro-shade"></div>
+  <div class="intro-copy">
+    <div class="kicker">BALKAN SURVIVAL · BUILD 0.1.1</div>
+    <h1>SLEGNUĆE</h1>
+    <p class="tagline">Balance the document. Trust no promise. Carry what remains.</p>
+    <p class="intro-note">Jedna večer. Jedan stan. Nisu svi ljudi dostupni u svakom runu. Tko je ovdje određuje što uopće možeš učiniti.</p>
+    <button id="startBtn" class="primary">POKRENI NOVI RUN</button>
+    <button id="introTutorialBtn" class="secondary">KAKO SE IGRA</button>
+    <a class="archive-link" href="../../">ARHIV BUILDOVA</a>
+    <p class="audio-consent">Zvuk se aktivira tek nakon klika. AUDIO se može ugasiti u svakom trenutku.</p>
+  </div>
+</section>
+<main id="game" class="game" hidden>
+  <header class="topbar">
+    <div class="brand"><span>SLEGNUĆE</span><small id="seedLabel">RUN —</small></div>
+    <div class="clock"><small>DAN 0</small><strong id="timeLabel">17:10</strong></div>
+    <div id="resources" class="resources"></div>
+  </header>
+  <section class="workspace">
+    <aside class="cast-panel panel">
+      <div class="panel-title"><span>PRISUTNI / DOSTUPNI</span><button id="loreToggle" class="ghost-btn">LORE</button></div>
+      <div id="cast" class="cast"></div><div id="lorePanel" class="lore-panel" hidden></div>
+    </aside>
+    <section class="event-column">
+      <div class="room-stage">
+        <div class="window"><i></i><i></i></div><div class="cabinet cabinet-a"></div><div class="cabinet cabinet-b"></div>
+        <div class="shelf"><b></b><b></b><b></b><b></b><b></b></div><div class="fridge"><span></span><span></span><span></span></div>
+        <div class="table"><div class="bottle b1"></div><div class="bottle b2"></div><div class="radio"></div><div class="papers"></div></div>
+        <div class="lamp"></div><div class="room-status"><span id="roomCondition">PRITISAK VODE: NESTABILAN</span><span id="rosterStatus">2/4 U STANU</span></div>
+      </div>
+      <article class="event-card panel">
+        <div class="event-meta"><span id="eventIndex">01 / 07</span><span id="eventSource">ZGRADA</span></div>
+        <h2 id="eventTitle"></h2><p id="eventBody"></p><div id="eventQuote" class="event-quote"></div><div id="choices" class="choices"></div>
+        <div id="result" class="result" hidden></div><button id="continueBtn" class="continue" hidden>NASTAVI →</button>
+      </article>
+    </section>
+    <aside class="ledger panel">
+      <div class="panel-title"><span>TOKENI</span><small>nije sve novac</small></div><div id="tokens" class="tokens"></div><div class="divider"></div>
+      <div class="panel-title"><span>STANJE KUĆE</span><small>posljedice</small></div><div id="meters" class="meters"></div><div class="divider"></div>
+      <div class="panel-title"><span>RUN LOG</span><button id="exportBtn" class="ghost-btn">JSON</button></div><div id="log" class="log"></div>
+    </aside>
+  </section>
+</main>
+<section id="ending" class="ending" hidden>
+  <div class="ending-inner"><div class="kicker">RUN ZATVOREN · 23:40</div><h2 id="endingTitle"></h2><p id="endingBody"></p><div id="endingCast" class="ending-cast"></div><div id="endingFacts" class="ending-facts"></div>
+    <div class="ending-actions"><button id="restartBtn" class="primary">NOVI RUN</button><button id="endingExportBtn" class="secondary">IZVEZI RUN JSON</button><a class="archive-link" href="../../">ARHIV</a></div>
+  </div>
+</section>
+<script src="../0.1.0/app.js"></script>
+<script src="./polish.js"></script>
+</body>
+</html>

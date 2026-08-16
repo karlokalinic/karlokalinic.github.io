@@ -6,9 +6,9 @@ Public route: `/balkan-survival/`
 
 ## Current MAIN
 
-`0.1.0 — Prvi javni rez`
+`0.1.1 — Nauči sustav, ne tipke`
 
-This is the first build treated as a public vertical slice rather than a systems laboratory. It contains a complete one-evening run, canonical cast visuals, variable character presence, character-exclusive actions, a five-token social economy and state-aware endings.
+The first playable vertical slice now has a first-run tutorial, procedural Web Audio SFX/ambience, state-aware motion, reduced-motion behavior and the first committed Unity Web migration contract.
 
 ## Architecture
 
@@ -18,6 +18,9 @@ This is the first build treated as a public vertical slice rather than a systems
 - `data/builds.json` — build registry.
 - `devlog/` — one literary/critical development entry per meaningful project change.
 - `docs/SYSTEMS.md` — implementation backlog and design rationale.
+- `docs/AUDIO_TUTORIAL_ANIMATION.md` — polish rules and ownership boundaries.
+- `docs/WEBGL_PREP.md` — Unity Web migration and hosting contract.
+- `webgl/` — Unity 6 bridge/template scaffolding; not yet a compiled Unity build.
 - `scripts/validate.mjs` — archive/manifest integrity checks.
 
 ## Release model
@@ -32,6 +35,7 @@ A commit may be newer while the public MAIN remains on an older, more stable bui
 - `0.0.1` — deterministic time, crisis timeline, cancellable tasks and structured RunLog.
 - `0.0.2` — directional SocialLedger with evidence-backed promises, refusal, lies and reciprocity.
 - `0.1.0` — first full playable evening: variable roster, character-specific affordances, token economy, connected scenarios, visuals and endings.
+- `0.1.1` — tutorial, procedural SFX/ambience, motion language and Unity Web integration scaffolding.
 
 ## Design rule
 
@@ -51,3 +55,7 @@ A character is not a passive modifier. Presence must change which actions legall
 ## Causality rule
 
 A relationship number is never sufficient evidence by itself. Meaningful social mutations should preserve who affected whom, when, which event caused it and why.
+
+## Web runtime rule
+
+Unity will own simulation/rendering. The browser shell will own release routing, archive identity, loading integration, run export and host-level controls. They communicate through a small versioned event bridge rather than duplicated gameplay systems.
