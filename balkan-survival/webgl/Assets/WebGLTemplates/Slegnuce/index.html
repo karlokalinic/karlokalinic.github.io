@@ -13,19 +13,57 @@
     #loading small{font:700 10px ui-monospace,monospace;letter-spacing:.14em;color:#c7a646}
     #track{height:5px;background:#292a23;overflow:hidden}#bar{height:100%;width:0;background:#c7a646;transition:width .12s linear}
     #error{position:fixed;inset:0;display:none;place-items:center;padding:30px;background:#0c0d0b;color:#d9cdb2;text-align:center;z-index:10}
+    #bridge-status{position:fixed;right:12px;top:12px;z-index:7;display:none;max-width:min(420px,calc(100vw - 24px));padding:10px 12px;border:1px solid #464638;background:rgba(8,9,7,.88);color:#bdb8a4;font:11px/1.45 ui-monospace,monospace;white-space:pre-wrap;pointer-events:none}
   </style>
 </head>
 <body>
   <div id="shell"><canvas id="unity-canvas" tabindex="-1"></canvas></div>
   <div id="loading"><small>UČITAVANJE · {{{ PRODUCT_NAME }}} · {{{ PRODUCT_VERSION }}}</small><div id="track"><div id="bar"></div></div></div>
+  <div id="bridge-status"></div>
   <div id="error"></div>
   <script>
-    window.SLEGNUCE_SHELL = window.SLEGNUCE_SHELL || {
+    var query = new URLSearchParams(location.search);
+    var debugBridge = query.get('debug') === '1';
+    var bridgeStatus = document.querySelector('#bridge-status');
+    if (debugBridge) bridgeStatus.style.display = 'block';
+
+    function parsePayload(payload) {
+      if (typeof payload !== 'string') return payload;
+      try { return JSON.parse(payload); } catch (_) { return payload; }
+    }
+
+    function showBridgeEvent(type, payload) {
+      if (!debugBridge) return;
+      var text = typeof payload === 'string' ? payload : JSON.stringify(payload);
+      bridgeStatus.textContent = type + '\n' + text.slice(0, 900);
+    }
+
+    window.SLEGNUCE_SHELL = window.SLEGNUCE_SHELL || {};
+    Object.assign(window.SLEGNUCE_SHELL, {
       build: "{{{ PRODUCT_VERSION }}}",
+      lastEvent: null,
+      unityReady: false,
       onUnityEvent: function(type, payload) {
-        window.parent && window.parent !== window && window.parent.postMessage({ source: 'slegnuce-unity', type, payload }, '*');
-      }
-    };
+        var parsed = parsePayload(payload);
+        this.lastEvent = { type: type, payload: parsed, at: Date.now() };
+        showBridgeEvent(type, parsed);
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({ source: 'slegnuce-unity', type: type, payload: payload }, '*');
+        }
+      },
+      command: function() {
+        console.warn('[Slegnuce] Unity instance is not ready yet.');
+        return false;
+      },
+      restoreLastRun: function() {
+        var saved = localStorage.getItem('slegnuce:last-unity-run');
+        if (!saved) return false;
+        return this.command('RESTORE_RUN', saved);
+      },
+      requestState: function() { return this.command('REQUEST_STATE', ''); },
+      requestExport: function() { return this.command('REQUEST_RUN_EXPORT', ''); },
+      startRun: function(seed) { return this.command('START_RUN', seed || ''); }
+    });
 
     var canvas = document.querySelector('#unity-canvas');
     var buildUrl = 'Build';
@@ -55,11 +93,27 @@
         document.querySelector('#bar').style.width = (progress * 100).toFixed(1) + '%';
       }).then(function(instance) {
         window.SLEGNUCE_UNITY = instance;
+        window.SLEGNUCE_SHELL.unityReady = true;
+        window.SLEGNUCE_SHELL.command = function(type, payload) {
+          var serializedPayload = typeof payload === 'string' ? payload : JSON.stringify(payload == null ? {} : payload);
+          instance.SendMessage('WebBridge', 'ReceiveShellCommand', JSON.stringify({
+            type: type,
+            payload: serializedPayload
+          }));
+          return true;
+        };
+
         document.querySelector('#loading').style.display = 'none';
+        window.dispatchEvent(new CustomEvent('slegnuce:unity-ready'));
+
         window.addEventListener('message', function(e) {
           if (!e.data || e.data.source !== 'slegnuce-shell') return;
-          instance.SendMessage('WebBridge', 'ReceiveShellCommand', JSON.stringify(e.data));
+          window.SLEGNUCE_SHELL.command(e.data.type, e.data.payload || '');
         });
+
+        if (query.get('restore') === '1') {
+          window.SLEGNUCE_SHELL.restoreLastRun();
+        }
       }).catch(function(message) {
         var error = document.querySelector('#error');
         error.textContent = 'UNITY WEB BUILD ERROR: ' + message;

@@ -52,6 +52,13 @@ namespace Slegnuce.Simulation
         public List<CharacterRunState> characters = new List<CharacterRunState>();
         public List<RunLogEntry> log = new List<RunLogEntry>();
 
+        public void NormalizeAfterRestore()
+        {
+            if (string.IsNullOrWhiteSpace(schema)) schema = "slegnuce.run/1";
+            if (characters == null) characters = new List<CharacterRunState>();
+            if (log == null) log = new List<RunLogEntry>();
+        }
+
         public int Get(ResourceId id)
         {
             switch (id)
@@ -133,6 +140,7 @@ namespace Slegnuce.Simulation
 
         public CharacterRunState Character(CharacterId id)
         {
+            NormalizeAfterRestore();
             CharacterRunState found = characters.Find(x => x.id == id);
             if (found != null) return found;
 

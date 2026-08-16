@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using Slegnuce.Web;
 
@@ -7,8 +8,12 @@ namespace Slegnuce.Simulation
 {
     public sealed class RunEngine : MonoBehaviour
     {
+        public const string SupportedSchema = "slegnuce.run/1";
+
         [SerializeField] private string build = "unity-dev";
         [SerializeField] private List<ScenarioDefinition> scenarios = new List<ScenarioDefinition>();
+
+        private SlegnuceWebBridge boundBridge;
 
         public RunState State { get; private set; }
 
@@ -25,6 +30,36 @@ namespace Slegnuce.Simulation
         public event Action<RunState> StateChanged;
         public event Action<ScenarioDefinition> ScenarioChanged;
 
+        public void SetBuild(string value)
+        {
+            if (!string.IsNullOrWhiteSpace(value)) build = value;
+        }
+
+        public void ConfigureScenarios(IEnumerable<ScenarioDefinition> definitions)
+        {
+            scenarios.Clear();
+            if (definitions == null) return;
+
+            foreach (ScenarioDefinition definition in definitions)
+            {
+                if (definition != null) scenarios.Add(definition);
+            }
+        }
+
+        public void BindWebBridge(SlegnuceWebBridge bridge)
+        {
+            if (boundBridge == bridge) return;
+            if (boundBridge != null) boundBridge.ShellCommandReceived -= HandleShellCommand;
+
+            boundBridge = bridge;
+            if (boundBridge != null) boundBridge.ShellCommandReceived += HandleShellCommand;
+        }
+
+        private void OnDestroy()
+        {
+            if (boundBridge != null) boundBridge.ShellCommandReceived -= HandleShellCommand;
+        }
+
         public void StartNewRun(string seed = null)
         {
             if (string.IsNullOrWhiteSpace(seed))
@@ -34,6 +69,7 @@ namespace Slegnuce.Simulation
 
             State = new RunState
             {
+                schema = SupportedSchema,
                 build = build,
                 seed = seed,
                 scenarioIndex = 0
@@ -80,6 +116,12 @@ namespace Slegnuce.Simulation
             if (!CanChoose(choiceIndex, out reason))
             {
                 Debug.LogWarning("[RunEngine] Choice rejected: " + reason);
+                Emit("CHOICE_REJECTED", JsonUtility.ToJson(new ChoiceRejectedPayload
+                {
+                    scenarioId = CurrentScenario != null ? CurrentScenario.id : string.Empty,
+                    choiceIndex = choiceIndex,
+                    reason = reason
+                }));
                 return false;
             }
 
@@ -99,6 +141,7 @@ namespace Slegnuce.Simulation
             {
                 scenarioId = scenario.id,
                 choiceId = choice.id,
+                fingerprint = Fingerprint(),
                 state = State
             };
 
@@ -128,13 +171,93 @@ namespace Slegnuce.Simulation
             return State == null ? "{}" : JsonUtility.ToJson(State, true);
         }
 
-        public void RestoreJson(string json)
+        public string ExportCompactJson()
         {
-            if (string.IsNullOrWhiteSpace(json)) return;
-            State = JsonUtility.FromJson<RunState>(json);
-            if (State == null) return;
+            return State == null ? "{}" : JsonUtility.ToJson(State, false);
+        }
+
+        public string Fingerprint()
+        {
+            byte[] bytes = Encoding.UTF8.GetBytes(ExportCompactJson());
+            unchecked
+            {
+                uint hash = 2166136261;
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    hash ^= bytes[i];
+                    hash *= 16777619;
+                }
+                return hash.ToString("X8");
+            }
+        }
+
+        public bool RestoreJson(string json)
+        {
+            if (string.IsNullOrWhiteSpace(json))
+            {
+                RejectRestore("empty_payload", "Restore payload is empty.");
+                return false;
+            }
+
+            RunState restored;
+            try
+            {
+                restored = JsonUtility.FromJson<RunState>(json);
+            }
+            catch (Exception ex)
+            {
+                RejectRestore("invalid_json", ex.Message);
+                return false;
+            }
+
+            if (restored == null)
+            {
+                RejectRestore("invalid_state", "JsonUtility returned a null RunState.");
+                return false;
+            }
+
+            restored.NormalizeAfterRestore();
+            if (!string.Equals(restored.schema, SupportedSchema, StringComparison.Ordinal))
+            {
+                RejectRestore("unsupported_schema", "Expected " + SupportedSchema + " but received " + restored.schema + ".");
+                return false;
+            }
+
+            State = restored;
             StateChanged?.Invoke(State);
             EmitScenario();
+            EmitStateSnapshot("RUN_RESTORED");
+            return true;
+        }
+
+        public void HandleShellCommand(string type, string payload)
+        {
+            switch (type)
+            {
+                case "START_RUN":
+                    StartNewRun(string.IsNullOrWhiteSpace(payload) ? null : payload);
+                    break;
+                case "RESTORE_RUN":
+                    RestoreJson(payload);
+                    break;
+                case "REQUEST_RUN_EXPORT":
+                case "REQUEST_STATE":
+                    EmitStateSnapshot(type == "REQUEST_STATE" ? "STATE_SNAPSHOT" : "RUN_EXPORT");
+                    break;
+                case "COMMIT_CHOICE":
+                    int choiceIndex;
+                    if (int.TryParse(payload, out choiceIndex)) CommitChoice(choiceIndex);
+                    break;
+                case "ADVANCE":
+                    Advance();
+                    break;
+                default:
+                    Emit("SHELL_COMMAND_UNKNOWN", JsonUtility.ToJson(new MessagePayload
+                    {
+                        message = "Unknown shell command: " + type
+                    }));
+                    break;
+            }
         }
 
         private void AssignRoster(string seed)
@@ -229,9 +352,36 @@ namespace Slegnuce.Simulation
 
         private void CompleteRun()
         {
-            string json = ExportJson();
+            string json = ExportCompactJson();
             Emit("RUN_COMPLETE", json);
+            EmitStateSnapshot("RUN_COMPLETE_META");
             if (SlegnuceWebBridge.Instance != null) SlegnuceWebBridge.Instance.SaveRun(json);
+        }
+
+        private void EmitStateSnapshot(string eventType)
+        {
+            if (State == null)
+            {
+                Emit(eventType, "{}");
+                return;
+            }
+
+            StateSnapshotPayload payload = new StateSnapshotPayload
+            {
+                fingerprint = Fingerprint(),
+                state = State
+            };
+            Emit(eventType, JsonUtility.ToJson(payload));
+        }
+
+        private void RejectRestore(string code, string message)
+        {
+            Emit("RUN_RESTORE_REJECTED", JsonUtility.ToJson(new RestoreRejectedPayload
+            {
+                code = code,
+                message = message,
+                expectedSchema = SupportedSchema
+            }));
         }
 
         private static void Emit(string type, string payload)
@@ -265,7 +415,37 @@ namespace Slegnuce.Simulation
         {
             public string scenarioId;
             public string choiceId;
+            public string fingerprint;
             public RunState state;
+        }
+
+        [Serializable]
+        private sealed class ChoiceRejectedPayload
+        {
+            public string scenarioId;
+            public int choiceIndex;
+            public string reason;
+        }
+
+        [Serializable]
+        private sealed class StateSnapshotPayload
+        {
+            public string fingerprint;
+            public RunState state;
+        }
+
+        [Serializable]
+        private sealed class RestoreRejectedPayload
+        {
+            public string code;
+            public string message;
+            public string expectedSchema;
+        }
+
+        [Serializable]
+        private sealed class MessagePayload
+        {
+            public string message;
         }
     }
 }
