@@ -1,31 +1,8 @@
 {
   "builds": [
-    {
-      "version": "0.0.0",
-      "date": "2026-08-16",
-      "route": "./builds/0.0.0/",
-      "engine": "browser-js",
-      "kind": "systems-prototype",
-      "devlog": "./devlog/0000-kuca-nije-bunker.md",
-      "summary": "First playable proof: time pressure, weight, scarcity and social priority as one decision system."
-    },
-    {
-      "version": "0.0.1",
-      "date": "2026-08-16",
-      "route": "./builds/0.0.1/",
-      "engine": "browser-js",
-      "kind": "time-systems-prototype",
-      "devlog": "./devlog/0001-vrijeme-nije-neutralno.md",
-      "summary": "GameClock, deterministic CrisisTimeline, cancellable ActionTask and exportable RunLog make time itself a social resource."
-    },
-    {
-      "version": "0.0.2",
-      "date": "2026-08-16",
-      "route": "./builds/0.0.2/",
-      "engine": "browser-js",
-      "kind": "social-ledger-prototype",
-      "devlog": "./devlog/0002-dug-nije-broj.md",
-      "summary": "Directional SocialLedger, evidence-backed promises, refusal, lies and reciprocity make relationships causal rather than decorative."
-    }
+    {"version":"0.0.0","date":"2026-08-16","route":"./builds/0.0.0/","engine":"browser-js","kind":"systems-prototype","devlog":"./devlog/0000-kuca-nije-bunker.md","summary":"First playable proof: time pressure, weight, scarcity and social priority as one decision system."},
+    {"version":"0.0.1","date":"2026-08-16","route":"./builds/0.0.1/","engine":"browser-js","kind":"time-systems-prototype","devlog":"./devlog/0001-vrijeme-nije-neutralno.md","summary":"GameClock, deterministic CrisisTimeline, cancellable ActionTask and exportable RunLog make time itself a social resource."},
+    {"version":"0.0.2","date":"2026-08-16","route":"./builds/0.0.2/","engine":"browser-js","kind":"social-ledger-prototype","devlog":"./devlog/0002-dug-nije-broj.md","summary":"Directional SocialLedger, evidence-backed promises, refusal, lies and reciprocity make relationships causal rather than decorative."},
+    {"version":"0.1.0","date":"2026-08-16","route":"./builds/0.1.0/","engine":"browser-js","kind":"first-public-playable","devlog":"./devlog/0003-prvi-javni-rez.md","summary":"First complete visual run: variable roster, character-exclusive actions, PRUD/TLAK/MOSTARINA/ZAVODNI BON/BILJEG economy, seven linked scenarios and multiple state-aware endings."}
   ]
 }

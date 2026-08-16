@@ -1,8 +1,14 @@
-# BALKAN SURVIVAL
+# BALKAN SURVIVAL / SLEGNUĆE
 
-Working title. This is a game, a permanent build archive, and a development diary published as one object.
+A game, permanent playable-build archive and literary development diary published as one object.
 
 Public route: `/balkan-survival/`
+
+## Current MAIN
+
+`0.1.0 — Prvi javni rez`
+
+This is the first build treated as a public vertical slice rather than a systems laboratory. It contains a complete one-evening run, canonical cast visuals, variable character presence, character-exclusive actions, a five-token social economy and state-aware endings.
 
 ## Architecture
 
@@ -18,21 +24,14 @@ Public route: `/balkan-survival/`
 
 `main branch != MAIN game`
 
-A commit may be newer while the public MAIN remains on an older, more stable build. Historical builds stay playable.
+A commit may be newer while the public MAIN remains on an older, more stable build. Promotion is explicit through `production.json`.
 
-## Current stage
-
-PRE-PRODUCTION / SYSTEMS LAB.
-
-Current MAIN: `0.0.2 — Dug nije broj`.
-
-The browser prototypes are not throwaway mockups. They are deterministic systems laboratories used to prove the game's causal grammar before the long-term Unity Web implementation inherits it.
-
-Implemented sequence:
+## Implemented sequence
 
 - `0.0.0` — finite preparation, weight, scarcity and socially weighted objects.
 - `0.0.1` — deterministic time, crisis timeline, cancellable tasks and structured RunLog.
 - `0.0.2` — directional SocialLedger with evidence-backed promises, refusal, lies and reciprocity.
+- `0.1.0` — first full playable evening: variable roster, character-specific affordances, token economy, connected scenarios, visuals and endings.
 
 ## Design rule
 
@@ -45,15 +44,10 @@ Every mechanic must answer four questions:
 
 If a feature cannot answer all four, it is optional.
 
+## Character rule
+
+A character is not a passive modifier. Presence must change which actions legally exist. Absence therefore changes the rhetoric and strategy of the same scenario.
+
 ## Causality rule
 
-A relationship number is never sufficient evidence by itself.
-
-Every meaningful social mutation must preserve:
-- who affected whom,
-- when,
-- which action or event caused it,
-- which dimensions changed,
-- and a human-readable reason.
-
-Future narrative systems must be able to explain why an event occurred from recorded state rather than hiding arbitrary randomness behind prose.
+A relationship number is never sufficient evidence by itself. Meaningful social mutations should preserve who affected whom, when, which event caused it and why.

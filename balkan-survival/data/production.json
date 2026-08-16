@@ -1,8 +1,8 @@
 {
-  "version": "0.0.2",
+  "version": "0.1.0",
   "channel": "production",
   "label": "MAIN",
-  "route": "./builds/0.0.2/",
-  "status": "social-ledger-prototype",
+  "route": "./builds/0.1.0/",
+  "status": "first-public-playable",
   "promotedAt": "2026-08-16"
 }
