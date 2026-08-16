@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="hr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#11120f">
+<title>Slegnuće 0.2.0 — 2.5D Shelter Playtest</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div id="app">
+  <canvas id="scene" aria-label="Slegnuće 2.5D shelter playtest"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="buildbar">
+    <div><b>SLEGNUĆE</b><span>0.2.0 · 2.5D SHELTER PLAYTEST</span></div>
+    <div class="build-actions"><button id="helpBtn">?</button><button id="resetBtn">NOVI RUN</button></div>
+  </header>
+  <div id="hint" class="hint">KLIKNI POD ZA KRETANJE · KLIKNI IVANA ZA INTERAKCIJU</div>
+  <div id="worldPrompt" class="world-prompt" hidden></div>
+  <section id="dialogue" class="dialogue" hidden>
+    <div class="dialogue-meta">18:45 · HODNIK / IVAN</div>
+    <h1>DVIJE LITRE</h1>
+    <p>Ivan kuca tek kada je voda već postala predmet, a ne usluga. Kaže da mu dijete povraća.</p>
+    <blockquote>„Ne treba mi puno. Dvije litre. Samo da izdržimo noć.”</blockquote>
+    <div id="choices" class="choices"></div>
+    <button id="closeDialogue" class="close-dialogue">×</button>
+  </section>
+  <section id="result" class="result-card" hidden>
+    <small>ZAPISANO U RUN</small>
+    <p id="resultText"></p>
+  </section>
+  <section id="ending" class="ending" hidden>
+    <div class="ending-panel">
+      <small>RUN COMPLETE</small>
+      <h2 id="endingTitle">ONO ŠTO OSTANE U SOBI</h2>
+      <p id="endingText"></p>
+      <div id="endingFacts" class="ending-facts"></div>
+      <button id="againBtn">NOVI RUN</button>
+    </div>
+  </section>
+  <aside id="debug" class="debug" hidden><pre id="debugText"></pre></aside>
+  <section id="help" class="help" hidden>
+    <div class="help-card">
+      <button id="closeHelp">×</button>
+      <small>PLAYTEST 0.2.0</small>
+      <h2>Ne uči tipke. Čitaj prostor.</h2>
+      <p>Klikni po podu za kretanje. Klikni Ivana da mu priđeš i odlučiš što napraviti. Nakon odluke klikni vrata. Predmeti u sobi mijenjaju se iz istog run stanja: voda, šalica, držanje lika i svjetlo nisu dekoracija.</p>
+      <p><b>WASD / strelice</b> također pomiču lika. <b>F1</b> prikazuje state witness. Run se sprema lokalno u browseru.</p>
+    </div>
+  </section>
+</div>
+<script src="./game.js"></script>
+</body>
+</html>

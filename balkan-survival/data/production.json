@@ -1,8 +1,8 @@
 {
-  "version": "0.1.1",
+  "version": "0.2.0",
   "channel": "production",
   "label": "MAIN",
-  "route": "./builds/0.1.1/",
-  "status": "tutorial-audio-motion-webgl-prep",
+  "route": "./builds/0.2.0/",
+  "status": "playable-2.5d-presentation-reference",
   "promotedAt": "2026-08-16"
 }
