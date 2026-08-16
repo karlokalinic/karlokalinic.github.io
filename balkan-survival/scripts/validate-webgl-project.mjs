@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '..');
+const repositoryRoot = path.resolve(root, '..');
 const project = path.join(root, 'webgl');
 let failed = false;
 
@@ -55,7 +56,16 @@ for (const token of ['round-trip fingerprint', 'schema rejection', 'character ga
 }
 
 const template = read('Assets/WebGLTemplates/Slegnuce/index.html');
-for (const token of ['createUnityInstance', 'SendMessage', 'SLEGNUCE_SHELL', 'RESTORE_RUN']) {
+for (const token of [
+  'createUnityInstance',
+  'SendMessage',
+  'SLEGNUCE_SHELL',
+  'RESTORE_RUN',
+  '_eventSeq',
+  'eventHistory',
+  'clearEvents',
+  'slegnuce:unity-event',
+]) {
   if (!template.includes(token)) fail(`custom Web template missing: ${token}`);
 }
 
@@ -75,6 +85,7 @@ for (const token of [
   'SLEGNUCE_VERCEL_PROJECT_PURPOSE',
   'package-vercel-release.mjs',
   'verify-vercel-preview.mjs',
+  'dispatch-roundtrip.mjs',
   'vercel@latest deploy',
   '--prebuilt',
   'Production was NOT changed',
@@ -101,6 +112,9 @@ else {
     if (cloudState.hosting?.productionMode !== 'promote-existing-preview-without-rebuild') {
       fail('cloud release policy must promote an existing Preview without rebuild');
     }
+    if (cloudState.gates?.browserRoundTrip !== 'automated-github-playwright-12-of-12-after-preview-dispatch') {
+      fail('cloud release policy must route Preview through the automated 12/12 Playwright gate');
+    }
   } catch (error) {
     fail(`data/cloud-release.json is invalid JSON: ${error.message}`);
   }
@@ -108,13 +122,34 @@ else {
 
 for (const relative of [
   'docs/CLOUD_RELEASE.md',
+  'docs/ROUNDTRIP_TEST.md',
   'scripts/package-vercel-release.mjs',
   'scripts/verify-vercel-preview.mjs',
   'scripts/test-release-packager.mjs',
+  'scripts/headless-roundtrip.mjs',
+  'scripts/dispatch-roundtrip.mjs',
 ]) {
   const full = path.join(root, relative);
   if (!fs.existsSync(full)) fail(`missing balkan-survival/${relative}`);
 }
 
+const roundTripWorkflowPath = path.join(repositoryRoot, '.github', 'workflows', 'slegnuce-roundtrip.yml');
+if (!fs.existsSync(roundTripWorkflowPath)) fail('missing .github/workflows/slegnuce-roundtrip.yml');
+else {
+  const workflow = fs.readFileSync(roundTripWorkflowPath, 'utf8');
+  for (const token of [
+    'repository_dispatch',
+    'workflow_dispatch',
+    'slegnuce-preview-ready',
+    'playwright@1.62.0',
+    'headless-roundtrip.mjs',
+    'actions/upload-artifact@v4',
+    'slegnuce-production',
+    'promote-vercel.sh',
+  ]) {
+    if (!workflow.includes(token)) fail(`slegnuce-roundtrip.yml missing: ${token}`);
+  }
+}
+
 if (failed) process.exit(1);
-console.log('SLEGNUCE WEBGL PROJECT CONTRACT OK — Unity 6.3 LTS buildability, UBA hooks, immutable Vercel Preview packaging and promote-without-rebuild policy are present.');
+console.log('SLEGNUCE WEBGL PROJECT CONTRACT OK — Unity buildability, immutable Preview provenance, sequenced browser evidence, automated Playwright 12/12 gate and promote-without-rebuild policy are present.');

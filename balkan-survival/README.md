@@ -22,22 +22,25 @@ The first playable vertical slice now has a first-run tutorial, procedural Web A
 - `docs/AUDIO_TUTORIAL_ANIMATION.md` — polish rules and ownership boundaries.
 - `docs/WEBGL_PREP.md` — Unity Web migration and hosting contract.
 - `docs/UNITY_BUILD.md` — pinned Unity editor, deterministic project bootstrap, self-tests and local Development Web build procedure.
-- `docs/CLOUD_RELEASE.md` — Unity Build Automation → immutable Vercel Preview → promote-the-same-deployment production contract.
+- `docs/CLOUD_RELEASE.md` — Unity Build Automation → immutable Vercel Preview → browser gate → promote-the-same-deployment contract.
+- `docs/ROUNDTRIP_TEST.md` — the twelve browser-visible conditions required before a Unity Preview is eligible for production.
 - `webgl/` — buildable Unity 6.3 LTS project root with WebBridge/template/runtime source; a compiled Unity Web artifact has not yet been produced by this repository session.
 - `webgl/cloud/` — UBA post-build deployment and production-promotion scripts. Production never rebuilds the approved Preview artifact.
 - `scripts/validate.mjs` — archive/manifest integrity checks.
-- `scripts/validate-webgl-project.mjs` — static CI contract for the Unity project structure, build entrypoints and cloud-release hooks.
+- `scripts/validate-webgl-project.mjs` — static CI contract for Unity, cloud release and browser-gate wiring.
 - `scripts/package-vercel-release.mjs` — converts a Unity Web output into a versioned Vercel Build Output API bundle and release manifest.
-- `scripts/verify-vercel-preview.mjs` — checks that the public Preview serves the intended manifest, loader and Wasm artifact.
-- `scripts/test-release-packager.mjs` — credential-free CI proof that packaging is deterministic with respect to Unity output bytes.
+- `scripts/verify-vercel-preview.mjs` — proves the expected manifest, loader and Wasm reached the public Preview.
+- `scripts/headless-roundtrip.mjs` — Playwright/Chromium execution of all twelve Unity ↔ browser integration conditions.
+- `scripts/dispatch-roundtrip.mjs` — optional UBA → GitHub `repository_dispatch` handoff after a Preview passes the static gate.
+- `.github/workflows/slegnuce-roundtrip.yml` — automatic browser gate plus an explicitly requested production-promotion job.
 
 ## Release model
 
-`main branch != newest cloud artifact != MAIN game`
+`main branch != newest cloud artifact != Vercel production != MAIN game`
 
 A commit may be newer while the public MAIN remains on an older, more stable build. Promotion is explicit through `production.json`.
 
-The Unity Web release path adds one more distinction:
+The Unity Web release path is:
 
 ```text
 Git commit
@@ -46,14 +49,18 @@ Unity Build Automation
   ↓
 immutable Vercel Preview
   ↓
-browser release gate
+static artifact verification
+  ↓
+Playwright / Chromium 12-of-12 round-trip
+  ↓
+manual release approval
   ↓
 Vercel promote SAME deployment
   ↓
 optional project MAIN promotion
 ```
 
-Production must never be created by rebuilding an already approved release candidate.
+Production must never be created by rebuilding an already approved release candidate. Passing a deployment test also does not make the release project MAIN; visual and editorial acceptance remain distinct gates.
 
 ## Implemented sequence
 
@@ -65,6 +72,7 @@ Production must never be created by rebuilding an already approved release candi
 - source milestone — authoritative Unity `RunState`/`RunEngine`, schema-aware round-trip contract and browser command bridge.
 - source milestone — Unity 6.3 project pin, deterministic generated prototype scene, five editor-side buildability tests and programmatic Development Web build entrypoint.
 - source milestone — UBA pre-export contract, immutable SHA-256 release manifest, Vercel Preview packaging/static verification and production promotion without rebuild.
+- source milestone — sequenced browser event ledger, Playwright/Chromium 12/12 round-trip automation, Preview dispatch and evidence-report artifact.
 
 ## Design rule
 
@@ -87,8 +95,12 @@ A relationship number is never sufficient evidence by itself. Meaningful social 
 
 ## Web runtime rule
 
-Unity will own simulation/rendering. The browser shell will own release routing, archive identity, loading integration, run export and host-level controls. They communicate through a small versioned event bridge rather than duplicated gameplay systems.
+Unity owns simulation/rendering. The browser shell owns release routing, archive identity, loading integration, run export and host-level controls. They communicate through a small versioned event bridge rather than duplicated gameplay systems. Browser tests consume that same public bridge instead of reaching into private C# internals.
 
 ## Artifact rule
 
 A release candidate is identified by its Unity output bytes, not by the human intention to create “the same build again.” The release manifest stores SHA-256 per file plus an aggregate artifact digest. Preview and production must point to the same Vercel deployment after the browser gate passes.
+
+## Evidence rule
+
+A final state is not enough to prove a transition. The Web shell keeps a bounded, sequenced event ledger so automated tests can distinguish which event happened after which command. The ledger is diagnostic evidence, not a second game state.

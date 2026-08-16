@@ -20,7 +20,8 @@
     "sourceContract": "automated-github-ci",
     "unitySelfTest": "5/5-pre-export",
     "publicStaticArtifact": "automated-post-deploy",
-    "browserRoundTrip": "pending-headless-automation",
+    "browserRoundTrip": "automated-github-playwright-12-of-12-after-preview-dispatch",
+    "productionPromotion": "manual-workflow-dispatch-after-roundtrip-success",
     "projectMainPromotion": "manual-explicit-production-json-change"
   }
 }

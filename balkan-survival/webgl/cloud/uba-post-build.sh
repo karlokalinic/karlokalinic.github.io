@@ -64,6 +64,12 @@ node "${REPO_ROOT}/balkan-survival/scripts/verify-vercel-preview.mjs" \
 printf '%s\n' "${PREVIEW_URL}" > "${OUTPUT_DIRECTORY}/slegnuce-preview-url.txt"
 cp "${BUNDLE_DIR}/.vercel/output/static/release-manifest.json" "${OUTPUT_DIRECTORY}/slegnuce-release-manifest.json"
 
+node "${REPO_ROOT}/balkan-survival/scripts/dispatch-roundtrip.mjs" \
+  --url "${PREVIEW_URL}" \
+  --version "${VERSION}" \
+  --digest "${ARTIFACT_DIGEST}" \
+  --commit "${GIT_SHA}"
+
 if [[ -n "${DEVOPS_ENV:-}" ]]; then
   {
     echo "SLEGNUCE_PREVIEW_URL=${PREVIEW_URL}"
@@ -76,4 +82,4 @@ echo "SLEGNUCE UBA POST-BUILD PASS"
 echo "Preview: ${PREVIEW_URL}"
 echo "Version: ${VERSION}"
 echo "Artifact digest: ${ARTIFACT_DIGEST}"
-echo "Production was NOT changed. Promote this exact deployment only after the browser round-trip gate passes."
+echo "Production was NOT changed. Headless round-trip is dispatched when GITHUB_RELEASE_TOKEN is configured."

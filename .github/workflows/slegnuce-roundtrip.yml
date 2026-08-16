@@ -1,0 +1,124 @@
+name: Slegnuce Preview Round Trip
+
+on:
+  repository_dispatch:
+    types: [slegnuce-preview-ready]
+  workflow_dispatch:
+    inputs:
+      preview_url:
+        description: 'Vercel Preview deployment URL'
+        required: true
+        type: string
+      version:
+        description: 'Release version, e.g. 0.2.0-rc.17'
+        required: true
+        type: string
+      digest:
+        description: 'Expected Unity artifact SHA-256 aggregate digest'
+        required: true
+        type: string
+      promote_after_pass:
+        description: 'Promote this exact Preview deployment to Vercel production after 12/12 passes'
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: slegnuce-roundtrip-${{ github.event.client_payload.version || inputs.version || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  roundtrip:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      preview_url: ${{ steps.candidate.outputs.preview_url }}
+      version: ${{ steps.candidate.outputs.version }}
+      digest: ${{ steps.candidate.outputs.digest }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Resolve release candidate
+        id: candidate
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          DISPATCH_URL: ${{ github.event.client_payload.preview_url }}
+          DISPATCH_VERSION: ${{ github.event.client_payload.version }}
+          DISPATCH_DIGEST: ${{ github.event.client_payload.digest }}
+          MANUAL_URL: ${{ inputs.preview_url }}
+          MANUAL_VERSION: ${{ inputs.version }}
+          MANUAL_DIGEST: ${{ inputs.digest }}
+        run: |
+          set -euo pipefail
+          if [ "$EVENT_NAME" = "repository_dispatch" ]; then
+            URL="$DISPATCH_URL"
+            VERSION="$DISPATCH_VERSION"
+            DIGEST="$DISPATCH_DIGEST"
+          else
+            URL="$MANUAL_URL"
+            VERSION="$MANUAL_VERSION"
+            DIGEST="$MANUAL_DIGEST"
+          fi
+
+          test -n "$URL"
+          test -n "$VERSION"
+          test -n "$DIGEST"
+
+          echo "preview_url=$URL" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "digest=$DIGEST" >> "$GITHUB_OUTPUT"
+
+      - name: Install Playwright 1.62.0 and Chromium
+        run: |
+          npm install --prefix balkan-survival --no-save --package-lock=false playwright@1.62.0
+          npm exec --prefix balkan-survival -- playwright install --with-deps chromium
+
+      - name: Execute 12/12 Unity-browser round-trip gate
+        shell: bash
+        run: |
+          node balkan-survival/scripts/headless-roundtrip.mjs \
+            --url '${{ steps.candidate.outputs.preview_url }}' \
+            --version '${{ steps.candidate.outputs.version }}' \
+            --digest '${{ steps.candidate.outputs.digest }}' \
+            --report '${{ runner.temp }}/slegnuce-roundtrip-report.json'
+
+      - name: Upload round-trip evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: slegnuce-roundtrip-${{ steps.candidate.outputs.version }}
+          path: ${{ runner.temp }}/slegnuce-roundtrip-report.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  promote:
+    if: github.event_name == 'workflow_dispatch' && inputs.promote_after_pass == true
+    needs: roundtrip
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: slegnuce-production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Promote the tested deployment without rebuilding
+        shell: bash
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          SLEGNUCE_RELEASE_APPROVED: 'YES'
+          SLEGNUCE_EXPECTED_VERSION: ${{ needs.roundtrip.outputs.version }}
+          SLEGNUCE_EXPECTED_DIGEST: ${{ needs.roundtrip.outputs.digest }}
+        run: |
+          bash balkan-survival/webgl/cloud/promote-vercel.sh '${{ needs.roundtrip.outputs.preview_url }}'

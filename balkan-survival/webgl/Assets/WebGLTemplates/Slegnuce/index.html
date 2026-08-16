@@ -43,13 +43,29 @@
       build: "{{{ PRODUCT_VERSION }}}",
       lastEvent: null,
       unityReady: false,
+      _eventSeq: 0,
+      eventHistory: [],
       onUnityEvent: function(type, payload) {
         var parsed = parsePayload(payload);
-        this.lastEvent = { type: type, payload: parsed, at: Date.now() };
+        var event = {
+          seq: ++this._eventSeq,
+          type: type,
+          payload: parsed,
+          at: Date.now()
+        };
+        this.lastEvent = event;
+        this.eventHistory.push(event);
+        if (this.eventHistory.length > 256) this.eventHistory.splice(0, this.eventHistory.length - 256);
         showBridgeEvent(type, parsed);
+        window.dispatchEvent(new CustomEvent('slegnuce:unity-event', { detail: event }));
         if (window.parent && window.parent !== window) {
-          window.parent.postMessage({ source: 'slegnuce-unity', type: type, payload: payload }, '*');
+          window.parent.postMessage({ source: 'slegnuce-unity', type: type, payload: payload, seq: event.seq }, '*');
         }
+      },
+      clearEvents: function() {
+        this.eventHistory.length = 0;
+        this.lastEvent = null;
+        return this._eventSeq;
       },
       command: function() {
         console.warn('[Slegnuce] Unity instance is not ready yet.');
