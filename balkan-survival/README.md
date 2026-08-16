@@ -20,8 +20,10 @@ The first playable vertical slice now has a first-run tutorial, procedural Web A
 - `docs/SYSTEMS.md` — implementation backlog and design rationale.
 - `docs/AUDIO_TUTORIAL_ANIMATION.md` — polish rules and ownership boundaries.
 - `docs/WEBGL_PREP.md` — Unity Web migration and hosting contract.
-- `webgl/` — Unity 6 bridge/template scaffolding; not yet a compiled Unity build.
+- `docs/UNITY_BUILD.md` — pinned Unity editor, deterministic project bootstrap, self-tests and local Development Web build procedure.
+- `webgl/` — buildable Unity 6.3 LTS project root with WebBridge/template/runtime source; a compiled Unity Web artifact has not yet been produced by this repository session.
 - `scripts/validate.mjs` — archive/manifest integrity checks.
+- `scripts/validate-webgl-project.mjs` — static CI contract for the Unity project structure and build entrypoints.
 
 ## Release model
 
@@ -36,6 +38,8 @@ A commit may be newer while the public MAIN remains on an older, more stable bui
 - `0.0.2` — directional SocialLedger with evidence-backed promises, refusal, lies and reciprocity.
 - `0.1.0` — first full playable evening: variable roster, character-specific affordances, token economy, connected scenarios, visuals and endings.
 - `0.1.1` — tutorial, procedural SFX/ambience, motion language and Unity Web integration scaffolding.
+- source milestone — authoritative Unity `RunState`/`RunEngine`, schema-aware round-trip contract and browser command bridge.
+- source milestone — Unity 6.3 project pin, deterministic generated prototype scene, five editor-side buildability tests and programmatic Development Web build entrypoint.
 
 ## Design rule
 

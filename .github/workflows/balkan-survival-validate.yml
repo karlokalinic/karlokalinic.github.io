@@ -26,6 +26,9 @@ jobs:
       - name: Validate archive and MAIN pointer
         run: node balkan-survival/scripts/validate.mjs
 
+      - name: Validate Unity Web project contract
+        run: node balkan-survival/scripts/validate-webgl-project.mjs
+
       - name: Syntax-check browser JavaScript
         shell: bash
         run: |
