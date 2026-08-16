@@ -17,6 +17,15 @@
       "kind": "time-systems-prototype",
       "devlog": "./devlog/0001-vrijeme-nije-neutralno.md",
       "summary": "GameClock, deterministic CrisisTimeline, cancellable ActionTask and exportable RunLog make time itself a social resource."
+    },
+    {
+      "version": "0.0.2",
+      "date": "2026-08-16",
+      "route": "./builds/0.0.2/",
+      "engine": "browser-js",
+      "kind": "social-ledger-prototype",
+      "devlog": "./devlog/0002-dug-nije-broj.md",
+      "summary": "Directional SocialLedger, evidence-backed promises, refusal, lies and reciprocity make relationships causal rather than decorative."
     }
   ]
 }

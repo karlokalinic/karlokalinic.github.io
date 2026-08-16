@@ -7,7 +7,7 @@ Public route: `/balkan-survival/`
 ## Architecture
 
 - `index.html` — public project front page; MAIN is always visually dominant.
-- `builds/<version>/` — immutable playable builds. The first build is a browser systems prototype; later builds may be Unity Web exports.
+- `builds/<version>/` — immutable playable builds. Historical builds are never overwritten.
 - `data/production.json` — the single pointer to the recommended MAIN build.
 - `data/builds.json` — build registry.
 - `devlog/` — one literary/critical development entry per meaningful project change.
@@ -24,7 +24,15 @@ A commit may be newer while the public MAIN remains on an older, more stable bui
 
 PRE-PRODUCTION / SYSTEMS LAB.
 
-Build `0.0.0` is intentionally small. It proves the archive, MAIN pointer, resource-choice grammar, social scoring, and devlog workflow before a Unity project is allowed to become large.
+Current MAIN: `0.0.2 — Dug nije broj`.
+
+The browser prototypes are not throwaway mockups. They are deterministic systems laboratories used to prove the game's causal grammar before the long-term Unity Web implementation inherits it.
+
+Implemented sequence:
+
+- `0.0.0` — finite preparation, weight, scarcity and socially weighted objects.
+- `0.0.1` — deterministic time, crisis timeline, cancellable tasks and structured RunLog.
+- `0.0.2` — directional SocialLedger with evidence-backed promises, refusal, lies and reciprocity.
 
 ## Design rule
 
@@ -36,3 +44,16 @@ Every mechanic must answer four questions:
 4. Why is this a game mechanic instead of a paragraph of lore?
 
 If a feature cannot answer all four, it is optional.
+
+## Causality rule
+
+A relationship number is never sufficient evidence by itself.
+
+Every meaningful social mutation must preserve:
+- who affected whom,
+- when,
+- which action or event caused it,
+- which dimensions changed,
+- and a human-readable reason.
+
+Future narrative systems must be able to explain why an event occurred from recorded state rather than hiding arbitrary randomness behind prose.

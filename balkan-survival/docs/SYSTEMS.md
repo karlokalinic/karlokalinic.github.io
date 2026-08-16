@@ -10,14 +10,26 @@ We copy none of its content. We extract interaction problems worth solving.
 Implemented: finite preparation window, weight-limited selection, social-value dimensions on objects, immutable playable build archive and MAIN release pointer.
 
 ### Build 0.0.1 — Vrijeme nije neutralno
-Implemented slice:
+Implemented:
 - `GameClock`: deterministic simulated minutes.
 - `CrisisTimeline`: scheduled world events mutate water, store and network states.
 - `ActionTask`: one active timed task, dynamic duration, cancellable with no time refund.
 - `RunLog`: structured state-transition log with JSON export.
-- first conditional social request: neighbor asks for water only after the timeline creates the obligation.
+- first conditional social request.
 
-Not complete yet: generalized task definitions, multi-character actors, persistent relationships, seed system, automated replay tests.
+### Build 0.0.2 — Dug nije broj
+Implemented:
+- directional `SocialLedger`: `A -> B` is distinct from `B -> A`.
+- five relationship dimensions: trust, obligation, resentment, dependency, fear.
+- append-only relationship history with timestamp, cause code, human-readable reason and exact deltas.
+- promise state: a future resource can become socially committed before inventory changes.
+- distinct refusal vs lie outcomes.
+- knowledge-backed lie discovery: a social consequence requires evidence that Ivan previously observed the water.
+- first reciprocity consequence: giving water can later produce food without resetting the relationship.
+- social ledger changes are also written into the structured `RunLog`.
+- relationship and ledger inspection UI.
+
+Still intentionally missing: autonomous NPC needs, general item ownership, generalized knowledge model, seed/replay tests, multi-character scheduling.
 
 ## P0 — build these before content production
 
@@ -27,18 +39,21 @@ Social reason: institutions rarely fail at one cinematic second; warnings arrive
 Implementation: deterministic timeline events keyed by simulation minute. No Update-loop spaghetti.
 Test target: replay same seed and verify identical event timestamps.
 
-### 2. ItemDefinition + ContainerInventory — EASY
+### 2. ItemDefinition + ContainerInventory — EASY — NEXT SUPPORT SYSTEM
 Player-facing: weight, volume, ownership, perishability, category, location.
 Social reason: an object is not only useful. It can be mine, ours, borrowed, stolen, rationed or owed.
 Required metadata: `owner`, `moralStatus`, `essentiality`, `tradeValue`, `institutionalValue`.
+0.0.2 already proves why ownership metadata is required: bakini lijekovi can be physically held by the player while socially belonging to somebody else.
 
 ### 3. Stockpile / Risk Register — EASY
 Player-facing: low / adequate / resilient across water, calories, heat, medicine, information, power and documents.
 Social reason: preparedness is partly planning and partly purchasing power. The UI must never pretend those are the same thing.
 
-### 4. CharacterNeeds — EASY
+### 4. CharacterNeeds — EASY — NEXT GAMEPLAY SLICE
 Do not build six bars that simply decay. Needs should create decisions, not chores.
-Start with hydration, calories, warmth, fatigue. Morale is derived later from events and relationships rather than another leaking fuel tank.
+Start with hydration, calories, warmth, fatigue.
+Each need belongs to a concrete character. The question is not "does the household have water?" but "whose hydration becomes critical first?"
+Morale is derived later from events and relationships rather than another leaking fuel tank.
 
 ### 5. ActionTask — EASY — PARTIAL 0.0.1
 Every action has duration, interruptibility and completion effect. Stamina/resource reservation comes later.
@@ -46,26 +61,28 @@ Cost is charged on completion unless the action itself logically consumes resour
 Social reason: the player must be able to change their mind. Friction is meaningful only when it represents the world, not bad controls.
 
 ### 6. PhoneFeed / InformationSource — EASY–MEDIUM — PROTOTYPE 0.0.1
-Messages currently carry source, timestamp and consequence. Next iteration adds confidence, agenda and character belief.
+Messages currently carry source, timestamp and consequence.
+Next iteration adds confidence, agenda, source reliability and per-character belief/knowledge.
 Sources: civil protection, family, employer, neighbor group, local radio, anonymous forward.
 Social reason: information scarcity and trust are resources.
 
-### 7. SocialLedger — MEDIUM / CORE FEATURE — NEXT
-Do not use one Friendship number.
-Pairwise values: trust, obligation, resentment, dependency, fear.
-Actions write ledger entries: `gaveMedicine`, `refusedShelter`, `usedSharedWater`, `liedAboutStock`.
-This is the first system that turns survival into society.
+### 7. SocialLedger — MEDIUM / CORE FEATURE — PROTOTYPE 0.0.2
+Implemented foundation.
+Never collapse the system into one Friendship or Karma score.
+Pairwise directional values: trust, obligation, resentment, dependency, fear.
+Every mutation requires a ledger entry with evidence.
+Next: thresholds should gate requests, help, disclosure and refusal rather than merely alter endings.
 
-### 8. RunLog — EASY / MANDATORY — PARTIAL 0.0.1
-Every meaningful state transition becomes structured data: timestamp, actor, action, consequence, social tags and build version.
-Current browser prototype can export JSON.
+### 8. RunLog — EASY / MANDATORY — PARTIAL 0.0.1, EXTENDED 0.0.2
+Every meaningful state transition becomes structured data: timestamp, actor, action, consequence, social tags, build version and optional metadata.
+0.0.2 writes SocialLedger deltas into the same log.
 Purpose: save debugging data now; later generate ending summaries, statistics and selected post-run prose from the same facts.
 
 ## P1 — depth without architectural suicide
 
 ### 9. Spoilage + HousingQuality — MEDIUM
 Food spoilage, damp, mold, insulation and sanitation are environmental pressures.
-Social reason: 'clean harder' is not a neutral answer when the building itself is bad.
+Social reason: "clean harder" is not a neutral answer when the building itself is bad.
 
 ### 10. PowerGrid — MEDIUM
 Loads, sources and priority groups. Fridge, radio, lights, heater, charging.
@@ -81,9 +98,11 @@ Background changes starting access, knowledge, working hours and relationships, 
 Examples: student, warehouse worker, nurse, unemployed tenant, municipal clerk.
 Question: who begins a disaster already holding the keys — and who is still clocked in?
 
-### 13. Neighbor Reciprocity Network — MEDIUM
+### 13. Neighbor Reciprocity Network — MEDIUM — FIRST PROOF 0.0.2
 Requests, gifts, loans and favors produce future claims.
 A donated object is not deleted from the story; it becomes an obligation edge.
+0.0.2 demonstrates one loop: water given -> obligation recorded -> food returned -> obligation reduced but history preserved.
+Next: generalize this away from hard-coded Ivan events.
 
 ### 14. Resource Finder — EASY
 Search all known containers from one interface.
@@ -102,6 +121,7 @@ Social reason: architecture distributes privacy, safety and labor.
 ### 17. Dynamic Social Event Director — HARD / HIGH VALUE
 Events query world state instead of firing from a flat random deck.
 Example: a medicine request exists because a known neighbor is ill, knows you have medicine, and has enough trust to ask.
+0.0.2 establishes the evidence model required for this.
 This makes narrative causality inspectable and testable.
 
 ### 18. Institutional Simulation — HARD / SIGNATURE FEATURE
@@ -116,10 +136,12 @@ Purpose: the website becomes historical evidence of how the rules evolved.
 
 - giant crafting tree
 - hundreds of near-identical food items
-- combat because 'survival games need combat'
+- combat because "survival games need combat"
 - real-time autonomous NPC AI before deterministic tasks work
 - procedural text that cannot explain which state caused it
 - morale as a constantly draining chore meter
+- one-dimensional Karma/Friendship systems
+- opaque relationship changes without ledger evidence
 - any feature whose only justification is that Survival Log has it
 
 Quality comes from causal density: fewer systems, more ways for them to collide.
