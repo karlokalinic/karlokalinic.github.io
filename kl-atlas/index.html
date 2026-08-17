@@ -4,15 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <title>KL//ATLAS — Playground Zero</title>
+  <title>KL//ATLAS — Playground + Personal Workspace</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="03-playground-zero.css">
+  <link rel="stylesheet" href="04-personal-workspace.css">
 </head>
 <body data-theme="sterile">
   <section id="playgroundZero" class="pz-root" data-lang="both" aria-labelledby="pzTitle">
     <header class="pz-hero">
       <div>
-        <div class="pz-eyebrow">KL//ATLAS 0.3 · PLAYGROUND ZERO / IGRAONICA NULA · LESSON 00</div>
+        <div class="pz-eyebrow">KL//ATLAS 0.4 · PLAYGROUND ZERO / IGRAONICA NULA · LESSON 00</div>
         <h1 id="pzTitle">MOVE ONE THING.</h1>
         <div class="pz-hero-copy">
           <div class="pz-lang-line" data-pz-lang="hr"><span class="pz-lang-tag">HR</span><span>Nemoj još učiti “arhitekturu”. Pritisni tipku, gledaj broj, gledaj kod, gledaj svijet. Jedan red koda treba proizvesti jednu stvar koju možeš vidjeti.</span></div>
@@ -77,6 +78,92 @@
       <summary>PAUKTUNEL PARTS DRAWER / LADICA DIJELOVA — OPEN ONLY AFTER THE TOY MAKES SENSE</summary>
       <div id="pzPartsGrid" class="pz-parts-grid"></div>
     </details>
+  </section>
+
+  <section id="personalWorkspace" class="ws-root" aria-labelledby="wsTitle">
+    <header class="ws-hero">
+      <div class="ws-hero-copy">
+        <div class="ws-kicker">KL//ATLAS 0.4 · PERSONAL WORKSPACE / OSOBNI RADNI PROSTOR · REMOTE CORPUS</div>
+        <h2 id="wsTitle">MAKE YOUR OWN THING.</h2>
+        <p><b>HR</b> — Ovdje tvoj kod prestaje biti vježba i postaje tvoj vlastiti korpus. Kod moraš fizički utipkati znak po znak. Prijedlozi smiju pokazivati; ne smiju pisati umjesto tebe.</p>
+        <p><b>EN</b> — Here your code stops being an exercise and becomes your own corpus. Code must be physically typed character by character. Suggestions may point; they may never write it for you.</p>
+      </div>
+      <div id="wsPetHabitat" class="ws-pet-habitat" aria-label="Mrvica, workspace companion">
+        <span class="ws-pet-label">COMPANION / LJUBIMAC · MRVICA</span>
+        <div id="wsPetSpeech" class="ws-pet-speech">Empty page. I will not type it for you. I will just point. / Prazna stranica. Neću tipkati umjesto tebe. Samo pokazujem.</div>
+        <i class="ws-pet-ground"></i>
+        <div id="wsPet" class="ws-pet">
+          <i class="ws-pet-body"></i><i class="ws-pet-tail"></i><i class="ws-pet-leg l"></i><i class="ws-pet-leg r"></i>
+          <i class="ws-pet-head"><i class="ws-pet-ear"></i><i class="ws-pet-ear r"></i><i class="ws-pet-eye l"></i><i class="ws-pet-eye r"></i><i class="ws-pet-mouth"></i></i>
+          <i class="ws-pet-heart">♥</i>
+        </div>
+      </div>
+    </header>
+
+    <section class="ws-connect" aria-label="Private GitHub workspace connection">
+      <label class="ws-field"><span>OWNER / VLASNIK</span><input id="wsOwner" value="karlokalinic" autocomplete="off"></label>
+      <label class="ws-field"><span>PRIVATE REPO / PRIVATNI REPO</span><input id="wsRepo" value="GIT" autocomplete="off"></label>
+      <label class="ws-field"><span>WORKSPACE BRANCH / GRANA</span><input id="wsBranch" value="workspace-live" autocomplete="off"></label>
+      <label class="ws-field token"><span>FINE-GRAINED TOKEN · CONTENTS READ/WRITE · SESSION ONLY</span><input id="wsToken" type="password" placeholder="github_pat_…" autocomplete="off"></label>
+      <button id="wsConnect" type="button">CONNECT REMOTE / SPOJI</button>
+      <div class="ws-token-note"><span><b>NO TOKEN STORAGE:</b> token stays only in JavaScript memory and is cleared from the field after connection. / Token ostaje samo u memoriji ove sesije.</span><span id="wsRemoteStatus" class="ws-remote-status">OFFLINE / NIJE SPOJENO</span></div>
+    </section>
+
+    <div class="ws-grid">
+      <aside class="ws-library">
+        <div class="ws-section-title"><span>REMOTE LIBRARY / UDALJENA BIBLIOTEKA</span><span>GIT</span></div>
+        <div class="ws-new-row">
+          <button id="wsNewScript" type="button">+ SCRIPT</button>
+          <button id="wsNewLore" type="button">+ LORE</button>
+          <button id="wsAssetButton" class="wide" type="button">+ SMALL ASSET ≤ 4 MB</button>
+          <input id="wsAssetInput" class="ws-asset-input" type="file" accept="image/*,.json,.txt,.md,.glb,.gltf,.anim,.asset,.shader,.wav,.ogg">
+        </div>
+        <div id="wsLibrary" class="ws-library-list"></div>
+      </aside>
+
+      <main class="ws-editor-panel">
+        <header class="ws-editor-head">
+          <label class="ws-field"><span>FILE NAME / IME</span><input id="wsFileName" value="NewBehaviour.cs" autocomplete="off"></label>
+          <label class="ws-field"><span>TYPE / VRSTA</span><select id="wsFileKind"><option value="script">SCRIPT / KOD</option><option value="lore">LORE / TEKST</option></select></label>
+          <button id="wsSave" type="button">SAVE → GITHUB</button>
+          <button id="wsAnalyze" type="button">TRACE RULES</button>
+        </header>
+        <div class="ws-authorship">
+          <span class="ws-badge no-paste">CODE: KEYSTROKE-ONLY / SAMO TIPKE</span>
+          <span id="wsTyped" class="ws-badge typed">0 KEYS / TIPKI</span>
+          <span id="wsPasteCount" class="ws-badge">0 BLOCKED / BLOKIRANO</span>
+          <span id="wsDirty" class="ws-badge">CLEAN / ČISTO</span>
+          <span>AUTOCOMPLETE = READ ONLY. TAB/PASTE/DROP/REPLACEMENT INSERTS ARE BLOCKED IN CODE MODE.</span>
+        </div>
+        <div class="ws-editor-shell">
+          <pre id="wsLineRail" class="ws-line-rail" aria-hidden="true">1</pre>
+          <textarea id="wsEditor" class="ws-editor" aria-label="Keystroke only code editor" wrap="off" placeholder="Type every character yourself… / Utipkaj svaki znak sam…"></textarea>
+          <div id="wsGhost" class="ws-ghost" hidden></div>
+        </div>
+        <div class="ws-editor-actions">
+          <span>Remote save = normal Git commit on <b>workspace-live</b>. Existing remote files may be opened; every new code edit still has to come through allowed keystrokes.</span>
+        </div>
+      </main>
+
+      <aside class="ws-coach">
+        <div class="ws-coach-block"><h3>DETECTED CONCEPTS / OTKRIVENI KONCEPTI</h3><div id="wsConcepts" class="ws-concepts"></div></div>
+        <div class="ws-coach-block"><h3>DETERMINISTIC COACH / ALGORITAMSKI SAVJETI</h3><ul id="wsSuggestions" class="ws-coach-list"></ul></div>
+        <div class="ws-coach-block"><h3>WHAT THE ALGORITHM IS ALLOWED TO DO</h3><ul class="ws-coach-list"><li>Regex + symbol patterns may classify systems.<span class="ws-rule">CLASSIFY-EXPLICIT</span></li><li>Shared concepts may connect your script, lore, assets and Pauktunel evidence.<span class="ws-rule">GRAPH-SHARED-CONCEPT</span></li><li>Rules may warn or suggest a test. They may not fabricate source facts or write source code for you.<span class="ws-rule">NO-AI-NO-AUTOWRITE</span></li></ul></div>
+      </aside>
+    </div>
+
+    <section class="ws-lab">
+      <div class="ws-lab-panel">
+        <div class="ws-section-title"><span>SCRIPT TEST MODEL / MODEL ZA TEST</span><button id="wsInitModel" type="button">INIT MODEL</button></div>
+        <div class="ws-preview-wrap"><canvas id="wsPreview" width="720" height="300" aria-label="Deterministic top-down model extracted from current script. Focus and use WASD; arrows rotate when camera behavior is detected."></canvas><span class="ws-preview-label">FOCUS CANVAS · WASD · ←/→ LOOK · MODEL ≠ C# RUNTIME</span></div>
+      </div>
+      <div class="ws-lab-panel"><div class="ws-section-title"><span>STATIC PROOFS / STATIČKI DOKAZI</span><span>PASS · WARN · FAIL</span></div><div id="wsTests" class="ws-test-output"></div></div>
+    </section>
+
+    <section class="ws-atlas">
+      <div class="ws-graph-wrap"><div class="ws-section-title"><span>YOUR ATLAS / TVOJ ATLAS</span><span>OWN CODE ↔ CONCEPT ↔ PAUKTUNEL</span></div><svg id="wsGraph" class="ws-graph" role="img" aria-label="Deterministic workspace relationship graph"></svg></div>
+      <aside id="wsInspector" class="ws-inspector"><div class="ws-section-title"><span>NODE INSPECTOR / INSPEKTOR</span><span>PROVENANCE</span></div><h3 id="wsInspectorTitle">CLICK A NODE / KLIKNI ČVOR</h3><p id="wsInspectorBody">Connections appear only when explicit rules find shared concepts. Lore is treated as evidence about your intended world, not executable truth.</p><div id="wsInspectorPath" class="ws-inspector-path"></div></aside>
+    </section>
   </section>
 
   <details class="pz-advanced">
@@ -165,6 +252,6 @@
     <footer class="system-footer"><span>KL//ATLAS CASEWORK 0.2.1</span><span id="footerStatus">LOCAL-FIRST · NO SOURCE UPLOAD</span></footer>
   </details>
 
-  <script src="00-data.js"></script><script src="05-projects.js"></script><script src="10-parse.js"></script><script src="15-curriculum.js"></script><script src="17-pauktunel-depth.js"></script><script src="20-render.js"></script><script src="30-pedagogy.js"></script><script src="40-app.js"></script><script src="03-playground-zero.js"></script>
+  <script src="00-data.js"></script><script src="05-projects.js"></script><script src="10-parse.js"></script><script src="15-curriculum.js"></script><script src="17-pauktunel-depth.js"></script><script src="20-render.js"></script><script src="30-pedagogy.js"></script><script src="40-app.js"></script><script src="03-playground-zero.js"></script><script src="04-personal-workspace.js"></script>
 </body>
 </html>
