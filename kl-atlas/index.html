@@ -4,92 +4,167 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="light dark">
-  <title>KL//ATLAS — Project Reconstruction Casework</title>
+  <title>KL//ATLAS — Playground Zero</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="03-playground-zero.css">
 </head>
 <body data-theme="sterile">
-  <header class="registry-bar">
-    <div class="registry-mark"><strong>KL//ATLAS</strong><span>CASEWORK 0.2.1</span></div>
-    <div class="registry-mode"><span>MODE</span><b>PROJECT RECONSTRUCTION</b></div>
-    <div class="registry-state"><span>ENGINE</span><b>DETERMINISTIC / LOCAL-FIRST</b></div>
-    <div class="registry-actions">
-      <button id="soundToggle" type="button">SOUND: ON</button>
-      <button id="themeButton" type="button">CONTRAST</button>
-      <button id="resetCurriculum" type="button">RESET COURSE</button>
+  <section id="playgroundZero" class="pz-root" data-lang="both" aria-labelledby="pzTitle">
+    <header class="pz-hero">
+      <div>
+        <div class="pz-eyebrow">KL//ATLAS 0.3 · PLAYGROUND ZERO / IGRAONICA NULA · LESSON 00</div>
+        <h1 id="pzTitle">MOVE ONE THING.</h1>
+        <div class="pz-hero-copy">
+          <div class="pz-lang-line" data-pz-lang="hr"><span class="pz-lang-tag">HR</span><span>Nemoj još učiti “arhitekturu”. Pritisni tipku, gledaj broj, gledaj kod, gledaj svijet. Jedan red koda treba proizvesti jednu stvar koju možeš vidjeti.</span></div>
+          <div class="pz-lang-line" data-pz-lang="en"><span class="pz-lang-tag">EN</span><span>Do not learn “architecture” yet. Press a key, watch a number, watch the code, watch the world. One code idea should produce one thing you can see.</span></div>
+        </div>
+      </div>
+      <div class="pz-hero-actions">
+        <button id="pzInit" type="button">INIT()</button>
+        <button id="pzLang" type="button">LANG: BOTH</button>
+        <button id="pzReset" class="pz-muted-button" type="button">RESET LESSON</button>
+      </div>
+    </header>
+
+    <nav class="pz-legend" aria-label="Code behavior colors">
+      <button type="button" data-segment="init">PURPLE · INIT</button>
+      <button type="button" data-segment="input">BLUE · INPUT</button>
+      <button type="button" data-segment="look">PINK · LOOK</button>
+      <button type="button" data-segment="move">GREEN · MOVE</button>
+      <button type="button" data-segment="body">YELLOW · BODY / COLLISION</button>
+    </nav>
+
+    <div class="pz-main">
+      <aside id="pzSteps" class="pz-steps" aria-label="Tutorial steps"></aside>
+
+      <section class="pz-code-wrap" aria-labelledby="pzCodeTitle">
+        <header class="pz-panel-head"><span id="pzCodeTitle">BabyPlayer.cs</span><span>CLICK A COLOR OR LINE / KLIKNI BOJU ILI RED</span></header>
+        <div id="pzCode" class="pz-code" aria-live="polite"></div>
+        <div id="pzCodeNote" class="pz-code-note"><strong>START HERE / KRENI OVDJE</strong><p>Colors are responsibilities. The same color lights up while that behavior is happening. / Boje su odgovornosti. Ista boja svijetli dok se ta radnja stvarno događa.</p></div>
+        <div class="pz-vars" aria-label="Live variables">
+          <div id="pzInputX" class="pz-var"><span>INPUT X</span><b>0</b></div>
+          <div id="pzInputZ" class="pz-var"><span>INPUT Z</span><b>0</b></div>
+          <div id="pzYaw" class="pz-var"><span>YAW</span><b>0°</b></div>
+          <div id="pzPitch" class="pz-var"><span>PITCH</span><b>0°</b></div>
+          <div id="pzPosX" class="pz-var"><span>POSITION X</span><b>2.50</b></div>
+          <div id="pzPosZ" class="pz-var"><span>POSITION Z</span><b>2.50</b></div>
+        </div>
+      </section>
+
+      <section class="pz-world-wrap" aria-labelledby="pzWorldTitle">
+        <header class="pz-panel-head"><span id="pzWorldTitle">MICRO 3D VIEW / RAYCAST LAB</span><span>CODE ↔ WORLD</span></header>
+        <div class="pz-world-stage">
+          <canvas id="pzCanvas" width="640" height="360" aria-label="Playable first person micro world. Use WASD and drag to look."></canvas>
+          <div class="pz-world-overlay" aria-hidden="true"><i class="pz-crosshair"></i><span id="pzWorldChip" class="pz-world-chip">WASD + DRAG</span><span id="pzCollision" class="pz-collision">BLOCKED / ZID</span></div>
+        </div>
+        <div class="pz-controls">
+          <div class="pz-wasd" aria-label="On screen movement controls">
+            <button class="pz-key" type="button" data-key="w">W</button><button class="pz-key" type="button" data-key="a">A</button><button class="pz-key" type="button" data-key="s">S</button><button class="pz-key" type="button" data-key="d">D</button>
+          </div>
+          <div class="pz-control-copy"><b>PLAY IT / IGRAJ</b><span data-pz-lang="hr">WASD pomiče tijelo. Povuci miš po slici za pogled. Namjerno udari u zid.</span><span data-pz-lang="en">WASD moves the body. Drag inside the image to look. Deliberately walk into a wall.</span></div>
+        </div>
+        <article class="pz-lesson" style="--step-color:var(--pz-init)">
+          <div class="pz-lesson-top"><h2 id="pzLessonTitle">0. NAPRAVI POČETAK</h2><span id="pzLessonStatus" class="pz-lesson-status">TRY IT / PROBAJ</span></div>
+          <div id="pzExplanation" class="pz-explanation"></div>
+          <div id="pzFormula" class="pz-formula"></div>
+          <div id="pzQuest" class="pz-quest"></div>
+          <div class="pz-lesson-actions"><button id="pzPrev" type="button">← PREV</button><button id="pzNext" class="pz-next" type="button">NEXT →</button></div>
+        </article>
+      </section>
     </div>
-  </header>
 
-  <main class="page-shell">
-    <section class="intake sheet" aria-labelledby="intakeTitle">
-      <header class="sheet-header">
-        <div><span class="form-code">FORM 00-A</span><h1 id="intakeTitle">PROJECT INTAKE / KNOWLEDGE BASELINE</h1></div>
-        <span id="projectStatus" class="status-stamp">—</span>
-      </header>
-      <div class="intake-grid">
-        <section class="project-register">
-          <label class="field-label" for="starterProject">STARTER PROJECT</label>
-          <select id="starterProject"></select>
-          <p id="projectSummary" class="serif-copy"></p>
-          <dl class="registry-table">
-            <div><dt>REPOSITORY</dt><dd id="projectRepo">—</dd></div><div><dt>REF</dt><dd id="projectRef">—</dd></div><div><dt>ENGINE</dt><dd id="projectEngine">—</dd></div><div><dt>TARGET</dt><dd id="projectTarget">—</dd></div>
-          </dl>
-          <div class="source-policy"><span>PRIVATE SOURCE POLICY</span><p id="projectSourcePolicy"></p></div>
-          <ul id="projectFacts" class="fact-list"></ul>
-          <button id="beginCurriculum" class="primary-action" type="button">BEGIN / RESUME RECONSTRUCTION</button>
-        </section>
-        <section class="diagnostic-register">
-          <div class="section-line"><span>BASELINE DIAGNOSTIC</span><b id="diagnosticReadout">—</b></div>
-          <p class="microcopy">Rate what you can actually do now. 0 = none, 1 = seen, 2 = explain, 3 = build, 4 = debug. This changes teaching priority; it never changes source facts.</p>
-          <div id="diagnosticGrid" class="diagnostic-grid"></div>
-        </section>
-      </div>
-    </section>
-
-    <section class="reconstruction-layout">
-      <aside class="ledger sheet">
-        <header class="sheet-header compact"><div><span class="form-code">LEDGER A</span><h2>RECONSTRUCTION ORDER</h2></div></header>
-        <div class="ledger-head"><span>#</span><span>MODULE</span><span>PRI</span><span>STATE</span><span>MECH</span></div>
-        <div id="moduleLedger" class="module-ledger"></div>
-        <div id="curriculumProgress" class="course-progress" data-label="0/0 PROVEN"><i></i></div>
-        <p id="nextRecommendation" class="next-recommendation"></p>
-        <details class="dependency-map"><summary>DEPENDENCY MAP</summary><svg id="curriculumGraph" role="img" aria-label="Reconstruction dependency map"></svg></details>
-      </aside>
-
-      <article id="caseFile" class="case-file sheet" data-status="open">
-        <header class="case-header">
-          <div><span id="moduleOrdinal" class="form-code">FORM 00 / 12</span><h2 id="moduleTitle">PROJECT CONTRACT</h2></div>
-          <div class="case-stamps"><span id="moduleStatus">OPEN</span><span id="moduleClass">CRITICAL</span><span id="moduleWeight">—</span></div>
-        </header>
-        <div class="case-lede"><p id="moduleThesis" class="serif-lede"></p><div class="mastery-box"><span>DOMAIN BASELINE</span><b id="moduleMastery">—</b></div></div>
-        <div id="moduleConcepts" class="case-chips"></div>
-        <section class="case-grid two"><div><h3>WHY THIS EXISTS</h3><p id="moduleWhy" class="serif-copy"></p></div><div><h3>REMOVE IT: EXPECTED DAMAGE</h3><p id="moduleBreaks" class="serif-copy"></p></div></section>
-        <section class="case-grid two compact-lists"><div><h3>PREREQUISITES</h3><ul id="modulePrereqs"></ul></div><div><h3>UNLOCKS</h3><ul id="moduleUnlocks"></ul></div></section>
-        <section class="evidence-section">
-          <div class="section-line"><span>EVIDENCE REGISTER</span><b id="moduleAttempts">0 ATTEMPTS</b></div><p id="moduleSourcePrompt" class="microcopy"></p><ul id="moduleEvidence" class="evidence-register"></ul>
-          <label class="file-button">OPEN LOCAL EVIDENCE<input id="moduleSourceInput" type="file" accept=".cs,.unity,.prefab,.asset,.md,.txt,.json,.shader,.anim"></label><p id="moduleCaveat" class="evidence-caveat"></p>
-        </section>
-        <section class="rebuild-section"><div class="section-line"><span>RECREATE FROM A BLANK PROJECT</span><b>ORDERED TASKS</b></div><ol id="moduleTasks" class="rebuild-list"></ol></section>
-        <section class="proof-section"><h3>DONE WHEN / OBSERVABLE PROOF</h3><p id="moduleTest" class="serif-lede proof-copy"></p></section>
-        <section class="mechanics-section"><div class="section-line"><span>LEARNING MECHANICS</span><b>STORE YOUR MODEL</b></div><div id="moduleMechanics" class="mechanics-grid"></div></section>
-        <aside class="margin-note"><div id="pet" class="pet tiny" aria-hidden="true"><i class="pet-ear left"></i><i class="pet-ear right"></i><i class="pet-head"><i class="pet-eye left"></i><i class="pet-eye right"></i></i></div><p id="petBubble">Do not memorize the file. Predict the state transition.</p><p id="moduleTip" class="tip-note"></p></aside>
-        <div id="moduleBlocked" class="lock-notice" hidden></div>
-        <footer class="case-actions"><button id="moduleDone" class="primary-action" type="button">MARK MODULE PROVEN</button><button id="nextModule" type="button">NEXT RECOMMENDED</button></footer>
-      </article>
-    </section>
-
-    <details id="sourceXray" class="source-xray sheet">
-      <summary><span>ANNEX X</span><b>SOURCE X-RAY / GENERIC KL LAB</b><small>Open a local evidence file from the case above or use these generic import tools.</small></summary>
-      <div class="xray-tools"><label class="file-button">SOURCE FILE<input id="sourceInput" type="file" accept=".cs,.js,.html,.css,.unity,.prefab,.asset,.md,.txt,.shader"></label><label class="file-button">KL LESSON<input id="klInput" type="file" accept=".kl,.txt"></label><span id="sourceStatus" class="inline-status">SAMPLE</span><button id="resetMemory" type="button">RESET SOURCE MEMORY</button></div>
-      <div class="xray-grid">
-        <section class="code-panel"><header><div><span>SOURCE</span><b id="sourceTitle">OnStart.cs</b></div><span id="structureReadout">—</span></header><div id="codeStage" class="code-stage"></div></section>
-        <section id="lessonCard" class="lesson-panel"><header><span id="lessonIndex">STEP 01</span><b id="stepCounter">1 / 1</b></header><p id="lessonTitle" class="panel-kicker">Lesson</p><h3 id="stepTitle">—</h3><p id="stepExplain" class="serif-copy"></p><div class="why-block"><span>WHY</span><p id="stepWhy"></p></div><div id="stepConcepts" class="case-chips"></div><div id="checkCard" class="check-card" hidden><span>CHECK</span><p id="checkQuestion"></p><button id="revealAnswer" type="button">REVEAL ANSWER</button><p id="checkAnswer" hidden></p></div><div class="lesson-actions"><button id="prevStep" type="button">PREV</button><button id="unclearButton" type="button">STILL UNCLEAR</button><button id="clearButton" type="button">CLEAR</button><button id="nextStep" type="button">NEXT</button></div></section>
-      </div>
-      <div class="xray-grid lower"><section class="graph-panel"><header><span>RELATION GRAPH</span><b id="graphReadout">—</b></header><svg id="graph" viewBox="0 0 900 520"></svg></section><section class="concept-panel"><header><span>CONCEPT CASE</span><b id="memoryReadout">—</b></header><h3 id="conceptTitle">Select a node</h3><p id="conceptExplanation" class="serif-copy"></p><div id="memoryStats" class="memory-stats"></div><div id="evidenceStack" class="evidence-stack"></div></section></div>
-      <section class="document-indexer"><header><span>DOCUMENT / LORE INDEXER</span></header><textarea id="documentPaste" rows="8" placeholder="Paste an audit, lore analysis, design document, reconstruction log..."></textarea><button id="analyzePaste" type="button">INDEX DOCUMENT</button></section>
+    <details id="pzParts" class="pz-parts">
+      <summary>PAUKTUNEL PARTS DRAWER / LADICA DIJELOVA — OPEN ONLY AFTER THE TOY MAKES SENSE</summary>
+      <div id="pzPartsGrid" class="pz-parts-grid"></div>
     </details>
-  </main>
+  </section>
 
-  <footer class="system-footer"><span>KL//ATLAS CASEWORK 0.2.1</span><span id="footerStatus">LOCAL-FIRST · NO SOURCE UPLOAD</span></footer>
-  <script src="00-data.js"></script><script src="05-projects.js"></script><script src="10-parse.js"></script><script src="15-curriculum.js"></script><script src="17-pauktunel-depth.js"></script><script src="20-render.js"></script><script src="30-pedagogy.js"></script><script src="40-app.js"></script>
+  <details class="pz-advanced">
+    <summary>ADVANCED ATLAS / NAPREDNI ATLAS <span>— CASEWORK, source graph, diagnostics and full reconstruction order; otvori kasnije</span></summary>
+    <header class="registry-bar">
+      <div class="registry-mark"><strong>KL//ATLAS</strong><span>CASEWORK 0.2.1</span></div>
+      <div class="registry-mode"><span>MODE</span><b>PROJECT RECONSTRUCTION</b></div>
+      <div class="registry-state"><span>ENGINE</span><b>DETERMINISTIC / LOCAL-FIRST</b></div>
+      <div class="registry-actions">
+        <button id="soundToggle" type="button">SOUND: ON</button>
+        <button id="themeButton" type="button">CONTRAST</button>
+        <button id="resetCurriculum" type="button">RESET COURSE</button>
+      </div>
+    </header>
+
+    <div class="page-shell">
+      <section class="intake sheet" aria-labelledby="intakeTitle">
+        <header class="sheet-header">
+          <div><span class="form-code">FORM 00-A</span><h1 id="intakeTitle">PROJECT INTAKE / KNOWLEDGE BASELINE</h1></div>
+          <span id="projectStatus" class="status-stamp">—</span>
+        </header>
+        <div class="intake-grid">
+          <section class="project-register">
+            <label class="field-label" for="starterProject">STARTER PROJECT</label>
+            <select id="starterProject"></select>
+            <p id="projectSummary" class="serif-copy"></p>
+            <dl class="registry-table">
+              <div><dt>REPOSITORY</dt><dd id="projectRepo">—</dd></div><div><dt>REF</dt><dd id="projectRef">—</dd></div><div><dt>ENGINE</dt><dd id="projectEngine">—</dd></div><div><dt>TARGET</dt><dd id="projectTarget">—</dd></div>
+            </dl>
+            <div class="source-policy"><span>PRIVATE SOURCE POLICY</span><p id="projectSourcePolicy"></p></div>
+            <ul id="projectFacts" class="fact-list"></ul>
+            <button id="beginCurriculum" class="primary-action" type="button">BEGIN / RESUME RECONSTRUCTION</button>
+          </section>
+          <section class="diagnostic-register">
+            <div class="section-line"><span>BASELINE DIAGNOSTIC</span><b id="diagnosticReadout">—</b></div>
+            <p class="microcopy">Rate what you can actually do now. 0 = none, 1 = seen, 2 = explain, 3 = build, 4 = debug. This changes teaching priority; it never changes source facts.</p>
+            <div id="diagnosticGrid" class="diagnostic-grid"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="reconstruction-layout">
+        <aside class="ledger sheet">
+          <header class="sheet-header compact"><div><span class="form-code">LEDGER A</span><h2>RECONSTRUCTION ORDER</h2></div></header>
+          <div class="ledger-head"><span>#</span><span>MODULE</span><span>PRI</span><span>STATE</span><span>MECH</span></div>
+          <div id="moduleLedger" class="module-ledger"></div>
+          <div id="curriculumProgress" class="course-progress" data-label="0/0 PROVEN"><i></i></div>
+          <p id="nextRecommendation" class="next-recommendation"></p>
+          <details class="dependency-map"><summary>DEPENDENCY MAP</summary><svg id="curriculumGraph" role="img" aria-label="Reconstruction dependency map"></svg></details>
+        </aside>
+
+        <article id="caseFile" class="case-file sheet" data-status="open">
+          <header class="case-header">
+            <div><span id="moduleOrdinal" class="form-code">FORM 00 / 11</span><h2 id="moduleTitle">PROJECT CONTRACT</h2></div>
+            <div class="case-stamps"><span id="moduleStatus">OPEN</span><span id="moduleClass">CRITICAL</span><span id="moduleWeight">—</span></div>
+          </header>
+          <div class="case-lede"><p id="moduleThesis" class="serif-lede"></p><div class="mastery-box"><span>DOMAIN BASELINE</span><b id="moduleMastery">—</b></div></div>
+          <div id="moduleConcepts" class="case-chips"></div>
+          <section class="case-grid two"><div><h3>WHY THIS EXISTS</h3><p id="moduleWhy" class="serif-copy"></p></div><div><h3>REMOVE IT: EXPECTED DAMAGE</h3><p id="moduleBreaks" class="serif-copy"></p></div></section>
+          <section class="case-grid two compact-lists"><div><h3>PREREQUISITES</h3><ul id="modulePrereqs"></ul></div><div><h3>UNLOCKS</h3><ul id="moduleUnlocks"></ul></div></section>
+          <section class="evidence-section">
+            <div class="section-line"><span>EVIDENCE REGISTER</span><b id="moduleAttempts">0 ATTEMPTS</b></div><p id="moduleSourcePrompt" class="microcopy"></p><ul id="moduleEvidence" class="evidence-register"></ul>
+            <label class="file-button">OPEN LOCAL EVIDENCE<input id="moduleSourceInput" type="file" accept=".cs,.unity,.prefab,.asset,.md,.txt,.json,.shader,.anim"></label><p id="moduleCaveat" class="evidence-caveat"></p>
+          </section>
+          <section class="rebuild-section"><div class="section-line"><span>RECREATE FROM A BLANK PROJECT</span><b>ORDERED TASKS</b></div><ol id="moduleTasks" class="rebuild-list"></ol></section>
+          <section class="proof-section"><h3>DONE WHEN / OBSERVABLE PROOF</h3><p id="moduleTest" class="serif-lede proof-copy"></p></section>
+          <section class="mechanics-section"><div class="section-line"><span>LEARNING MECHANICS</span><b>STORE YOUR MODEL</b></div><div id="moduleMechanics" class="mechanics-grid"></div></section>
+          <aside class="margin-note"><div id="pet" class="pet tiny" aria-hidden="true"><i class="pet-ear left"></i><i class="pet-ear right"></i><i class="pet-head"><i class="pet-eye left"></i><i class="pet-eye right"></i></i></div><p id="petBubble">Do not memorize the file. Predict the state transition.</p><p id="moduleTip" class="tip-note"></p></aside>
+          <div id="moduleBlocked" class="lock-notice" hidden></div>
+          <footer class="case-actions"><button id="moduleDone" class="primary-action" type="button">MARK MODULE PROVEN</button><button id="nextModule" type="button">NEXT RECOMMENDED</button></footer>
+        </article>
+      </section>
+
+      <details id="sourceXray" class="source-xray sheet">
+        <summary><span>ANNEX X</span><b>SOURCE X-RAY / GENERIC KL LAB</b><small>Open a local evidence file from the case above or use these generic import tools.</small></summary>
+        <div class="xray-tools"><label class="file-button">SOURCE FILE<input id="sourceInput" type="file" accept=".cs,.js,.html,.css,.unity,.prefab,.asset,.md,.txt,.shader"></label><label class="file-button">KL LESSON<input id="klInput" type="file" accept=".kl,.txt"></label><span id="sourceStatus" class="inline-status">SAMPLE</span><button id="resetMemory" type="button">RESET SOURCE MEMORY</button></div>
+        <div class="xray-grid">
+          <section class="code-panel"><header><div><span>SOURCE</span><b id="sourceTitle">OnStart.cs</b></div><span id="structureReadout">—</span></header><div id="codeStage" class="code-stage"></div></section>
+          <section id="lessonCard" class="lesson-panel"><header><span id="lessonIndex">STEP 01</span><b id="stepCounter">1 / 1</b></header><p id="lessonTitle" class="panel-kicker">Lesson</p><h3 id="stepTitle">—</h3><p id="stepExplain" class="serif-copy"></p><div class="why-block"><span>WHY</span><p id="stepWhy"></p></div><div id="stepConcepts" class="case-chips"></div><div id="checkCard" class="check-card" hidden><span>CHECK</span><p id="checkQuestion"></p><button id="revealAnswer" type="button">REVEAL ANSWER</button><p id="checkAnswer" hidden></p></div><div class="lesson-actions"><button id="prevStep" type="button">PREV</button><button id="unclearButton" type="button">STILL UNCLEAR</button><button id="clearButton" type="button">CLEAR</button><button id="nextStep" type="button">NEXT</button></div></section>
+        </div>
+        <div class="xray-grid lower"><section class="graph-panel"><header><span>RELATION GRAPH</span><b id="graphReadout">—</b></header><svg id="graph" viewBox="0 0 900 520"></svg></section><section class="concept-panel"><header><span>CONCEPT CASE</span><b id="memoryReadout">—</b></header><h3 id="conceptTitle">Select a node</h3><p id="conceptExplanation" class="serif-copy"></p><div id="memoryStats" class="memory-stats"></div><div id="evidenceStack" class="evidence-stack"></div></section></div>
+        <section class="document-indexer"><header><span>DOCUMENT / LORE INDEXER</span></header><textarea id="documentPaste" rows="8" placeholder="Paste an audit, lore analysis, design document, reconstruction log..."></textarea><button id="analyzePaste" type="button">INDEX DOCUMENT</button></section>
+      </details>
+    </div>
+
+    <footer class="system-footer"><span>KL//ATLAS CASEWORK 0.2.1</span><span id="footerStatus">LOCAL-FIRST · NO SOURCE UPLOAD</span></footer>
+  </details>
+
+  <script src="00-data.js"></script><script src="05-projects.js"></script><script src="10-parse.js"></script><script src="15-curriculum.js"></script><script src="17-pauktunel-depth.js"></script><script src="20-render.js"></script><script src="30-pedagogy.js"></script><script src="40-app.js"></script><script src="03-playground-zero.js"></script>
 </body>
 </html>
