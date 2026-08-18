@@ -1,0 +1,133 @@
+/* KL//ATLAS Playground Zero — scene ownership / camera capture layer.
+   This file intentionally sits beside the original Playground Zero CSS so the
+   scene-flow correction is isolated, reviewable and easy to remove/revise. */
+
+.pz-root[data-scene="menu"] .pz-world-stage canvas{
+  filter:blur(3px) brightness(.42) saturate(.65);
+  transform:scale(1.015);
+}
+
+.pz-world-stage canvas{
+  cursor:crosshair;
+  transition:filter .18s ease,transform .18s ease;
+}
+
+.pz-scene-menu{
+  position:absolute;
+  inset:0;
+  z-index:20;
+  display:grid;
+  place-items:center;
+  padding:22px;
+  background:
+    linear-gradient(180deg,rgba(12,14,14,.18),rgba(12,14,14,.58)),
+    repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 4px);
+  color:#fff;
+  transition:opacity .16s ease,visibility .16s ease;
+}
+.pz-scene-menu.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+
+.pz-scene-card{
+  width:min(430px,92%);
+  border:1px solid rgba(255,255,255,.82);
+  background:rgba(18,20,20,.88);
+  box-shadow:0 18px 60px rgba(0,0,0,.35);
+  padding:20px;
+  backdrop-filter:blur(8px);
+}
+.pz-scene-kicker{
+  display:block;
+  margin-bottom:8px;
+  font:700 9px/1.25 "Courier New",monospace;
+  letter-spacing:.12em;
+  color:#b8bbb5;
+}
+.pz-scene-card h3{
+  margin:0 0 10px;
+  font:700 clamp(31px,5vw,54px)/.92 Arial,Helvetica,sans-serif;
+  letter-spacing:-.055em;
+}
+.pz-scene-card p{
+  margin:0;
+  font-size:12px;
+  line-height:1.5;
+  color:#e6e7e3;
+}
+.pz-scene-route{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:8px;
+  align-items:center;
+  margin:15px 0;
+  font:700 11px/1 "Courier New",monospace;
+}
+.pz-scene-route span{border:1px solid #8d918e;padding:8px;text-align:center;background:#252827}
+.pz-scene-route i{font-style:normal;color:#f4ce69}
+
+.pz-root .pz-start-game{
+  width:100%;
+  min-height:46px;
+  border-color:#fff;
+  background:#f4ce69;
+  color:#171919;
+  font-size:12px;
+}
+.pz-start-game kbd{
+  margin-left:8px;
+  padding:3px 6px;
+  border:1px solid #272a29;
+  background:#fff;
+  font:700 9px/1 "Courier New",monospace;
+}
+.pz-scene-card small{
+  display:block;
+  margin-top:9px;
+  color:#bfc3bf;
+  font:10px/1.4 "Courier New",monospace;
+}
+
+.pz-capture-hint{
+  position:absolute;
+  z-index:12;
+  left:50%;
+  bottom:10px;
+  transform:translate(-50%,8px);
+  max-width:calc(100% - 90px);
+  opacity:0;
+  pointer-events:none;
+  border:1px solid rgba(255,255,255,.88);
+  background:rgba(18,20,20,.82);
+  color:#fff;
+  padding:6px 8px;
+  font:700 9px/1.25 "Courier New",monospace;
+  text-align:center;
+  transition:opacity .12s ease,transform .12s ease;
+}
+.pz-capture-hint.is-visible{opacity:1;transform:translate(-50%,0)}
+
+.pz-root .pz-return-menu{
+  position:absolute;
+  z-index:13;
+  right:8px;
+  bottom:8px;
+  min-height:28px;
+  display:none;
+  border-color:rgba(255,255,255,.8);
+  background:rgba(18,20,20,.78);
+  color:#fff;
+  padding:4px 8px;
+  font-size:9px;
+}
+.pz-root .pz-return-menu.is-visible{display:block}
+
+.pz-root[data-scene="menu"] .pz-crosshair,
+.pz-root[data-scene="menu"] .pz-collision{opacity:0!important}
+.pz-root[data-scene="menu"] .pz-key{opacity:.42;cursor:not-allowed}
+.pz-root[data-scene="game"] .pz-key{opacity:1}
+
+@media(max-width:720px){
+  .pz-scene-menu{padding:12px}
+  .pz-scene-card{padding:15px}
+  .pz-scene-card h3{font-size:36px}
+  .pz-capture-hint{max-width:calc(100% - 20px);bottom:44px}
+}
