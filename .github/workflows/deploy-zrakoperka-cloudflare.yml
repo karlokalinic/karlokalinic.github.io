@@ -1,0 +1,52 @@
+name: Deploy ZRAKOPERKA Cloudflare
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'zrakoperka/**'
+      - 'cloudflare-zrakoperka.toml'
+      - '.github/workflows/deploy-zrakoperka-cloudflare.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CF_API_TOKEN || secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID || vars.CLOUDFLARE_ACCOUNT_ID }}
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify Cloudflare credentials
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${CLOUDFLARE_API_TOKEN:-}" || { echo "::error::Cloudflare API token is not configured in this repository"; exit 21; }
+          test -n "${CLOUDFLARE_ACCOUNT_ID:-}" || { echo "::error::Cloudflare account ID is not configured in this repository"; exit 22; }
+      - name: Deploy ZRAKOPERKA
+        shell: bash
+        run: npx --yes wrangler@4 deploy --config cloudflare-zrakoperka.toml
+      - name: Verify public Worker
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --retry 5 --retry-delay 3 https://zrakoperka-website.karlolegend.workers.dev/ | grep -q 'ZRAKOPERKA'
+      - name: Record deploy result
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p deployment-status
+          printf 'status=%s\ncommit=%s\nurl=%s\ntime=%s\n' "${{ job.status }}" "$GITHUB_SHA" "https://zrakoperka-website.karlolegend.workers.dev/" "$(date -u +%FT%TZ)" > deployment-status/zrakoperka-cloudflare.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add deployment-status/zrakoperka-cloudflare.txt
+          if ! git diff --cached --quiet; then
+            git commit -m "Record ZRAKOPERKA Cloudflare deploy status [skip ci]"
+            git push
+          fi
