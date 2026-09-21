@@ -1,5 +1,5 @@
-status=failure
+status=blocked
 credentials=missing
-commit=0c1811c3095995914136c4beeab028ecdd4fdf3b
+commit=7e0be7437dfd5b4e3150ee6cf7661b97b30d39c7
 url=https://zrakoperka-website.karlolegend.workers.dev/
-time=2026-09-21T03:04:08Z
+time=2026-09-21T03:05:39Z
