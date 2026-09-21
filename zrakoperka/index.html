@@ -17,8 +17,8 @@
 .section{position:relative;min-height:100svh}
 
 /* opening */
-.opening{background:var(--cream);color:var(--ink);display:grid;place-items:center;overflow:hidden}.opening:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 44%,#f3ecd8 0,#e7dfca 48%,#d8cfb8 100%)}.presenter{position:absolute;z-index:3;inset:0;display:grid;place-items:center;animation:presenter 3.35s ease forwards}.presenter span{font:700 clamp(12px,1.3vw,20px)/1 monospace;letter-spacing:.44em;opacity:0;animation:presenterText 3.35s ease forwards}.opening-title{position:relative;z-index:2;width:min(1200px,82vw);opacity:0;transform:scale(.985);animation:titleArrive 3s 2.15s cubic-bezier(.2,.72,.18,1) forwards}.opening-title img{width:100%;filter:drop-shadow(2px 0 rgba(40,192,210,.45)) drop-shadow(-1px 1px rgba(215,173,74,.3))}.opening-meta{position:absolute;z-index:3;left:clamp(18px,5vw,84px);right:clamp(18px,5vw,84px);bottom:28px;display:flex;justify-content:space-between;opacity:0;animation:metaIn 1s 4.1s forwards;font:7px monospace;letter-spacing:.14em;color:#667066}.scroll-cue{display:flex;gap:12px;align-items:center}.scroll-cue i{display:block;width:44px;height:1px;background:#889086;animation:cue 1.5s ease-in-out infinite}
-@keyframes presenter{0%,70%{opacity:1}100%{opacity:0;visibility:hidden}}@keyframes presenterText{0%{opacity:0;transform:translateY(8px)}20%,63%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-7px)}}@keyframes titleArrive{0%{opacity:0;transform:scale(.985);filter:blur(3px)}100%{opacity:1;transform:scale(1);filter:none}}@keyframes metaIn{to{opacity:1}}@keyframes cue{50%{transform:translateX(8px);opacity:.45}}
+.opening{background:var(--cream);color:var(--ink);display:grid;place-items:center;overflow:hidden}.opening:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 44%,#f3ecd8 0,#e7dfca 48%,#d8cfb8 100%)}.presenter-asset{position:absolute;z-index:3;inset:0;display:grid;place-items:center;animation:presenter 3.65s ease forwards}.presenter-asset img{width:min(720px,72vw);max-height:68vh;object-fit:contain;opacity:0;filter:drop-shadow(0 24px 48px #5f5a4930);animation:presenterAsset 3.65s ease forwards}.opening-title{position:relative;z-index:2;width:min(1200px,82vw);opacity:0;transform:scale(.985);animation:titleArrive 3s 2.15s cubic-bezier(.2,.72,.18,1) forwards}.opening-title img{width:100%;filter:drop-shadow(2px 0 rgba(40,192,210,.45)) drop-shadow(-1px 1px rgba(215,173,74,.3))}.opening-meta{position:absolute;z-index:3;left:clamp(18px,5vw,84px);right:clamp(18px,5vw,84px);bottom:28px;display:flex;justify-content:space-between;opacity:0;animation:metaIn 1s 4.1s forwards;font:7px monospace;letter-spacing:.14em;color:#667066}.scroll-cue{display:flex;gap:12px;align-items:center}.scroll-cue i{display:block;width:44px;height:1px;background:#889086;animation:cue 1.5s ease-in-out infinite}
+@keyframes presenter{0%,72%{opacity:1}100%{opacity:0;visibility:hidden}}@keyframes presenterAsset{0%{opacity:0;transform:translateY(9px) scale(.985)}18%,64%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-8px) scale(1.012)}}@keyframes titleArrive{0%{opacity:0;transform:scale(.985);filter:blur(3px)}100%{opacity:1;transform:scale(1);filter:none}}@keyframes metaIn{to{opacity:1}}@keyframes cue{50%{transform:translateX(8px);opacity:.45}}
 
 /* real gameplay */
 .gameplay{min-height:118svh;background:#000;overflow:hidden}.gameplay-sticky{position:sticky;top:0;height:100svh;overflow:hidden}.gameplay-image{position:absolute;inset:-2%;background:url("assets/gameplay-01.webp") center/cover no-repeat;filter:brightness(.84) contrast(1.08);transform:scale(calc(1.02 + var(--depth)*.025))}.gameplay-sticky:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0005 0,#0000 30%,#0003 58%,#000e 100%),linear-gradient(90deg,#0008 0,transparent 38%,transparent 72%,#0007 100%)}.gameplay-copy{position:absolute;z-index:3;left:clamp(20px,5vw,82px);bottom:8vh;max-width:750px}.gameplay-copy small{font:8px monospace;letter-spacing:.18em;color:#89958f}.gameplay-copy h2{font:900 clamp(48px,7.2vw,106px)/.86 Arial;letter-spacing:-.065em;margin:16px 0 20px}.gameplay-copy p{max-width:610px;font:15px/1.55 Georgia,serif;color:#c5c8be}.gameplay-tag{position:absolute;z-index:3;right:clamp(20px,5vw,82px);top:14vh;border:1px solid #ffffff24;background:#0008;padding:12px 14px;font:8px/1.6 monospace;letter-spacing:.12em;color:#aab2ad}.gameplay-tag b{color:var(--gold);font-weight:400}
@@ -44,7 +44,30 @@
 
 @media(max-width:960px){.top{grid-template-columns:1fr auto}.top nav{display:none}.archive-head{grid-template-columns:1fr}.poster-grid{grid-template-columns:1fr}.poster-card:nth-child(2),.poster-card:nth-child(4){margin-top:0}.id-table{min-height:1120px}.idcard{width:min(300px,42vw)}.idcard:nth-child(1){left:3%;top:8%}.idcard:nth-child(2){left:48%;top:20%}.idcard:nth-child(3){left:9%;top:40%}.idcard:nth-child(4){left:52%;top:58%}.idcard:nth-child(5){left:15%;top:77%}.signal{grid-template-columns:1fr}.person{grid-template-columns:1fr;overflow:auto}.person-visual{min-height:45vh}.person-copy{min-height:50vh}}
 @media(max-width:620px){.top{height:55px}.readout{display:none}.opening-title{width:92vw}.opening-meta{left:16px;right:16px;bottom:18px}.archive,.crew,.signal,.final{padding-left:18px;padding-right:34px}.gameplay-copy{left:18px;right:34px}.gameplay-tag{right:34px;top:11vh}.poster-frame{min-height:52vh}.crew-head{align-items:start;flex-direction:column}.id-table{min-height:1200px}.idcard{width:68vw}.idcard:nth-child(1){left:2%;top:5%}.idcard:nth-child(2){left:27%;top:22%}.idcard:nth-child(3){left:2%;top:40%}.idcard:nth-child(4){left:27%;top:59%}.idcard:nth-child(5){left:4%;top:78%}.telemetry{right:34px;top:10vh;width:58vw}.cockpit-copy{left:18px;right:34px}.depth-meter{display:none}.person{inset:0}.person-copy{padding:34px 22px}.credits{flex-direction:column;gap:8px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.presenter{display:none}.opening-title,.opening-meta{opacity:1;animation:none;transform:none}.reveal{opacity:1;transform:none;transition:none}.person{transition:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.presenter-asset{display:none}.opening-title,.opening-meta{opacity:1;animation:none;transform:none}.reveal{opacity:1;transform:none;transition:none}.person{transition:none}}
+
+/* real in-world asset archive */
+.asset-wall{max-width:1480px;margin:auto;display:grid;grid-template-columns:repeat(12,1fr);grid-auto-flow:dense;gap:clamp(14px,2vw,30px);align-items:start}
+.artifact{position:relative;margin:0;background:#cbc1aa;border:1px solid #151a1617;overflow:hidden;min-height:280px;box-shadow:0 24px 50px #554d3c18;transition:transform .45s ease,box-shadow .45s ease}
+.artifact:hover{transform:translateY(-6px);box-shadow:0 34px 70px #554d3c30}
+.artifact img{width:100%;height:100%;min-height:inherit;object-fit:contain;background:#bbb19a;transition:transform .65s cubic-bezier(.2,.7,.2,1)}
+.artifact:hover img{transform:scale(1.018)}
+.artifact figcaption{position:absolute;left:9px;right:9px;bottom:8px;display:flex;justify-content:space-between;gap:10px;padding:7px 8px;background:#0a1210d9;color:#d9d2bd;backdrop-filter:blur(5px);font:7px/1.4 monospace;letter-spacing:.11em}
+.artifact figcaption b{font-weight:400;color:var(--gold)}
+.artifact.poster{grid-column:span 5;grid-row:span 2;min-height:720px}
+.artifact.book{grid-column:span 3;min-height:430px;rotate:-1deg}
+.artifact.filter{grid-column:span 4;min-height:520px;rotate:1.4deg}
+.artifact.paper{grid-column:span 7;min-height:520px}
+.artifact.kit{grid-column:span 5;min-height:360px}
+.artifact.screen{grid-column:span 8;min-height:410px;background:#071112}
+.artifact.recipe{grid-column:span 4;min-height:460px}
+.artifact.toc{grid-column:span 4;min-height:420px}
+.artifact.drink{grid-column:span 4;min-height:460px}
+.artifact.screen img{object-fit:cover;background:#071112}
+.asset-note{max-width:1450px;margin:34px auto 0;padding-top:12px;border-top:1px solid #242b271f;display:grid;grid-template-columns:1fr 1fr;gap:6vw;font:9px/1.6 monospace;color:#626b62}.asset-note b{color:var(--red);font-weight:400}
+@media(max-width:900px){.asset-wall{grid-template-columns:repeat(2,1fr)}.artifact,.artifact.poster,.artifact.book,.artifact.filter,.artifact.paper,.artifact.kit,.artifact.screen,.artifact.recipe,.artifact.toc,.artifact.drink{grid-column:span 1;grid-row:auto;min-height:420px;rotate:0}.artifact.poster,.artifact.paper,.artifact.screen{grid-column:span 2}.asset-note{grid-template-columns:1fr}}
+@media(max-width:560px){.asset-wall{grid-template-columns:1fr}.artifact,.artifact.poster,.artifact.book,.artifact.filter,.artifact.paper,.artifact.kit,.artifact.screen,.artifact.recipe,.artifact.toc,.artifact.drink{grid-column:1;min-height:360px}.artifact.poster{min-height:520px}}
+
 </style>
 </head>
 <body>
@@ -55,7 +78,7 @@
 <main id="top">
 
 <section class="section opening">
-  <div class="presenter"><span>KARLOLEGEND PREDSTAVLJA</span></div>
+  <div class="presenter-asset"><img src="assets/company.png" alt="KARLOLEGEND predstavlja"></div>
   <div class="opening-title"><img src="assets/zrakoperka-logo.png" alt="ZRAKOPERKA"></div>
   <div class="opening-meta"><span>NARATIVNI PSIHOLOŠKI HOROR / U RAZVOJU</span><a class="scroll-cue" href="#igra"><span>UĐI</span><i></i></a></div>
 </section>
@@ -74,27 +97,21 @@
 
 <section class="section archive" id="arhiv">
   <div class="archive-head reveal">
-    <div><small>01 / ABISAL MARITIMA / NOVA</small><h2>KORPORATIVNA BRIGA IMA GRAFIČKI STANDARD.</h2></div>
-    <p>Ovdje više ne vrtim isti company asset četiri puta. Svaki panel koristi drugi stvarni propagandni materijal iz projekta; zajedno čine jezik tvrtke, ne galeriju jednog logotipa.</p>
+    <div><small>01 / ABISAL MARITIMA / MATERIJALI S BRODA</small><h2>NEMA VIŠE TEKSTA KOJI GLUMI ASSET.</h2></div>
+    <p>Ovo su stvarni vizualni materijali iz aktualnog ZRAKOPERKA projekta. Različiti predmeti, različite površine i različite funkcije — umjesto istog company vizuala ponovljenog preko cijele stranice.</p>
   </div>
-  <div class="poster-grid">
-    <article class="poster-card reveal">
-      <div class="poster-frame"><div class="poster-artwork pa1"><small>NOVA KAŽE: / SIGURNOST 01</small><b>PAMET U GLAVU!</b><em>Pravilna priprema sprječava nezgode. Vaša je odgovornost zaštititi sebe i posadu.</em></div></div>
-      <div class="poster-caption"><span>NOVA / 01</span><strong>PAMET U GLAVU!</strong><div class="poster-warning">Troškovi liječenja odbit će se od osobnih kredita.</div></div>
-    </article>
-    <article class="poster-card reveal">
-      <div class="poster-frame"><div class="poster-artwork pa2"><small>NOVA KAŽE: / DOSTAVA 02</small><b>DRŽI KURS!</b><em>Dostava na vrijeme naš je ponos i obećanje — gdje god bili.</em></div></div>
-      <div class="poster-caption"><span>NOVA / 02</span><strong>DRŽI KURS!</strong><div class="poster-warning">Kašnjenje dostave naplaćuje se iz osobnih kredita.</div></div>
-    </article>
-    <article class="poster-card reveal">
-      <div class="poster-frame"><div class="poster-artwork pa3"><small>NOVA KAŽE: / POSADA 03</small><b>SVI U ISTOM BRODU!</b><em>Timski je rad temelj uspjeha. Kad dovršite svoje zadatke, provjerite treba li pomoći drugima.</em></div></div>
-      <div class="poster-caption"><span>NOVA / 03</span><strong>SVI U ISTOM BRODU!</strong><div class="poster-warning">Slaba suradnja može rezultirati kolektivnom kaznom.</div></div>
-    </article>
-    <article class="poster-card reveal">
-      <div class="poster-frame"><div class="poster-artwork pa4"><small>NOVA KAŽE: / ODMOR 04</small><b>ODMOR SE ZASLUŽUJE.</b><em>San je najbolji odmor nakon dugog radnog dana. Zaslužite ga. Ne pretjerujte i ne zaostajte.</em></div></div>
-      <div class="poster-caption"><span>NOVA / 04</span><strong>ODMOR SE ZASLUŽUJE.</strong><div class="poster-warning">Ne odmarajte se dulje od 5 sati, uključujući slobodno vrijeme.</div></div>
-    </article>
+  <div class="asset-wall">
+    <figure class="artifact poster reveal"><img loading="lazy" src="assets/nurse-poster.png" alt="NOVA medicinski poster iz igre"><figcaption><span>NOVA / MEDICINSKI POSTER</span><b>ORIGINALNI ASSET</b></figcaption></figure>
+    <figure class="artifact book reveal"><img loading="lazy" src="assets/cookbook.png" alt="Za stol s NOVOM — naslovnica"><figcaption><span>ZA STOL S NOVOM</span><b>KUHARICA</b></figcaption></figure>
+    <figure class="artifact filter reveal"><img loading="lazy" src="assets/water-filter.png" alt="ABISAL filter za vodu"><figcaption><span>FILTAR ZA VODU</span><b>LOKALIZIRANO</b></figcaption></figure>
+    <figure class="artifact paper reveal"><img loading="lazy" src="assets/personnel-paper.png" alt="Dokumenti posade"><figcaption><span>DOSJEI / PAPIRI POSADE</span><b>PRINTED PROP</b></figcaption></figure>
+    <figure class="artifact kit reveal"><img loading="lazy" src="assets/safety-kit.png" alt="ABISAL zaštitni komplet"><figcaption><span>ZAŠTITNI KOMPLET</span><b>ABISAL</b></figcaption></figure>
+    <figure class="artifact screen reveal"><img loading="lazy" src="assets/cockpit-screen.png" alt="Cockpit ekran iz igre"><figcaption><span>COCKPIT DISPLAY</span><b>IN-WORLD UI</b></figcaption></figure>
+    <figure class="artifact recipe reveal"><img loading="lazy" src="assets/cake-instruction.png" alt="Upute za kolač iz igre"><figcaption><span>RECEPT / UPUTE</span><b>NOVA</b></figcaption></figure>
+    <figure class="artifact toc reveal"><img loading="lazy" src="assets/table-of-contents.png" alt="Sadržaj kuharice"><figcaption><span>SADRŽAJ</span><b>ZA STOL S NOVOM</b></figcaption></figure>
+    <figure class="artifact drink reveal"><img loading="lazy" src="assets/drink-instruction.png" alt="Upute za piće iz igre"><figcaption><span>BEZALKOHOLNI KOKTEL</span><b>UPUTE</b></figcaption></figure>
   </div>
+  <div class="asset-note reveal"><span>Poster, ambalaža, dokument, sigurnosni predmet, kuharica i cockpit više nisu predstavljeni istim vizualnim jezikom samo zato što su na istom websiteu.</span><b>SVAKI ASSET ZADRŽAVA SVOJU FUNKCIJU I MATERIJALNOST.</b></div>
 </section>
 
 <section class="section crew" id="posada">
@@ -118,7 +135,7 @@
 </section>
 
 <section class="section signal">
-  <div class="signal-art reveal"><img src="assets/company.png" alt="ABISAL MARITIMA / NOVA"></div>
+  <div class="signal-art reveal"><img src="assets/abisal-white.png" alt="ABISAL MARITIMA"></div>
   <div class="signal-copy reveal"><small>03 / NOVA / SIGNAL</small><h2>Prijateljski glas nije isto što i prijatelj.</h2><p>Company/NOVA art ovdje se pojavljuje jednom, kao zaseban korporativni identitet. Ne kao tapeta. Sustav ostaje vedar, pristupačan i koristan čak i kad odnosi među ljudima prestanu biti išta od toga.</p><div class="signal-line"><span>SUSTAV</span><b>NASTAVLJA RAD</b></div></div>
 </section>
 
