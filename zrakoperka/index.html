@@ -47,6 +47,13 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.presenter-asset{display:none}.opening-title,.opening-meta{opacity:1;animation:none;transform:none}.reveal{opacity:1;transform:none;transition:none}.person{transition:none}}
 
 /* real in-world asset archive */
+
+.artifact.realposter{grid-column:span 3;min-height:0;background:#c8bea6;align-self:start}
+.artifact.realposter img{height:auto;min-height:0;object-fit:contain;background:#c8bea6}
+.poster-row-label{grid-column:1/-1;margin:18px 0 2px;font:700 8px monospace;letter-spacing:.18em;color:#596159;border-bottom:1px solid #20272022;padding-bottom:10px}
+@media(max-width:900px){.artifact.realposter{grid-column:span 1}.poster-row-label{grid-column:1/-1}}
+@media(max-width:560px){.artifact.realposter{grid-column:1}}
+
 .asset-wall{max-width:1480px;margin:auto;display:grid;grid-template-columns:repeat(12,1fr);grid-auto-flow:dense;gap:clamp(14px,2vw,30px);align-items:start}
 .artifact{position:relative;margin:0;background:#cbc1aa;border:1px solid #151a1617;overflow:hidden;min-height:280px;box-shadow:0 24px 50px #554d3c18;transition:transform .45s ease,box-shadow .45s ease}
 .artifact:hover{transform:translateY(-6px);box-shadow:0 34px 70px #554d3c30}
@@ -97,21 +104,27 @@
 
 <section class="section archive" id="arhiv">
   <div class="archive-head reveal">
-    <div><small>01 / ABISAL MARITIMA / MATERIJALI S BRODA</small><h2>NEMA VIŠE TEKSTA KOJI GLUMI ASSET.</h2></div>
-    <p>Ovo su stvarni vizualni materijali iz aktualnog ZRAKOPERKA projekta. Različiti predmeti, različite površine i različite funkcije — umjesto istog company vizuala ponovljenog preko cijele stranice.</p>
+    <div><small>01 / ABISAL MARITIMA / VIZUALNI ARHIV</small><h2>STVARI KOJE STVARNO POSTOJE U IGRI.</h2></div>
+    <p>Nema više tekstualnih zamjena za vizuale. Prvo dolaze stvarni lokalizirani NOVA posteri, a zatim ostali propovi i tiskani materijali iz projekta.</p>
   </div>
   <div class="asset-wall">
-    <figure class="artifact poster reveal"><img loading="lazy" src="assets/nurse-poster.png" alt="NOVA medicinski poster iz igre"><figcaption><span>NOVA / MEDICINSKI POSTER</span><b>ORIGINALNI ASSET</b></figcaption></figure>
+    <div class="poster-row-label">NOVA / LOKALIZIRANI POSTERI</div>
+    <figure class="artifact realposter reveal"><img loading="lazy" src="https://res.cloudinary.com/dxerj842z/image/upload/c_limit,w_1200/q_auto/f_auto/v1789968831/poster-pamet-u-glavu.png" alt="NOVA poster — Pamet u glavu"><figcaption><span>PAMET U GLAVU!</span><b>POSTER 01</b></figcaption></figure>
+    <figure class="artifact realposter reveal"><img loading="lazy" src="https://res.cloudinary.com/dxerj842z/image/upload/c_limit,w_1200/q_auto/f_auto/v1789968839/poster-drzi-kurs.png" alt="NOVA poster — Drži kurs"><figcaption><span>DRŽI KURS!</span><b>POSTER 02</b></figcaption></figure>
+    <figure class="artifact realposter reveal"><img loading="lazy" src="https://res.cloudinary.com/dxerj842z/image/upload/c_limit,w_1200/q_auto/f_auto/v1789968843/poster-svi-u-istom-brodu.png" alt="NOVA poster — Svi u istom brodu"><figcaption><span>SVI U ISTOM BRODU!</span><b>POSTER 03</b></figcaption></figure>
+    <figure class="artifact realposter reveal"><img loading="lazy" src="https://res.cloudinary.com/dxerj842z/image/upload/c_limit,w_1200/q_auto/f_auto/v1789968847/poster-odmor-se-zasluzuje.png" alt="NOVA poster — Odmor se zaslužuje"><figcaption><span>ODMOR SE ZASLUŽUJE.</span><b>POSTER 04</b></figcaption></figure>
+
+    <div class="poster-row-label">PRINTED PROPS / PRODUKTI / BRODSKI UI</div>
+    <figure class="artifact poster reveal"><img loading="lazy" src="assets/nurse-poster.png" alt="Medicinski poster iz igre"><figcaption><span>MEDICINSKI POSTER</span><b>ORIGINALNI ASSET</b></figcaption></figure>
     <figure class="artifact book reveal"><img loading="lazy" src="assets/cookbook.png" alt="Za stol s NOVOM — naslovnica"><figcaption><span>ZA STOL S NOVOM</span><b>KUHARICA</b></figcaption></figure>
     <figure class="artifact filter reveal"><img loading="lazy" src="assets/water-filter.png" alt="ABISAL filter za vodu"><figcaption><span>FILTAR ZA VODU</span><b>LOKALIZIRANO</b></figcaption></figure>
     <figure class="artifact paper reveal"><img loading="lazy" src="assets/personnel-paper.png" alt="Dokumenti posade"><figcaption><span>DOSJEI / PAPIRI POSADE</span><b>PRINTED PROP</b></figcaption></figure>
     <figure class="artifact kit reveal"><img loading="lazy" src="assets/safety-kit.png" alt="ABISAL zaštitni komplet"><figcaption><span>ZAŠTITNI KOMPLET</span><b>ABISAL</b></figcaption></figure>
     <figure class="artifact screen reveal"><img loading="lazy" src="assets/cockpit-screen.png" alt="Cockpit ekran iz igre"><figcaption><span>COCKPIT DISPLAY</span><b>IN-WORLD UI</b></figcaption></figure>
-    <figure class="artifact recipe reveal"><img loading="lazy" src="assets/cake-instruction.png" alt="Upute za kolač iz igre"><figcaption><span>RECEPT / UPUTE</span><b>NOVA</b></figcaption></figure>
+    <figure class="artifact recipe reveal"><img loading="lazy" src="assets/cake-instruction.png" alt="Upute za kolač"><figcaption><span>RECEPT / UPUTE</span><b>NOVA</b></figcaption></figure>
     <figure class="artifact toc reveal"><img loading="lazy" src="assets/table-of-contents.png" alt="Sadržaj kuharice"><figcaption><span>SADRŽAJ</span><b>ZA STOL S NOVOM</b></figcaption></figure>
-    <figure class="artifact drink reveal"><img loading="lazy" src="assets/drink-instruction.png" alt="Upute za piće iz igre"><figcaption><span>BEZALKOHOLNI KOKTEL</span><b>UPUTE</b></figcaption></figure>
+    <figure class="artifact drink reveal"><img loading="lazy" src="assets/drink-instruction.png" alt="Upute za piće"><figcaption><span>BEZALKOHOLNI KOKTEL</span><b>UPUTE</b></figcaption></figure>
   </div>
-  <div class="asset-note reveal"><span>Poster, ambalaža, dokument, sigurnosni predmet, kuharica i cockpit više nisu predstavljeni istim vizualnim jezikom samo zato što su na istom websiteu.</span><b>SVAKI ASSET ZADRŽAVA SVOJU FUNKCIJU I MATERIJALNOST.</b></div>
 </section>
 
 <section class="section crew" id="posada">
