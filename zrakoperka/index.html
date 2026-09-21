@@ -1,88 +1,527 @@
 <!doctype html>
 <html lang="hr">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#d8d2bd">
-<title>ZRAKOPERKA / ABISAL MARITIMA</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#081719">
+<meta name="description" content="ZRAKOPERKA — narativni psihološki horor. KARLOLEGEND / ABISAL MARITIMA.">
+<title>ZRAKOPERKA — KARLOLEGEND</title>
 <style>
-:root{--p:#d8d2bd;--i:#151814;--r:#8c2e27;--y:#e0ca63;--d:0}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--p);color:var(--i);font-family:"Arial Narrow",Arial,sans-serif;overflow-x:hidden}button,a{font:inherit;color:inherit}a{text-decoration:none}button{cursor:pointer}
-body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.18;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.13'/%3E%3C/svg%3E");mix-blend-mode:multiply}
-.ocean{position:fixed;z-index:-3;inset:0;background:linear-gradient(#d8d2bd,#92aaa1 20%,#244747 46%,#081616 72%,#020505);opacity:var(--d)}.ocean:after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 calc(var(--d)*180px) calc(var(--d)*55px) #0009}
-.depth{position:fixed;z-index:40;right:18px;top:50%;height:56vh;transform:translateY(-50%);display:flex;align-items:center;gap:8px;color:#fff;mix-blend-mode:difference;font:8px monospace}.track{height:100%;width:1px;background:#ffffff55;position:relative}.needle{position:absolute;left:-5px;width:11px;height:1px;background:#fff;top:0}.depth b{writing-mode:vertical-rl;transform:rotate(180deg);letter-spacing:.15em}
-.sound{position:fixed;z-index:45;bottom:16px;left:16px;background:#07100fcc;color:#cfcab7;border:1px solid #667069;padding:10px 12px;font:8px monospace;letter-spacing:.12em}.sound.on{color:var(--y);border-color:var(--y)}
-header{position:absolute;top:0;left:0;right:0;z-index:10;padding:23px clamp(18px,4vw,62px);display:flex;justify-content:space-between;font:8px monospace;letter-spacing:.14em}.brand{display:flex;gap:10px;align-items:center;font-weight:bold}.brand i{width:31px;height:31px;border:1px solid;border-radius:50%;position:relative}.brand i:after{content:"";position:absolute;width:5px;height:5px;border-radius:50%;background:var(--y);right:5px;top:6px}
-.scene{min-height:100vh;position:relative}.surface{padding:100px clamp(18px,4vw,62px) 40px;background:var(--p)}.paper{min-height:calc(100vh - 140px);border-block:1px solid;display:grid;grid-template-rows:auto auto 1fr auto}.meta{display:flex;justify-content:space-between;padding:11px 0;font:7px/1.5 monospace;letter-spacing:.1em}.lock{padding:6vh 0 0}.lock small{font:8px monospace;letter-spacing:.17em}.lock h1{font-size:clamp(68px,13vw,210px);line-height:.72;letter-spacing:-.08em;margin:18px 0 20px;transform:scaleX(.84);transform-origin:left;width:119%}.ship{min-height:280px;display:flex;align-items:center}.ship svg{width:100%;max-height:40vh}.ship path,.ship rect{fill:none;stroke:var(--i);stroke-width:2}.ship .hull{stroke-width:5}.ship rect{fill:var(--i)}.ship text{font:700 18px monospace;fill:var(--i);letter-spacing:.13em}.stamp{position:absolute;right:5%;bottom:18%;border:2px solid var(--r);color:var(--r);padding:7px 10px;font:700 8px monospace;transform:rotate(-4deg)}.surface-bottom{border-top:1px solid;padding:14px 0;display:flex;justify-content:space-between;gap:30px;font:9px/1.5 monospace}.surface-bottom p{max-width:720px;margin:0}.surface-bottom a{font-weight:bold;letter-spacing:.13em}
-.down{padding:100px clamp(18px,5vw,80px);color:#d8d2bd}.title{display:grid;grid-template-columns:90px 1fr 1fr;gap:20px;align-items:end}.title span,.title p{font:9px monospace;color:#93a49c}.title h2{font-size:clamp(42px,7vw,95px);letter-spacing:-.055em;line-height:.9;margin:0}.plan{margin-top:35px}.plan svg{width:100%}.cut{fill:#111a18;stroke:#a8a18d;stroke-width:2}.room{cursor:pointer}.room>path,.room>rect{fill:#29302b;stroke:#b7b19d;stroke-width:1.2;transition:.2s}.room .in{fill:#aaa38f;opacity:.15}.room:hover>path,.room:hover>rect{fill:#6e332d}.room text{fill:#d0c9b3;font:700 15px monospace;pointer-events:none}
-.evidence{padding:90px clamp(18px,5vw,80px);background:#a8aa97}.board{background:#d7d0b8;min-height:78vh;padding:clamp(20px,4vw,50px);box-shadow:0 35px 90px #0004}.board h2{font-size:clamp(46px,8vw,105px);letter-spacing:-.06em;line-height:.85;margin:10px 0 30px}.board>small{font:8px monospace;letter-spacing:.13em}.items{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;border-top:1px solid;padding-top:28px}.obj{border:0;background:transparent;text-align:left;min-height:280px;position:relative;transition:.2s}.obj:hover{transform:translateY(-7px)}.tag{font:7px monospace;background:#eee5cc;border:1px solid;padding:5px 6px}.thing{display:block;width:92px;height:105px;margin:28px auto 20px;filter:drop-shadow(7px 11px 8px #0004)}.badge{background:#e8e1c8;border:1px solid}.badge:after{content:"N";font:700 46px Arial;position:absolute;margin:27px 0 0 13px}.cup{height:76px;border:2px solid;border-radius:5px 5px 35px 35px}.wrench{width:18px;background:#595d55;transform:rotate(20deg)}.note{background:#eee3c6;transform:rotate(-4deg)}.note:after{content:"ne pitaj ga pred njim";font:italic 11px Georgia;display:block;padding:36px 8px}.lighter{width:45px;height:88px;background:#333833}.obj b,.obj em{display:block}.obj b{font-size:13px}.obj em{font:8px/1.4 monospace;color:#555b52;margin-top:4px}
-.log{padding:110px clamp(18px,5vw,80px);background:#778077}.ledger{max-width:1150px;margin:auto;background:#ddd5bc;color:#171a16;padding:30px clamp(20px,4vw,55px);box-shadow:0 40px 100px #0005}.ledger h2{font:700 clamp(38px,6vw,70px)/.95 Georgia,serif;margin:30px 0}.entry{display:grid;grid-template-columns:60px 90px 1fr 140px;gap:16px;border-top:1px solid #3338;padding:12px 0;align-items:baseline}.entry time,.entry strong,.entry em{font:8px monospace}.entry p{margin:0;font:14px Georgia}.entry.bad{background:#8c2e2710}.entry.bad time{color:var(--r)}.ledger button{margin-top:22px;border:1px solid;background:transparent;padding:9px 12px;font:8px monospace}
-.cam{padding:120px clamp(18px,5vw,80px);color:#ccc6b2}.console{max-width:1200px;margin:auto;border:1px solid #44534c;background:#07100f}.camtop{display:flex;justify-content:space-between;align-items:center;padding:0 15px;height:55px;border-bottom:1px solid #35433d;font:8px monospace}.tabs button{height:55px;border:0;border-left:1px solid #35433d;background:transparent;color:#7d8b84;padding:0 15px;font:8px monospace}.tabs button.on{background:#17231f;color:#ddd5bd}.view{height:min(64vh,650px);position:relative;overflow:hidden;background:linear-gradient(90deg,#111a18 0 19%,#29342e 19% 21%,#18221f 21% 72%,#303932 72% 74%,#101715 74%)}.door{position:absolute;left:4%;bottom:0;width:14%;height:72%;background:#0a100f;border:2px solid #36433d}.table{position:absolute;left:32%;bottom:18%;width:36%;height:18%;background:#222c28;transform:perspective(500px) rotateX(63deg);border:1px solid #47524c}.figure{position:absolute;left:68%;bottom:15%;width:6%;height:38%;background:#030605;border-radius:40% 40% 10% 10%;opacity:.75}.overlay{position:absolute;inset:15px 16px auto;display:flex;justify-content:space-between;font:8px monospace}.lost{display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:700 18px monospace;letter-spacing:.22em}.view.drop .lost{display:block}.view.drop>*:not(.lost){opacity:.12}.scrub{padding:15px;display:grid;grid-template-columns:40px 1fr 40px;gap:10px;font:8px monospace}.scrub input{accent-color:var(--y)}
-.black{padding:130px clamp(18px,5vw,80px);color:#d5cfbc}.box{max-width:900px;margin:auto}.rec{background:#c65d34;color:#211812;padding:30px;border-radius:7px;box-shadow:0 50px 110px #000;display:grid;grid-template-columns:1fr 1fr;gap:25px}.speaker{min-height:220px;border:2px solid #2e2119;background:radial-gradient(circle,#2e2119 1px,transparent 2px);background-size:10px 10px}.display{background:#251b16;color:#d8c879;padding:25px}.display b{font:700 58px monospace}.display small{font:9px monospace}.rec button{grid-column:1/3;border:2px solid #2b1f18;background:transparent;padding:15px;font:700 9px monospace}.transcript{margin-top:25px;border-top:1px solid #3d4741}.transcript p{margin:0;border-bottom:1px solid #27302c;padding:10px 0;display:grid;grid-template-columns:65px 1fr;font:9px monospace}.transcript time{color:#74827a}
-.end{min-height:110vh;padding:150px clamp(18px,5vw,80px) 40px;color:#d8d2bd;display:grid;grid-template-rows:1fr auto}.end h2{font:400 clamp(48px,8vw,110px)/.92 Georgia,serif;letter-spacing:-.05em;max-width:900px}.end p{font:10px/1.6 monospace;max-width:620px;color:#8d9891}.status{margin-top:60px;border-block:1px solid #3b4640;padding:15px 0;display:flex;justify-content:space-between;font:8px monospace}.status b{color:var(--y)}.word{font:900 clamp(90px,21vw,350px)/.65 Arial;letter-spacing:-.09em;color:#0a1010;transform:scaleX(.82);transform-origin:left;width:122%}
-.drawer{position:fixed;z-index:60;right:0;top:0;width:min(500px,92vw);height:100vh;background:#d8d2bd;color:#171a16;padding:65px 40px;transform:translateX(105%);transition:.45s;box-shadow:-30px 0 80px #0007}.drawer.open{transform:none}.drawer button{position:absolute;right:17px;top:13px;border:0;background:transparent;font-size:30px}.drawer small{font:8px monospace}.drawer h3{font:700 54px/.9 Georgia;margin:25px 0}.drawer p{font:15px/1.55 Georgia}.scrim{position:fixed;z-index:55;inset:0;background:#0008;opacity:0;pointer-events:none;transition:.3s}.scrim.on{opacity:1;pointer-events:auto}
-@media(max-width:800px){.title{grid-template-columns:1fr}.items{grid-template-columns:1fr 1fr}.entry{grid-template-columns:48px 65px 1fr}.entry em{grid-column:3}.rec{grid-template-columns:1fr}.rec button{grid-column:1}.surface-bottom{flex-direction:column}.plan svg{width:145%;transform:translateX(-17%)}}@media(max-width:520px){header{padding-right:40px}.surface{padding:85px 36px 30px 15px}.lock h1{font-size:20vw}.down,.evidence,.log,.cam,.black,.end{padding-left:15px;padding-right:36px}.items{grid-template-columns:1fr}.entry{gap:7px}.tabs button{padding:0 8px}.drawer{padding:60px 28px}.word{font-size:25vw}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.drawer{transition:none}}
+:root{
+  --ink:#081719;
+  --deep:#020708;
+  --teal:#12383c;
+  --cyan:#29a9b7;
+  --gold:#e1bf58;
+  --paper:#e8e0ca;
+  --paper2:#cfc6ad;
+  --red:#9f342e;
+  --muted:#81908a;
+  --depth:0;
+  --mx:50%;
+  --my:50%;
+}
+*{box-sizing:border-box}
+html{background:var(--deep);scroll-behavior:smooth}
+body{
+  margin:0;
+  color:var(--paper);
+  background:
+    radial-gradient(circle at 50% 0,#12383c 0,#071415 30%,#020708 72%);
+  font-family:Arial,Helvetica,sans-serif;
+  overflow-x:hidden
+}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit}
+::selection{background:var(--gold);color:#111}
+.noise,.vignette,.pointer-light{position:fixed;inset:0;pointer-events:none}
+.noise{
+  z-index:100;opacity:.055;mix-blend-mode:screen;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")
+}
+.vignette{z-index:99;box-shadow:inset 0 0 calc(50px + var(--depth)*120px) calc(var(--depth)*18px) #0008}
+.pointer-light{
+  z-index:98;
+  background:radial-gradient(circle 280px at var(--mx) var(--my),rgba(225,191,88,.08),transparent 70%);
+  mix-blend-mode:screen
+}
+.top{
+  position:fixed;z-index:90;top:0;left:0;right:0;height:62px;
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  padding:0 clamp(16px,3vw,46px);
+  border-bottom:1px solid #ffffff16;
+  background:linear-gradient(#031012ed,#031012a8,transparent);
+  backdrop-filter:blur(10px)
+}
+.top .brand{display:flex;align-items:center;gap:12px;font:700 9px monospace;letter-spacing:.15em}
+.top .brand img{height:24px;width:auto;max-width:155px;object-fit:contain;filter:brightness(1.08)}
+.top nav{display:flex;gap:20px;font:8px monospace;letter-spacing:.14em;color:#9badA6}
+.top nav a:hover{color:var(--gold)}
+.top .readout{justify-self:end;font:8px monospace;color:#8d9b96;letter-spacing:.12em}
+.top .readout b{color:var(--gold);font-weight:400}
+.depth-meter{
+  position:fixed;z-index:88;right:14px;top:50%;height:48vh;translate:0 -50%;
+  display:flex;gap:7px;align-items:center;font:7px monospace;letter-spacing:.1em;color:#d1d4cb
+}
+.depth-track{width:1px;height:100%;background:#ffffff3d;position:relative}
+.depth-needle{position:absolute;left:-5px;width:11px;height:1px;background:var(--gold);top:0;box-shadow:0 0 10px var(--gold)}
+.depth-label{writing-mode:vertical-rl;transform:rotate(180deg);opacity:.65}
+.sound{
+  position:fixed;z-index:90;left:14px;bottom:14px;
+  border:1px solid #ffffff25;background:#061112de;padding:9px 10px;
+  font:8px monospace;letter-spacing:.12em;color:#899994;cursor:pointer
+}
+.sound.on{border-color:var(--gold);color:var(--gold)}
+.section{position:relative;min-height:100svh}
+.hero{
+  display:grid;place-items:center;overflow:hidden;
+  min-height:100svh;padding:90px 5vw 50px;
+  background:#061315
+}
+.hero-bg{
+  position:absolute;inset:-6%;
+  background:
+    linear-gradient(180deg,#02060728,#020607c8 72%,#020607),
+    url("assets/cockpit-abisal.png") center/cover no-repeat;
+  transform:scale(calc(1.06 + var(--depth)*.08));
+  filter:saturate(1.08) contrast(1.04) brightness(.64);
+  transition:filter .2s linear
+}
+.hero:after{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(circle at var(--mx) var(--my),transparent 0 5%,#0207073a 24%,#020707dc 74%),
+    linear-gradient(90deg,#041111d8 0,transparent 28%,transparent 72%,#041111d8 100%)
+}
+.hero-inner{
+  position:relative;z-index:2;width:min(1280px,100%);display:grid;
+  grid-template-columns:.78fr 1.22fr;align-items:end;gap:6vw
+}
+.hero-copy{padding-bottom:6vh}
+.kicker{font:8px monospace;letter-spacing:.2em;color:#a9b8b2}
+.hero-logo{
+  width:min(760px,100%);margin:16px 0 26px;
+  filter:drop-shadow(0 20px 35px #000b);
+  mix-blend-mode:screen
+}
+.hero-copy p{
+  margin:0;max-width:520px;font:400 clamp(16px,1.5vw,22px)/1.45 Georgia,serif;color:#d2d0c3
+}
+.enter{
+  display:inline-flex;margin-top:27px;align-items:center;gap:12px;
+  font:700 8px monospace;letter-spacing:.17em;border-bottom:1px solid #7d8c86;padding-bottom:5px
+}
+.enter i{display:block;width:38px;height:1px;background:var(--gold)}
+.hero-company{
+  position:relative;min-height:66vh;display:flex;align-items:center;justify-content:center
+}
+.hero-company img{
+  width:min(540px,45vw);max-height:67vh;object-fit:contain;
+  filter:drop-shadow(0 30px 55px #0009);
+  transform:translateY(calc(var(--depth)*12px))
+}
+.hero-company:before{
+  content:"NOVA / ABISAL MARITIMA";position:absolute;left:-2%;top:11%;
+  writing-mode:vertical-rl;transform:rotate(180deg);
+  font:7px monospace;letter-spacing:.23em;color:#84948e
+}
+.hero-meta{
+  position:absolute;z-index:3;left:5vw;right:5vw;bottom:20px;
+  display:flex;justify-content:space-between;font:7px monospace;letter-spacing:.12em;color:#677a73
+}
+
+.transition{
+  min-height:42vh;display:flex;align-items:center;overflow:hidden;
+  border-block:1px solid #ffffff12;background:#020809
+}
+.marquee{
+  white-space:nowrap;width:max-content;
+  font:900 clamp(44px,8vw,130px)/.8 Arial,sans-serif;
+  letter-spacing:-.065em;color:#10292b;
+  text-shadow:1px 0 #486367;
+  animation:marquee 28s linear infinite
+}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+.corporate{
+  background:var(--paper);color:#161b18;padding:120px clamp(22px,5vw,80px)
+}
+.corporate-head{
+  max-width:1380px;margin:auto 0 60px;display:grid;grid-template-columns:1.2fr .8fr;gap:6vw;align-items:end
+}
+.corporate-head small{font:8px monospace;letter-spacing:.18em;color:#525c55}
+.corporate-head h2{margin:13px 0 0;font:900 clamp(50px,8vw,120px)/.83 Arial;letter-spacing:-.07em}
+.corporate-head p{font:15px/1.55 Georgia,serif;margin:0;color:#424b44;max-width:510px}
+.poster-stack{max-width:1480px;margin:auto;display:grid;gap:25vh}
+.poster{
+  min-height:86vh;display:grid;grid-template-columns:.85fr 1.15fr;
+  align-items:center;gap:6vw;position:relative
+}
+.poster:nth-child(even){grid-template-columns:1.15fr .85fr}
+.poster:nth-child(even) .poster-art{order:2}
+.poster-art{
+  min-height:66vh;position:relative;display:grid;place-items:center;overflow:hidden;
+  border:1px solid #1f28230d;background:#132f31;
+  box-shadow:0 35px 80px #3d433b2b
+}
+.poster-art:before{
+  content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(135deg,#ffffff10 0 1px,transparent 1px 44px)
+}
+.poster:nth-child(2) .poster-art{background:#304d55}
+.poster:nth-child(3) .poster-art{background:#235d4b}
+.poster:nth-child(4) .poster-art{background:#6e572a}
+.poster-art img{position:relative;width:82%;height:72%;object-fit:contain;filter:drop-shadow(0 25px 30px #0004)}
+.poster-copy{padding:5vw 0}
+.poster-copy .nr{font:8px monospace;letter-spacing:.16em;color:#667069}
+.poster-copy h3{
+  margin:20px 0 25px;font:900 clamp(43px,6vw,90px)/.9 Arial;letter-spacing:-.06em
+}
+.poster-copy .body{font:18px/1.45 Georgia,serif;max-width:550px}
+.poster-copy .warning{
+  margin-top:38px;border-top:1px solid #242b27;padding-top:12px;
+  color:var(--red);font:italic 13px/1.5 Georgia,serif;max-width:540px
+}
+.poster .ghost{
+  position:absolute;font:900 clamp(70px,14vw,220px)/.7 Arial;color:#00000008;
+  letter-spacing:-.08em;z-index:0;white-space:nowrap;bottom:-2vw
+}
+
+.crew{
+  background:#091719;padding:120px clamp(22px,5vw,80px) 150px;overflow:hidden
+}
+.crew-head{max-width:1300px;margin:0 auto 70px;display:flex;justify-content:space-between;gap:30px;align-items:end}
+.crew-head h2{margin:0;font:900 clamp(58px,9vw,135px)/.8 Arial;letter-spacing:-.08em}
+.crew-head p{max-width:430px;margin:0;font:11px/1.6 monospace;color:#8ea099}
+.id-table{
+  max-width:1450px;min-height:760px;margin:auto;position:relative;
+  border-top:1px solid #ffffff20;border-bottom:1px solid #ffffff20;
+  background:
+    radial-gradient(circle at 50% 52%,#163235 0,#0b191b 38%,#061012 73%)
+}
+.id-table:after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,#ffffff04 1px,transparent 1px),linear-gradient(#ffffff04 1px,transparent 1px);
+  background-size:70px 70px;mask-image:radial-gradient(circle,#000 0,transparent 72%)
+}
+.idcard{
+  position:absolute;z-index:2;width:min(310px,24vw);border:0;background:transparent;padding:0;
+  transform-style:preserve-3d;transition:transform .25s ease,filter .25s ease;cursor:pointer
+}
+.idcard img{width:100%;filter:drop-shadow(0 26px 28px #000b)}
+.idcard:hover{z-index:8;filter:brightness(1.08)}
+.idcard span{
+  position:absolute;left:50%;bottom:-34px;translate:-50% 0;
+  font:8px monospace;letter-spacing:.18em;color:#7f918b;white-space:nowrap
+}
+.idcard:nth-child(1){left:5%;top:20%;rotate:-10deg}
+.idcard:nth-child(2){left:21%;top:42%;rotate:7deg}
+.idcard:nth-child(3){left:41%;top:11%;rotate:-3deg}
+.idcard:nth-child(4){left:59%;top:39%;rotate:9deg}
+.idcard:nth-child(5){left:78%;top:17%;rotate:-8deg}
+.id-table .caption{
+  position:absolute;z-index:1;left:2%;bottom:3%;font:8px/1.6 monospace;color:#61716b;letter-spacing:.1em
+}
+.id-table .caption b{color:var(--gold);font-weight:400}
+
+.cockpit{
+  min-height:125vh;background:#020809;overflow:hidden
+}
+.cockpit-sticky{position:sticky;top:0;height:100svh;overflow:hidden}
+.cockpit-img{
+  position:absolute;inset:-8%;
+  background:url("assets/cockpit-abisal.png") center/cover no-repeat;
+  filter:brightness(.45) saturate(1.08) contrast(1.08);
+  transform:scale(calc(1.08 + var(--depth)*.035))
+}
+.cockpit-sticky:after{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(circle 320px at var(--mx) var(--my),transparent 0,#02080945 55%,#020809e8 90%),
+    linear-gradient(180deg,#02080915,#020809dd 84%)
+}
+.cockpit-copy{
+  position:absolute;z-index:3;left:clamp(22px,6vw,95px);bottom:8vh;max-width:900px
+}
+.cockpit-copy small{font:8px monospace;letter-spacing:.18em;color:#849a92}
+.cockpit-copy h2{font:900 clamp(54px,9vw,130px)/.82 Arial;letter-spacing:-.075em;margin:18px 0}
+.cockpit-copy p{font:15px/1.55 Georgia;color:#b9c1ba;max-width:630px}
+.telemetry{
+  position:absolute;z-index:4;right:clamp(24px,6vw,95px);top:15vh;width:min(290px,35vw);
+  border:1px solid #6b7e762d;background:#031011a8;backdrop-filter:blur(8px)
+}
+.telemetry div{display:flex;justify-content:space-between;padding:10px 12px;border-bottom:1px solid #ffffff12;font:8px monospace}
+.telemetry div:last-child{border-bottom:0}.telemetry span{color:#768b83}.telemetry b{font-weight:400;color:var(--gold)}
+
+.signal{
+  min-height:110vh;padding:150px clamp(22px,5vw,80px) 70px;
+  background:#020606;display:grid;grid-template-columns:1fr 1fr;gap:8vw;align-items:center
+}
+.signal-art{position:relative;display:grid;place-items:center;min-height:65vh}
+.signal-art:before,.signal-art:after{
+  content:"";position:absolute;border:1px solid #d7bd6330;border-radius:50%
+}
+.signal-art:before{width:75%;aspect-ratio:1}
+.signal-art:after{width:45%;aspect-ratio:1}
+.signal-art img{position:relative;z-index:2;width:min(560px,90%);filter:drop-shadow(0 0 80px #3eb2c348)}
+.signal-copy small{font:8px monospace;letter-spacing:.18em;color:#73867e}
+.signal-copy h2{font:400 clamp(52px,7vw,100px)/.92 Georgia,serif;letter-spacing:-.05em;margin:22px 0}
+.signal-copy p{font:13px/1.7 monospace;color:#8ea099;max-width:560px}
+.signal-copy .line{
+  margin-top:44px;border-top:1px solid #33423c;padding-top:12px;
+  display:flex;justify-content:space-between;font:8px monospace;color:#687b74
+}
+.signal-copy .line b{color:var(--gold);font-weight:400}
+.final{
+  min-height:100svh;background:var(--paper);color:#101714;display:grid;place-items:center;
+  padding:90px 5vw;overflow:hidden
+}
+.final-inner{width:min(1400px,100%);text-align:center}
+.final-logo{width:min(1100px,95%);margin:auto;filter:contrast(1.06)}
+.final p{margin:45px auto 0;max-width:720px;font:14px/1.6 Georgia,serif;color:#4f5952}
+.final .credits{
+  margin-top:70px;padding-top:15px;border-top:1px solid #1d26211d;
+  display:flex;justify-content:space-between;font:8px monospace;letter-spacing:.12em;color:#687269
+}
+
+.modal-scrim{position:fixed;z-index:120;inset:0;background:#000c;opacity:0;pointer-events:none;transition:.3s}
+.modal-scrim.open{opacity:1;pointer-events:auto}
+.person{
+  position:fixed;z-index:121;inset:6vh 5vw;background:#d8d0b9;color:#131a16;
+  display:grid;grid-template-columns:minmax(280px,.8fr) 1.2fr;
+  transform:translateY(110%);transition:.45s cubic-bezier(.2,.8,.2,1);
+  box-shadow:0 30px 120px #000a
+}
+.person.open{transform:none}
+.person-visual{background:#0b1718;display:grid;place-items:center;padding:5vw}
+.person-visual img{width:min(500px,90%);filter:drop-shadow(0 30px 35px #0008)}
+.person-copy{padding:clamp(35px,7vw,100px);display:flex;flex-direction:column;justify-content:center}
+.person-copy small{font:8px monospace;letter-spacing:.18em;color:#667168}
+.person-copy h3{margin:18px 0 14px;font:900 clamp(54px,8vw,115px)/.82 Arial;letter-spacing:-.07em}
+.person-copy .role{font:700 10px monospace;letter-spacing:.16em;color:var(--red)}
+.person-copy p{font:17px/1.55 Georgia;max-width:600px}
+.close{
+  position:absolute;right:14px;top:10px;border:0;background:transparent;font-size:38px;cursor:pointer;color:#151a17
+}
+
+.reveal{opacity:0;transform:translateY(24px);transition:.85s ease}
+.reveal.in{opacity:1;transform:none}
+
+@media(max-width:960px){
+  .top{grid-template-columns:1fr auto}.top nav{display:none}
+  .hero-inner{grid-template-columns:1fr}.hero-copy{padding-top:10vh}.hero-company{min-height:40vh}.hero-company img{width:min(450px,80vw)}
+  .corporate-head{grid-template-columns:1fr}.poster,.poster:nth-child(even){grid-template-columns:1fr}.poster:nth-child(even) .poster-art{order:0}
+  .poster-art{min-height:55vh}
+  .id-table{min-height:1100px}.idcard{width:min(300px,42vw)}
+  .idcard:nth-child(1){left:3%;top:8%}.idcard:nth-child(2){left:48%;top:20%}.idcard:nth-child(3){left:9%;top:40%}.idcard:nth-child(4){left:52%;top:57%}.idcard:nth-child(5){left:16%;top:75%}
+  .signal{grid-template-columns:1fr}.signal-art{min-height:50vh}
+  .person{grid-template-columns:1fr;overflow:auto}.person-visual{min-height:45vh}.person-copy{min-height:50vh}
+}
+@media(max-width:620px){
+  .top{height:56px}.top .brand img{max-width:115px}.top .readout{display:none}
+  .hero{padding-inline:18px}.hero-meta{display:none}.hero-logo{width:100%}
+  .corporate,.crew,.signal{padding-inline:18px}
+  .poster-stack{gap:14vh}.poster{min-height:auto}.poster-art{min-height:47vh}.poster-copy{padding:30px 0 80px}
+  .crew-head{align-items:start;flex-direction:column}.id-table{min-height:1180px}
+  .idcard{width:68vw}.idcard:nth-child(1){left:2%;top:5%}.idcard:nth-child(2){left:27%;top:22%}.idcard:nth-child(3){left:2%;top:40%}.idcard:nth-child(4){left:27%;top:59%}.idcard:nth-child(5){left:4%;top:78%}
+  .telemetry{right:16px;top:10vh;width:55vw}.cockpit-copy{left:18px;right:18px}
+  .signal{padding-top:100px}.final{padding-inline:18px}.final .credits{flex-direction:column;gap:8px}
+  .depth-meter{display:none}.person{inset:0}.person-copy{padding:35px 22px}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}.marquee{animation:none}.reveal{opacity:1;transform:none;transition:none}.person{transition:none}
+}
 </style>
 </head>
 <body>
-<div class="ocean"></div><div class="depth"><span id="dv">000m</span><div class="track"><i class="needle" id="dn"></i></div><b>POVRŠINA / 900m</b></div>
-<button class="sound" id="sound">ZVUK / ISKLJUČEN</button>
-<header><a class="brand" href="#surface"><i></i><span>ABISAL MARITIMA</span></a><span>OPERATIVNI ARHIV / BROD 07</span></header>
-<main>
-<section class="scene surface" id="surface">
-<div class="paper">
-<div class="meta"><span>AM–07 / PUTNIČKO-ISTRAŽIVAČKI ODJEL<br>REV. 6.2 / PRISTUP: JAVNI</span><span>Sigurnost. Disciplina. Povratak.</span></div>
-<div class="lock"><small>KARLOLEGEND PREDSTAVLJA</small><h1>ZRAKOPERKA</h1><small>narativni psihološki horor / single-player / u razvoju</small></div>
-<div class="ship"><svg viewBox="0 0 1200 400"><path d="M80 280c176 4 320-8 431-8 205 0 377 9 581-16-39 83-135 121-313 128H329C204 378 122 346 80 280Z" class="hull"/><path d="M213 246h671l86 24H156l57-24Z"/><path d="M360 190h329l88 56H307l53-56Z"/><path d="M424 130h186l72 60H376l48-60Z"/><path d="M524 70v60M487 88h72M542 64l23-33"/><rect x="435" y="148" width="37" height="14"/><rect x="483" y="148" width="37" height="14"/><rect x="531" y="148" width="37" height="14"/><rect x="579" y="148" width="37" height="14"/><text x="843" y="324">ZRAKOPERKA</text></svg><div class="stamp">PRIKAZ NIJE ZA NAVIGACIJU</div></div>
-<div class="surface-bottom"><p>Interna prezentacija plovila ZRAKOPERKA. U nastavku se nalazi presjek prostora, evidencija posade i nepotpuni zapisnik posljednje smjene.</p><a href="#plan">OTVORI PRESJEK ↓</a></div>
-</div></section>
+<div class="noise"></div><div class="vignette"></div><div class="pointer-light"></div>
+<header class="top">
+  <a class="brand" href="#top"><img src="assets/zrakoperka-logo.png" alt="ZRAKOPERKA"><span>/ KARLOLEGEND</span></a>
+  <nav><a href="#nova">NOVA</a><a href="#posada">POSADA</a><a href="#most">MOST</a><a href="#signal">SIGNAL</a></nav>
+  <div class="readout">DUBINA <b id="depthValue">000 m</b></div>
+</header>
+<div class="depth-meter"><span id="meterValue">000</span><div class="depth-track"><i class="depth-needle" id="needle"></i></div><span class="depth-label">POVRŠINA / DNO</span></div>
+<button class="sound" id="sound">BRODSKI HUM / OFF</button>
 
-<section class="scene down" id="plan">
-<div class="title"><span>095 m</span><h2>Presjek plovila</h2><p>Ne biraš izbornik. Biraš prostor koji je nešto zadržao.</p></div>
-<div class="plan"><svg viewBox="0 0 1400 650"><path class="cut" d="M77 351c187-15 374-17 561-18 277-1 488 13 680-34-27 114-141 197-322 217-201 22-475 14-665-14-131-20-216-70-254-151Z"/><g class="room" data-r="most"><path d="M469 177h306l89 102H390l79-102Z"/><path class="in" d="M481 190h281l68 77H419l62-77Z"/><text x="583" y="236">MOST</text></g><g class="room" data-r="kuhinja"><path d="M338 284h305v128H312l26-128Z"/><rect class="in" x="350" y="300" width="277" height="95"/><text x="445" y="355">KUHINJA</text></g><g class="room" data-r="kabine"><path d="M648 284h273l40 128H648V284Z"/><rect class="in" x="663" y="300" width="244" height="95"/><text x="740" y="355">KABINE</text></g><g class="room" data-r="amb"><path d="M966 279h187l-14 133H966V279Z"/><rect class="in" x="980" y="296" width="157" height="100"/><text x="1014" y="351">AMB.</text></g><g class="room" data-r="stroj"><path d="M382 417h638l64 76H296l86-76Z"/><path class="in" d="M397 431h608l42 48H337l60-48Z"/><text x="602" y="465">STROJARNICA</text></g></svg></div>
+<main id="top">
+<section class="section hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-copy reveal">
+      <div class="kicker">KARLOLEGEND PREDSTAVLJA / ABISAL MARITIMA</div>
+      <img class="hero-logo" src="assets/zrakoperka-logo.png" alt="ZRAKOPERKA">
+      <p>Narativni psihološki horor o posadi, hijerarhiji, tijelu i poslu koji nastavlja funkcionirati čak i kada ljudima više ne ide.</p>
+      <a class="enter" href="#nova"><span>OTVORI KORPORATIVNI MATERIJAL</span><i></i></a>
+    </div>
+    <div class="hero-company reveal">
+      <img src="assets/company.png" alt="ABISAL MARITIMA / NOVA kompanijski vizual">
+    </div>
+  </div>
+  <div class="hero-meta"><span>WEB ARHIV / REV. 02</span><span>ASSETI: AKTUALNI ZRAKOPERKA BUILD</span></div>
 </section>
 
-<section class="scene evidence">
-<div class="board"><small>238 m / SMJENA 03</small><h2>Ostavili su stvari.</h2><div class="items">
-<button class="obj" data-p="nives"><span class="tag">NIVES / N-01</span><i class="thing badge"></i><b>ISKAZNICA</b><em>vratna vrpca odrezana škarama</em></button>
-<button class="obj" data-p="branimir"><span class="tag">BRANIMIR / B-02</span><i class="thing cup"></i><b>ŠALICA</b><em>na dnu: pola tablete</em></button>
-<button class="obj" data-p="stipe"><span class="tag">STIPE / S-03</span><i class="thing wrench"></i><b>KLJUČ 24</b><em>ručka omotana medicinskom trakom</em></button>
-<button class="obj" data-p="denis"><span class="tag">DENIS / D-04</span><i class="thing note"></i><b>PAPIR</b><em>presavijen četiri puta</em></button>
-<button class="obj" data-p="viktor"><span class="tag">VIKTOR / V-05</span><i class="thing lighter"></i><b>UPALJAČ</b><em>radi. nema cigareta.</em></button>
-</div></div></section>
+<section class="transition" aria-hidden="true">
+  <div class="marquee">ABISAL MARITIMA · SIGURNOST · DISCIPLINA · POVRATAK · ABISAL MARITIMA · SIGURNOST · DISCIPLINA · POVRATAK · </div>
+</section>
 
-<section class="scene log">
-<div class="ledger"><small>417 m / ABISAL MARITIMA / ZAPISNIK PLOVIDBE / LIST 118</small><h2>Posljednja uredna stranica.</h2><div id="entries">
-<div class="entry"><time>05:40</time><strong>STIPE</strong><p>Generator B ponovno gubi tlak. Privremeno stabilizirano.</p><em>potpisano</em></div>
-<div class="entry"><time>06:15</time><strong>NIVES</strong><p>Promjena kursa nije odobrena. Viktor tvrdi da jest.</p><em>potpisano</em></div>
-<div class="entry"><time>06:15</time><strong>VIKTOR</strong><p>Promjena kursa odobrena u 06:20.</p><em>potpisano</em></div>
-<div class="entry bad"><time>06:04</time><strong>DENIS</strong><p>Branimir nije u ambulanti.</p><em>izmijenjeno</em></div>
-<div class="entry bad"><time>06:04</time><strong>DENIS</strong><p>Branimir je u ambulanti.</p><em>izmijenjeno</em></div>
-</div><button id="more">PRIKAŽI SVE IZMJENE</button></div></section>
+<section class="section corporate" id="nova">
+  <div class="corporate-head reveal">
+    <div><small>01 / NOVA / KORPORATIVNA KOMUNIKACIJA</small><h2>SVE JE U REDU DOK PIŠE DA JE U REDU.</h2></div>
+    <p>Vizualni jezik weba sada dolazi iz stvarnog ABISAL/NOVA rebranda u igri: ista maskota, isti slogan-sustav, ista lažno optimistična korporativna briga.</p>
+  </div>
+  <div class="poster-stack">
+    <article class="poster reveal">
+      <div class="poster-art"><img src="assets/company.png" alt=""></div>
+      <div class="poster-copy"><span class="nr">NOVA / 01</span><h3>PAMET U GLAVU!</h3><p class="body">Pravilna priprema sprječava nezgode. Vaša je odgovornost zaštititi sebe i posadu.</p><p class="warning">Troškovi liječenja odbit će se od osobnih kredita.</p></div><div class="ghost">SIGURNOST</div>
+    </article>
+    <article class="poster reveal">
+      <div class="poster-art"><img src="assets/company.png" alt=""></div>
+      <div class="poster-copy"><span class="nr">NOVA / 02</span><h3>DRŽI KURS!</h3><p class="body">Dostava na vrijeme naš je ponos i obećanje — gdje god bili.</p><p class="warning">Kašnjenje dostave naplaćuje se iz osobnih kredita.</p></div><div class="ghost">KURS</div>
+    </article>
+    <article class="poster reveal">
+      <div class="poster-art"><img src="assets/company.png" alt=""></div>
+      <div class="poster-copy"><span class="nr">NOVA / 03</span><h3>SVI U ISTOM BRODU!</h3><p class="body">Timski je rad temelj uspjeha. Kad dovršite svoje zadatke, provjerite treba li pomoći drugima.</p><p class="warning">Slaba suradnja može rezultirati kolektivnom kaznom.</p></div><div class="ghost">POSADA</div>
+    </article>
+    <article class="poster reveal">
+      <div class="poster-art"><img src="assets/company.png" alt=""></div>
+      <div class="poster-copy"><span class="nr">NOVA / 04</span><h3>ODMOR SE ZASLUŽUJE.</h3><p class="body">San je najbolji odmor nakon dugog radnog dana. Zaslužite ga. Ne pretjerujte i ne zaostajte.</p><p class="warning">Ne odmarajte se dulje od 5 sati, uključujući slobodno vrijeme.</p></div><div class="ghost">ODMOR</div>
+    </article>
+  </div>
+</section>
 
-<section class="scene cam">
-<div class="console"><div class="camtop"><span>621 m / CCTV ARHIV</span><div class="tabs"><button class="on" data-c="1">CAM 01</button><button data-c="2">CAM 02</button><button data-c="3">CAM 03</button></div></div><div class="view" id="view"><div class="door"></div><div class="table"></div><div class="figure" id="figure"></div><div class="overlay"><span id="ct">CAM 01 / KUHINJA</span><time id="tm">06:03:12</time></div><div class="lost">SIGNAL LOST</div></div><div class="scrub"><span>06:02</span><input id="scr" type="range" min="0" max="100" value="36"><span>06:05</span></div></div></section>
+<section class="section crew" id="posada">
+  <div class="crew-head reveal">
+    <h2>POSADA</h2>
+    <p>Ne generirani portreti. Stvarne lokalizirane ID kartice iz aktualnog Unity projekta. Klikni karticu; oštećenje i tisak ostaju dio samog asseta.</p>
+  </div>
+  <div class="id-table reveal">
+    <button class="idcard" data-person="nives"><img src="assets/id-nives.png" alt="Nives — ID kartica"><span>NIVES / MEDICINSKA SESTRA</span></button>
+    <button class="idcard" data-person="branimir"><img src="assets/id-branimir.png" alt="Branimir — oštećena ID kartica"><span>BRANIMIR / KAPETAN</span></button>
+    <button class="idcard" data-person="denis"><img src="assets/id-denis.png" alt="Denis — oštećena ID kartica"><span>DENIS / PRIPRAVNIK</span></button>
+    <button class="idcard" data-person="viktor"><img src="assets/id-viktor.png" alt="Viktor — oštećena ID kartica"><span>VIKTOR / KOPILOT</span></button>
+    <button class="idcard" data-person="stipe"><img src="assets/id-stipe.png" alt="Stipe — oštećena ID kartica"><span>STIPE / MEHANIČAR</span></button>
+    <div class="caption">ABISAL MARITIMA / PERSONAL FILE<br><b>5 KARTICA / 1 AKTIVNA, 4 OŠTEĆENE</b></div>
+  </div>
+</section>
 
-<section class="scene black">
-<div class="box"><small>812 m / VOYAGE DATA RECORDER</small><div class="rec"><div class="speaker"></div><div class="display"><b>812</b><small> m<br><br><span id="bs">RECOVERING</span></small></div><button id="play">REPRODUCIRAJ POSLJEDNJIH 11 SEKUNDI</button></div><div class="transcript" id="tr"><p><time>00:00</time><span>—</span></p></div></div></section>
+<section class="section cockpit" id="most">
+  <div class="cockpit-sticky">
+    <div class="cockpit-img"></div>
+    <div class="telemetry">
+      <div><span>ABISAL LINK</span><b>ACTIVE</b></div>
+      <div><span>NOVA</span><b>ONLINE</b></div>
+      <div><span>POSADA</span><b>05</b></div>
+      <div><span>STATUS</span><b>NEPOTPUN</b></div>
+    </div>
+    <div class="cockpit-copy reveal">
+      <small>02 / MOST / STVARNI COCKPIT ASSET</small>
+      <h2>OVDJE JE BRAND PRESTAO BITI BRAND.</h2>
+      <p>ABISAL više nije ukras stranice. Isti vizual koji postoji na brodu sada zauzima sam prostor weba. Pomicanjem pokazivača ne “otkrivaš lore”; samo vidiš koliko je kompanija fizički prisutna u prostoru u kojem ljudi moraju živjeti i raditi.</p>
+    </div>
+  </div>
+</section>
 
-<section class="scene end"><div><small>900 m / AUTOMATSKA PORUKA</small><h2>Hvala što ste pregledali sigurnosni materijal.</h2><p>Sadržaj iznad može biti nepotpun. To ne utječe na valjanost procedure.</p><div class="status"><span>STATUS PLOVILA</span><b>POVRATAK NIJE POTVRĐEN</b></div></div><div class="word">ZRAKOPERKA</div></section>
+<section class="section signal" id="signal">
+  <div class="signal-art reveal"><img src="assets/company.png" alt="NOVA / ABISAL MARITIMA"></div>
+  <div class="signal-copy reveal">
+    <small>03 / SIGNAL / ABISAL MARITIMA</small>
+    <h2>Prijateljski glas nije isto što i prijatelj.</h2>
+    <p>NOVA ostaje korisna, ugodna i korporativno sigurna. Upravo zato je zanimljivija kada se oko nje raspadaju odnosi među ljudima. Web se više ne trudi dokazati da je “horor”; pušta stvarnim assetima i jeziku tvrtke da naprave taj posao.</p>
+    <div class="line"><span>SUSTAV</span><b>NASTAVLJA RAD</b></div>
+  </div>
+</section>
+
+<section class="section final">
+  <div class="final-inner reveal">
+    <img class="final-logo" src="assets/zrakoperka-logo.png" alt="ZRAKOPERKA">
+    <p>Psihološki horor u razvoju. KARLOLEGEND. Store, trailer i javni build pojavit će se ovdje kada budu dovoljno stvarni da ne trebaju placeholder.</p>
+    <div class="credits"><span>© <b id="year"></b> KARLOLEGEND</span><span>ABISAL MARITIMA / NOVA / ZRAKOPERKA</span><a href="#top">POVRŠINA ↑</a></div>
+  </div>
+</section>
 </main>
 
-<div class="scrim" id="scrim"></div><aside class="drawer" id="drawer"><button id="close">×</button><small id="di">AM–07</small><h3 id="dt">MOST</h3><p id="db"></p></aside>
+<div class="modal-scrim" id="scrim"></div>
+<aside class="person" id="person">
+  <button class="close" id="close">×</button>
+  <div class="person-visual"><img id="personImg" src="assets/id-nives.png" alt=""></div>
+  <div class="person-copy"><small id="personCode">PERSONAL FILE</small><h3 id="personName">NIVES</h3><div class="role" id="personRole">MEDICINSKA SESTRA</div><p id="personText"></p></div>
+</aside>
 
 <script>
-var root=document.documentElement,dv=document.getElementById('dv'),dn=document.getElementById('dn');
-function depth(){var m=document.documentElement.scrollHeight-innerHeight,p=m?scrollY/m:0;root.style.setProperty('--d',Math.min(1,p*1.08).toFixed(3));dv.textContent=String(Math.round(p*900)).padStart(3,'0')+'m';dn.style.top=(p*100)+'%'}addEventListener('scroll',depth,{passive:true});depth();
-var rooms={most:['MOST','Četiri sjedala, pet slušalica. Jedna je uvijek ostajala na podu ispod Viktorova mjesta.'],kuhinja:['KUHINJA','Tri čiste šalice i dvije prljave. Raspored sjedenja u zapisniku ne odgovara tragovima na podu.'],kabine:['KABINE','Pet ormarića. Šest ležajeva. Šesti madrac nije tvornički zapakiran.'],amb:['AMBULANTA','Inventura lijekova slaže se do posljednje smjene. Poslije toga nedostaje jedna tableta, a u šalici su dvije polovice.'],stroj:['STROJARNICA','Generator B nije bio pokvaren dovoljno da stane. Bio je pokvaren taman toliko da ga netko mora stalno obilaziti.']};
-var people={nives:['NIVES','Fotografija na iskaznici izgrebana je preko usta, ne preko očiju.'],branimir:['BRANIMIR','Na dnu šalice pronađena je polovica tablete. Druga polovica nije evidentirana.'],stipe:['STIPE','Medicinska traka na ključu prekriva stariju traku druge boje.'],denis:['DENIS','Poruka je napisana istom olovkom kao posljednja dva unosa u zapisniku.'],viktor:['VIKTOR','Upaljač radi. U osobnim stvarima nema duhana. Cigaretama je zadužen Denis.']};
-var drawer=document.getElementById('drawer'),scrim=document.getElementById('scrim');
-function openD(a,i){document.getElementById('dt').textContent=a[0];document.getElementById('db').textContent=a[1];document.getElementById('di').textContent=i;drawer.classList.add('open');scrim.classList.add('on')}
-function closeD(){drawer.classList.remove('open');scrim.classList.remove('on')}
-document.querySelectorAll('[data-r]').forEach(function(x){x.onclick=function(){openD(rooms[x.dataset.r],'AM–07 / PROSTOR')}});document.querySelectorAll('[data-p]').forEach(function(x){x.onclick=function(){openD(people[x.dataset.p],'PREDMET POSADE')}});document.getElementById('close').onclick=closeD;scrim.onclick=closeD;
-document.getElementById('more').onclick=function(){var a=[['05:58','AM–SYS','Vrata ambulante: OTVORENA → ZATVORENA → OTVORENA.'],['06:02','NIVES','Ne ulazi.'],['06:02','NIVES','Uđi.'],['06:21','AM–SYS','Most nije potvrdio novu smjenu.']];a.forEach(function(v){var d=document.createElement('div');d.className='entry bad';d.innerHTML='<time>'+v[0]+'</time><strong>'+v[1]+'</strong><p>'+v[2]+'</p><em>oporavljeno</em>';document.getElementById('entries').appendChild(d)});this.disabled=true;this.textContent='IZMJENE UČITANE'};
-document.querySelectorAll('[data-c]').forEach(function(b){b.onclick=function(){document.querySelectorAll('[data-c]').forEach(function(q){q.classList.remove('on')});b.classList.add('on');document.getElementById('ct').textContent=b.dataset.c==='1'?'CAM 01 / KUHINJA':b.dataset.c==='2'?'CAM 02 / HODNIK':'CAM 03 / STROJARNICA';document.getElementById('figure').style.opacity=b.dataset.c==='3'?'0':'.75';document.getElementById('figure').style.left=b.dataset.c==='2'?'19%':'68%'}});document.getElementById('scr').oninput=function(){var v=+this.value,view=document.getElementById('view');view.classList.toggle('drop',v>48&&v<56);document.getElementById('figure').style.transform='translateX('+((v-36)*.7)+'px)';document.getElementById('tm').textContent='06:0'+(2+Math.floor(v*1.8/60))+':'+String(Math.round(v*1.8)%60).padStart(2,'0')};
-var lines=[['00:01','[metalni udar]'],['00:03','DENIS: Ne. Ne tako.'],['00:05','NIVES: Pusti.'],['00:06','[tri kratka alarma]'],['00:08','STIPE: Tko je zaključao—'],['00:09','[prekid snimke]'],['00:11','AM–SYS: smjena prihvaćena.']];
-document.getElementById('play').onclick=function(){var tr=document.getElementById('tr'),btn=this;tr.innerHTML='';btn.disabled=true;document.getElementById('bs').textContent='PLAYBACK';lines.forEach(function(v,i){setTimeout(function(){var p=document.createElement('p');p.innerHTML='<time>'+v[0]+'</time><span>'+v[1]+'</span>';tr.appendChild(p);if(i===lines.length-1){document.getElementById('bs').textContent='END OF DATA';btn.disabled=false;btn.textContent='REPRODUCIRAJ PONOVNO'}},i*600)})};
-var ctx,hum;document.getElementById('sound').onclick=function(){if(ctx){ctx.close();ctx=null;this.classList.remove('on');this.textContent='ZVUK / ISKLJUČEN';return}ctx=new(window.AudioContext||window.webkitAudioContext)();var g=ctx.createGain();g.gain.value=.03;g.connect(ctx.destination);hum=ctx.createOscillator();hum.frequency.value=43;hum.type='sine';hum.connect(g);hum.start();this.classList.add('on');this.textContent='ZVUK / UKLJUČEN'};
+(function(){
+  var root=document.documentElement;
+  var depthValue=document.getElementById("depthValue");
+  var meterValue=document.getElementById("meterValue");
+  var needle=document.getElementById("needle");
+  function updateDepth(){
+    var max=Math.max(1,document.documentElement.scrollHeight-innerHeight);
+    var p=Math.max(0,Math.min(1,scrollY/max));
+    root.style.setProperty("--depth",p.toFixed(3));
+    var metres=Math.round(p*900);
+    depthValue.textContent=String(metres).padStart(3,"0")+" m";
+    meterValue.textContent=String(metres).padStart(3,"0");
+    needle.style.top=(p*100)+"%";
+  }
+  addEventListener("scroll",updateDepth,{passive:true});updateDepth();
+
+  if(!matchMedia("(prefers-reduced-motion: reduce)").matches){
+    addEventListener("pointermove",function(e){
+      root.style.setProperty("--mx",(e.clientX/innerWidth*100).toFixed(2)+"%");
+      root.style.setProperty("--my",(e.clientY/innerHeight*100).toFixed(2)+"%");
+    },{passive:true});
+  }
+
+  var observer=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");observer.unobserve(e.target)}});
+  },{threshold:.08});
+  document.querySelectorAll(".reveal").forEach(function(el){observer.observe(el)});
+
+  document.querySelectorAll(".idcard").forEach(function(card){
+    card.addEventListener("pointermove",function(e){
+      if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+      var r=card.getBoundingClientRect();
+      var x=(e.clientX-r.left)/r.width-.5;
+      var y=(e.clientY-r.top)/r.height-.5;
+      card.style.transform="perspective(700px) rotateX("+(-y*7)+"deg) rotateY("+(x*9)+"deg) translateY(-8px)";
+    });
+    card.addEventListener("pointerleave",function(){card.style.transform=""});
+  });
+
+  var people={
+    nives:{name:"NIVES",role:"MEDICINSKA SESTRA",img:"assets/id-nives.png",text:"Jedina kartica koja nije spaljena. Čista korporativna fotografija, čisti formular, uredan identitet — i osoba koja u priči mora raditi u uvjetima koji ništa od toga ne poštuju."},
+    branimir:{name:"BRANIMIR",role:"KAPETAN",img:"assets/id-branimir.png",text:"Kapetan postoji na kartici tek djelomično. Oštećenje nije web-efekt; nalazi se u stvarnom assetu iz igre i zato ga stranica ne pokušava uljepšati."},
+    denis:{name:"DENIS",role:"PRIPRAVNIK",img:"assets/id-denis.png",text:"Najmlađi član posade i najlakša meta tuđih projekcija. Na webu nema hero portret: ostaje administrativni komad plastike koji ga svodi na funkciju."},
+    viktor:{name:"VIKTOR",role:"KOPILOT",img:"assets/id-viktor.png",text:"Korporativni identitet i privatno ponašanje nisu ista stvar. Kartica može potvrditi tko je zaposlenik; ne može potvrditi tko je čovjek."},
+    stipe:{name:"STIPE",role:"MEHANIČAR",img:"assets/id-stipe.png",text:"Radnik koji zna da se brod održava improvizacijom, vremenom i tijelom. Oštećena kartica vizualno radi više od još jednog izmišljenog bio-panela."}
+  };
+  var modal=document.getElementById("person"),scrim=document.getElementById("scrim");
+  function openPerson(key){
+    var p=people[key];if(!p)return;
+    document.getElementById("personImg").src=p.img;
+    document.getElementById("personImg").alt=p.name+" — ID kartica";
+    document.getElementById("personName").textContent=p.name;
+    document.getElementById("personRole").textContent=p.role;
+    document.getElementById("personText").textContent=p.text;
+    document.getElementById("personCode").textContent="ABISAL MARITIMA / PERSONAL FILE";
+    modal.classList.add("open");scrim.classList.add("open");document.body.style.overflow="hidden";
+  }
+  function closePerson(){modal.classList.remove("open");scrim.classList.remove("open");document.body.style.overflow=""}
+  document.querySelectorAll("[data-person]").forEach(function(b){b.addEventListener("click",function(){openPerson(b.dataset.person)})});
+  document.getElementById("close").addEventListener("click",closePerson);scrim.addEventListener("click",closePerson);
+  addEventListener("keydown",function(e){if(e.key==="Escape")closePerson()});
+
+  var audioCtx,osc,osc2,gain;
+  document.getElementById("sound").addEventListener("click",function(){
+    if(audioCtx){audioCtx.close();audioCtx=null;this.classList.remove("on");this.textContent="BRODSKI HUM / OFF";return}
+    audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    gain=audioCtx.createGain();gain.gain.value=.022;gain.connect(audioCtx.destination);
+    osc=audioCtx.createOscillator();osc.type="sine";osc.frequency.value=42;osc.connect(gain);osc.start();
+    osc2=audioCtx.createOscillator();osc2.type="triangle";osc2.frequency.value=84.7;var g2=audioCtx.createGain();g2.gain.value=.004;osc2.connect(g2);g2.connect(audioCtx.destination);osc2.start();
+    this.classList.add("on");this.textContent="BRODSKI HUM / ON";
+  });
+  document.getElementById("year").textContent=new Date().getFullYear();
+})();
 </script>
-</body></html>
+</body>
+</html>
