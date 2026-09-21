@@ -1,0 +1,4 @@
+status=failure
+commit=41ac4113a5db16fb25c0ba6af158206f3a57e597
+url=https://zrakoperka-website.karlolegend.workers.dev/
+time=2026-09-21T03:03:35Z
