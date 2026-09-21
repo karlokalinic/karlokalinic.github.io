@@ -22,28 +22,35 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Verify Cloudflare credentials
+      - name: Detect Cloudflare credentials
+        id: auth
         shell: bash
         run: |
-          set -euo pipefail
-          test -n "${CLOUDFLARE_API_TOKEN:-}" || { echo "::error::Cloudflare API token is not configured in this repository"; exit 21; }
-          test -n "${CLOUDFLARE_ACCOUNT_ID:-}" || { echo "::error::Cloudflare account ID is not configured in this repository"; exit 22; }
+          if [[ -n "${CLOUDFLARE_API_TOKEN:-}" && -n "${CLOUDFLARE_ACCOUNT_ID:-}" ]]; then
+            echo 'available=true' >> "$GITHUB_OUTPUT"
+            echo 'Cloudflare credentials are available.'
+          else
+            echo 'available=false' >> "$GITHUB_OUTPUT"
+            echo 'Cloudflare credentials are not configured in this repository; deployment is skipped.'
+          fi
       - name: Deploy ZRAKOPERKA
+        if: steps.auth.outputs.available == 'true'
         shell: bash
         run: npx --yes wrangler@4 deploy --config cloudflare-zrakoperka.toml
       - name: Verify public Worker
+        if: steps.auth.outputs.available == 'true'
         shell: bash
         run: |
           set -euo pipefail
           curl --fail --silent --show-error --retry 5 --retry-delay 3 https://zrakoperka-website.karlolegend.workers.dev/ | grep -q 'ZRAKOPERKA'
-      - name: Record deploy result
+      - name: Record deploy state
         if: always()
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p deployment-status
-          if [[ -n "${CLOUDFLARE_API_TOKEN:-}" && -n "${CLOUDFLARE_ACCOUNT_ID:-}" ]]; then cred=present; else cred=missing; fi
-          printf 'status=%s\ncredentials=%s\ncommit=%s\nurl=%s\ntime=%s\n' "${{ job.status }}" "$cred" "$GITHUB_SHA" "https://zrakoperka-website.karlolegend.workers.dev/" "$(date -u +%FT%TZ)" > deployment-status/zrakoperka-cloudflare.txt
+          if [[ "${{ steps.auth.outputs.available }}" == 'true' ]]; then state="${{ job.status }}"; cred=present; else state=blocked; cred=missing; fi
+          printf 'status=%s\ncredentials=%s\ncommit=%s\nurl=%s\ntime=%s\n' "$state" "$cred" "$GITHUB_SHA" "https://zrakoperka-website.karlolegend.workers.dev/" "$(date -u +%FT%TZ)" > deployment-status/zrakoperka-cloudflare.txt
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add deployment-status/zrakoperka-cloudflare.txt
