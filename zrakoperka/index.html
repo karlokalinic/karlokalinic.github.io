@@ -3,523 +3,152 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#081719">
-<meta name="description" content="ZRAKOPERKA — narativni psihološki horor. KARLOLEGEND / ABISAL MARITIMA.">
+<meta name="theme-color" content="#e7dfca">
+<meta name="description" content="ZRAKOPERKA — narativni psihološki horor. KARLOLEGEND.">
 <title>ZRAKOPERKA — KARLOLEGEND</title>
 <style>
-:root{
-  --ink:#081719;
-  --deep:#020708;
-  --teal:#12383c;
-  --cyan:#29a9b7;
-  --gold:#e1bf58;
-  --paper:#e8e0ca;
-  --paper2:#cfc6ad;
-  --red:#9f342e;
-  --muted:#81908a;
-  --depth:0;
-  --mx:50%;
-  --my:50%;
-}
-*{box-sizing:border-box}
-html{background:var(--deep);scroll-behavior:smooth}
-body{
-  margin:0;
-  color:var(--paper);
-  background:
-    radial-gradient(circle at 50% 0,#12383c 0,#071415 30%,#020708 72%);
-  font-family:Arial,Helvetica,sans-serif;
-  overflow-x:hidden
-}
-img{display:block;max-width:100%}
-a{color:inherit;text-decoration:none}
-button{font:inherit;color:inherit}
-::selection{background:var(--gold);color:#111}
-.noise,.vignette,.pointer-light{position:fixed;inset:0;pointer-events:none}
-.noise{
-  z-index:100;opacity:.055;mix-blend-mode:screen;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.78' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")
-}
-.vignette{z-index:99;box-shadow:inset 0 0 calc(50px + var(--depth)*120px) calc(var(--depth)*18px) #0008}
-.pointer-light{
-  z-index:98;
-  background:radial-gradient(circle 280px at var(--mx) var(--my),rgba(225,191,88,.08),transparent 70%);
-  mix-blend-mode:screen
-}
-.top{
-  position:fixed;z-index:90;top:0;left:0;right:0;height:62px;
-  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
-  padding:0 clamp(16px,3vw,46px);
-  border-bottom:1px solid #ffffff16;
-  background:linear-gradient(#031012ed,#031012a8,transparent);
-  backdrop-filter:blur(10px)
-}
-.top .brand{display:flex;align-items:center;gap:12px;font:700 9px monospace;letter-spacing:.15em}
-.top .brand img{height:24px;width:auto;max-width:155px;object-fit:contain;filter:brightness(1.08)}
-.top nav{display:flex;gap:20px;font:8px monospace;letter-spacing:.14em;color:#9badA6}
-.top nav a:hover{color:var(--gold)}
-.top .readout{justify-self:end;font:8px monospace;color:#8d9b96;letter-spacing:.12em}
-.top .readout b{color:var(--gold);font-weight:400}
-.depth-meter{
-  position:fixed;z-index:88;right:14px;top:50%;height:48vh;translate:0 -50%;
-  display:flex;gap:7px;align-items:center;font:7px monospace;letter-spacing:.1em;color:#d1d4cb
-}
-.depth-track{width:1px;height:100%;background:#ffffff3d;position:relative}
-.depth-needle{position:absolute;left:-5px;width:11px;height:1px;background:var(--gold);top:0;box-shadow:0 0 10px var(--gold)}
-.depth-label{writing-mode:vertical-rl;transform:rotate(180deg);opacity:.65}
-.sound{
-  position:fixed;z-index:90;left:14px;bottom:14px;
-  border:1px solid #ffffff25;background:#061112de;padding:9px 10px;
-  font:8px monospace;letter-spacing:.12em;color:#899994;cursor:pointer
-}
-.sound.on{border-color:var(--gold);color:var(--gold)}
+:root{--cream:#e7dfca;--ink:#111612;--deep:#020607;--teal:#0a2326;--cyan:#31bfd0;--gold:#dabd62;--red:#8f312d;--depth:0;--mx:50%;--my:50%}
+*{box-sizing:border-box}html{scroll-behavior:smooth;background:var(--deep)}body{margin:0;overflow-x:hidden;background:var(--deep);color:#ddd5bf;font-family:Arial,Helvetica,sans-serif}img{display:block;max-width:100%}a{color:inherit;text-decoration:none}button{font:inherit;color:inherit}::selection{background:var(--gold);color:#111}
+.noise,.vignette,.pointer{position:fixed;inset:0;pointer-events:none}.noise{z-index:100;opacity:.045;mix-blend-mode:screen;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.84' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}.vignette{z-index:99;box-shadow:inset 0 0 calc(35px + var(--depth)*120px) calc(var(--depth)*15px) #0008}.pointer{z-index:98;background:radial-gradient(circle 260px at var(--mx) var(--my),rgba(224,190,91,.07),transparent 72%);mix-blend-mode:screen}
+.top{position:fixed;z-index:90;top:0;left:0;right:0;height:58px;padding:0 clamp(16px,3vw,44px);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;border-bottom:1px solid #ffffff14;background:linear-gradient(#031012e8,#03101298,transparent);backdrop-filter:blur(9px);transition:opacity .25s}
+.brand{font:700 9px monospace;letter-spacing:.17em}.top nav{display:flex;gap:18px;font:8px monospace;letter-spacing:.14em;color:#8ca19a}.top nav a:hover{color:var(--gold)}.readout{justify-self:end;font:8px monospace;letter-spacing:.13em;color:#788c85}.readout b{font-weight:400;color:var(--gold)}
+.depth-meter{position:fixed;z-index:88;right:13px;top:50%;height:44vh;translate:0 -50%;display:flex;gap:6px;align-items:center;font:7px monospace;color:#cad0ca}.track{width:1px;height:100%;background:#ffffff35;position:relative}.needle{position:absolute;left:-5px;width:11px;height:1px;background:var(--gold);top:0}.depth-label{writing-mode:vertical-rl;transform:rotate(180deg);opacity:.55;letter-spacing:.13em}
+.sound{position:fixed;z-index:90;bottom:13px;left:13px;border:1px solid #ffffff25;background:#041011df;padding:9px 10px;font:8px monospace;letter-spacing:.12em;color:#859891;cursor:pointer}.sound.on{color:var(--gold);border-color:var(--gold)}
 .section{position:relative;min-height:100svh}
-.hero{
-  display:grid;place-items:center;overflow:hidden;
-  min-height:100svh;padding:90px 5vw 50px;
-  background:#061315
-}
-.hero-bg{
-  position:absolute;inset:-6%;
-  background:
-    linear-gradient(180deg,#02060728,#020607c8 72%,#020607),
-    url("assets/cockpit-abisal.png") center/cover no-repeat;
-  transform:scale(calc(1.06 + var(--depth)*.08));
-  filter:saturate(1.08) contrast(1.04) brightness(.64);
-  transition:filter .2s linear
-}
-.hero:after{
-  content:"";position:absolute;inset:0;
-  background:
-    radial-gradient(circle at var(--mx) var(--my),transparent 0 5%,#0207073a 24%,#020707dc 74%),
-    linear-gradient(90deg,#041111d8 0,transparent 28%,transparent 72%,#041111d8 100%)
-}
-.hero-inner{
-  position:relative;z-index:2;width:min(1280px,100%);display:grid;
-  grid-template-columns:.78fr 1.22fr;align-items:end;gap:6vw
-}
-.hero-copy{padding-bottom:6vh}
-.kicker{font:8px monospace;letter-spacing:.2em;color:#a9b8b2}
-.hero-logo{
-  width:min(760px,100%);margin:16px 0 26px;
-  filter:drop-shadow(0 20px 35px #000b);
-  mix-blend-mode:screen
-}
-.hero-copy p{
-  margin:0;max-width:520px;font:400 clamp(16px,1.5vw,22px)/1.45 Georgia,serif;color:#d2d0c3
-}
-.enter{
-  display:inline-flex;margin-top:27px;align-items:center;gap:12px;
-  font:700 8px monospace;letter-spacing:.17em;border-bottom:1px solid #7d8c86;padding-bottom:5px
-}
-.enter i{display:block;width:38px;height:1px;background:var(--gold)}
-.hero-company{
-  position:relative;min-height:66vh;display:flex;align-items:center;justify-content:center
-}
-.hero-company img{
-  width:min(540px,45vw);max-height:67vh;object-fit:contain;
-  filter:drop-shadow(0 30px 55px #0009);
-  transform:translateY(calc(var(--depth)*12px))
-}
-.hero-company:before{
-  content:"NOVA / ABISAL MARITIMA";position:absolute;left:-2%;top:11%;
-  writing-mode:vertical-rl;transform:rotate(180deg);
-  font:7px monospace;letter-spacing:.23em;color:#84948e
-}
-.hero-meta{
-  position:absolute;z-index:3;left:5vw;right:5vw;bottom:20px;
-  display:flex;justify-content:space-between;font:7px monospace;letter-spacing:.12em;color:#677a73
-}
 
-.transition{
-  min-height:42vh;display:flex;align-items:center;overflow:hidden;
-  border-block:1px solid #ffffff12;background:#020809
-}
-.marquee{
-  white-space:nowrap;width:max-content;
-  font:900 clamp(44px,8vw,130px)/.8 Arial,sans-serif;
-  letter-spacing:-.065em;color:#10292b;
-  text-shadow:1px 0 #486367;
-  animation:marquee 28s linear infinite
-}
-@keyframes marquee{to{transform:translateX(-50%)}}
+/* opening */
+.opening{background:var(--cream);color:var(--ink);display:grid;place-items:center;overflow:hidden}.opening:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 44%,#f3ecd8 0,#e7dfca 48%,#d8cfb8 100%)}.presenter{position:absolute;z-index:3;inset:0;display:grid;place-items:center;animation:presenter 3.35s ease forwards}.presenter span{font:700 clamp(12px,1.3vw,20px)/1 monospace;letter-spacing:.44em;opacity:0;animation:presenterText 3.35s ease forwards}.opening-title{position:relative;z-index:2;width:min(1200px,82vw);opacity:0;transform:scale(.985);animation:titleArrive 3s 2.15s cubic-bezier(.2,.72,.18,1) forwards}.opening-title img{width:100%;filter:drop-shadow(2px 0 rgba(40,192,210,.45)) drop-shadow(-1px 1px rgba(215,173,74,.3))}.opening-meta{position:absolute;z-index:3;left:clamp(18px,5vw,84px);right:clamp(18px,5vw,84px);bottom:28px;display:flex;justify-content:space-between;opacity:0;animation:metaIn 1s 4.1s forwards;font:7px monospace;letter-spacing:.14em;color:#667066}.scroll-cue{display:flex;gap:12px;align-items:center}.scroll-cue i{display:block;width:44px;height:1px;background:#889086;animation:cue 1.5s ease-in-out infinite}
+@keyframes presenter{0%,70%{opacity:1}100%{opacity:0;visibility:hidden}}@keyframes presenterText{0%{opacity:0;transform:translateY(8px)}20%,63%{opacity:1;transform:none}100%{opacity:0;transform:translateY(-7px)}}@keyframes titleArrive{0%{opacity:0;transform:scale(.985);filter:blur(3px)}100%{opacity:1;transform:scale(1);filter:none}}@keyframes metaIn{to{opacity:1}}@keyframes cue{50%{transform:translateX(8px);opacity:.45}}
 
-.corporate{
-  background:var(--paper);color:#161b18;padding:120px clamp(22px,5vw,80px)
-}
-.corporate-head{
-  max-width:1380px;margin:auto 0 60px;display:grid;grid-template-columns:1.2fr .8fr;gap:6vw;align-items:end
-}
-.corporate-head small{font:8px monospace;letter-spacing:.18em;color:#525c55}
-.corporate-head h2{margin:13px 0 0;font:900 clamp(50px,8vw,120px)/.83 Arial;letter-spacing:-.07em}
-.corporate-head p{font:15px/1.55 Georgia,serif;margin:0;color:#424b44;max-width:510px}
-.poster-stack{max-width:1480px;margin:auto;display:grid;gap:25vh}
-.poster{
-  min-height:86vh;display:grid;grid-template-columns:.85fr 1.15fr;
-  align-items:center;gap:6vw;position:relative
-}
-.poster:nth-child(even){grid-template-columns:1.15fr .85fr}
-.poster:nth-child(even) .poster-art{order:2}
-.poster-art{
-  min-height:66vh;position:relative;display:grid;place-items:center;overflow:hidden;
-  border:1px solid #1f28230d;background:#132f31;
-  box-shadow:0 35px 80px #3d433b2b
-}
-.poster-art:before{
-  content:"";position:absolute;inset:0;
-  background:repeating-linear-gradient(135deg,#ffffff10 0 1px,transparent 1px 44px)
-}
-.poster:nth-child(2) .poster-art{background:#304d55}
-.poster:nth-child(3) .poster-art{background:#235d4b}
-.poster:nth-child(4) .poster-art{background:#6e572a}
-.poster-art img{position:relative;width:82%;height:72%;object-fit:contain;filter:drop-shadow(0 25px 30px #0004)}
-.poster-copy{padding:5vw 0}
-.poster-copy .nr{font:8px monospace;letter-spacing:.16em;color:#667069}
-.poster-copy h3{
-  margin:20px 0 25px;font:900 clamp(43px,6vw,90px)/.9 Arial;letter-spacing:-.06em
-}
-.poster-copy .body{font:18px/1.45 Georgia,serif;max-width:550px}
-.poster-copy .warning{
-  margin-top:38px;border-top:1px solid #242b27;padding-top:12px;
-  color:var(--red);font:italic 13px/1.5 Georgia,serif;max-width:540px
-}
-.poster .ghost{
-  position:absolute;font:900 clamp(70px,14vw,220px)/.7 Arial;color:#00000008;
-  letter-spacing:-.08em;z-index:0;white-space:nowrap;bottom:-2vw
-}
+/* real gameplay */
+.gameplay{min-height:118svh;background:#000;overflow:hidden}.gameplay-sticky{position:sticky;top:0;height:100svh;overflow:hidden}.gameplay-image{position:absolute;inset:-2%;background:url("assets/gameplay-01.webp") center/cover no-repeat;filter:brightness(.84) contrast(1.08);transform:scale(calc(1.02 + var(--depth)*.025))}.gameplay-sticky:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#0005 0,#0000 30%,#0003 58%,#000e 100%),linear-gradient(90deg,#0008 0,transparent 38%,transparent 72%,#0007 100%)}.gameplay-copy{position:absolute;z-index:3;left:clamp(20px,5vw,82px);bottom:8vh;max-width:750px}.gameplay-copy small{font:8px monospace;letter-spacing:.18em;color:#89958f}.gameplay-copy h2{font:900 clamp(48px,7.2vw,106px)/.86 Arial;letter-spacing:-.065em;margin:16px 0 20px}.gameplay-copy p{max-width:610px;font:15px/1.55 Georgia,serif;color:#c5c8be}.gameplay-tag{position:absolute;z-index:3;right:clamp(20px,5vw,82px);top:14vh;border:1px solid #ffffff24;background:#0008;padding:12px 14px;font:8px/1.6 monospace;letter-spacing:.12em;color:#aab2ad}.gameplay-tag b{color:var(--gold);font-weight:400}
 
-.crew{
-  background:#091719;padding:120px clamp(22px,5vw,80px) 150px;overflow:hidden
-}
-.crew-head{max-width:1300px;margin:0 auto 70px;display:flex;justify-content:space-between;gap:30px;align-items:end}
-.crew-head h2{margin:0;font:900 clamp(58px,9vw,135px)/.8 Arial;letter-spacing:-.08em}
-.crew-head p{max-width:430px;margin:0;font:11px/1.6 monospace;color:#8ea099}
-.id-table{
-  max-width:1450px;min-height:760px;margin:auto;position:relative;
-  border-top:1px solid #ffffff20;border-bottom:1px solid #ffffff20;
-  background:
-    radial-gradient(circle at 50% 52%,#163235 0,#0b191b 38%,#061012 73%)
-}
-.id-table:after{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(90deg,#ffffff04 1px,transparent 1px),linear-gradient(#ffffff04 1px,transparent 1px);
-  background-size:70px 70px;mask-image:radial-gradient(circle,#000 0,transparent 72%)
-}
-.idcard{
-  position:absolute;z-index:2;width:min(310px,24vw);border:0;background:transparent;padding:0;
-  transform-style:preserve-3d;transition:transform .25s ease,filter .25s ease;cursor:pointer
-}
-.idcard img{width:100%;filter:drop-shadow(0 26px 28px #000b)}
-.idcard:hover{z-index:8;filter:brightness(1.08)}
-.idcard span{
-  position:absolute;left:50%;bottom:-34px;translate:-50% 0;
-  font:8px monospace;letter-spacing:.18em;color:#7f918b;white-space:nowrap
-}
-.idcard:nth-child(1){left:5%;top:20%;rotate:-10deg}
-.idcard:nth-child(2){left:21%;top:42%;rotate:7deg}
-.idcard:nth-child(3){left:41%;top:11%;rotate:-3deg}
-.idcard:nth-child(4){left:59%;top:39%;rotate:9deg}
-.idcard:nth-child(5){left:78%;top:17%;rotate:-8deg}
-.id-table .caption{
-  position:absolute;z-index:1;left:2%;bottom:3%;font:8px/1.6 monospace;color:#61716b;letter-spacing:.1em
-}
-.id-table .caption b{color:var(--gold);font-weight:400}
+/* poster archive */
+.archive{background:var(--cream);color:var(--ink);padding:125px clamp(20px,5vw,82px)}.archive-head{max-width:1380px;margin:0 auto 85px;display:grid;grid-template-columns:1.15fr .85fr;gap:7vw;align-items:end}.archive-head small{font:8px monospace;letter-spacing:.18em;color:#687167}.archive-head h2{font:900 clamp(48px,8vw,118px)/.84 Arial;letter-spacing:-.07em;margin:14px 0 0}.archive-head p{margin:0;max-width:520px;font:15px/1.6 Georgia,serif;color:#444c45}.poster-grid{max-width:1460px;margin:auto;display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(24px,4vw,64px)}.poster-card{position:relative;min-height:78vh;display:grid;grid-template-rows:1fr auto;border-top:1px solid #1d251f;background:#ddd4bd;overflow:hidden}.poster-card:nth-child(2){margin-top:16vh}.poster-card:nth-child(4){margin-top:11vh}.poster-frame{min-height:58vh;background:#10272a;overflow:hidden;display:grid;place-items:center}.poster-frame img{width:100%;height:100%;object-fit:cover;transition:transform .7s ease}.poster-card:hover .poster-frame img{transform:scale(1.025)}.poster-caption{padding:18px 0 3px;display:grid;grid-template-columns:90px 1fr;gap:18px}.poster-caption span{font:8px monospace;color:#667067;letter-spacing:.14em}.poster-caption strong{font:700 clamp(20px,2.5vw,34px)/1 Arial}.poster-warning{grid-column:2;font:italic 12px/1.5 Georgia;color:var(--red);padding-top:8px}
 
-.cockpit{
-  min-height:125vh;background:#020809;overflow:hidden
-}
-.cockpit-sticky{position:sticky;top:0;height:100svh;overflow:hidden}
-.cockpit-img{
-  position:absolute;inset:-8%;
-  background:url("assets/cockpit-abisal.png") center/cover no-repeat;
-  filter:brightness(.45) saturate(1.08) contrast(1.08);
-  transform:scale(calc(1.08 + var(--depth)*.035))
-}
-.cockpit-sticky:after{
-  content:"";position:absolute;inset:0;
-  background:
-    radial-gradient(circle 320px at var(--mx) var(--my),transparent 0,#02080945 55%,#020809e8 90%),
-    linear-gradient(180deg,#02080915,#020809dd 84%)
-}
-.cockpit-copy{
-  position:absolute;z-index:3;left:clamp(22px,6vw,95px);bottom:8vh;max-width:900px
-}
-.cockpit-copy small{font:8px monospace;letter-spacing:.18em;color:#849a92}
-.cockpit-copy h2{font:900 clamp(54px,9vw,130px)/.82 Arial;letter-spacing:-.075em;margin:18px 0}
-.cockpit-copy p{font:15px/1.55 Georgia;color:#b9c1ba;max-width:630px}
-.telemetry{
-  position:absolute;z-index:4;right:clamp(24px,6vw,95px);top:15vh;width:min(290px,35vw);
-  border:1px solid #6b7e762d;background:#031011a8;backdrop-filter:blur(8px)
-}
-.telemetry div{display:flex;justify-content:space-between;padding:10px 12px;border-bottom:1px solid #ffffff12;font:8px monospace}
-.telemetry div:last-child{border-bottom:0}.telemetry span{color:#768b83}.telemetry b{font-weight:400;color:var(--gold)}
+/* crew */
+.crew{background:#081719;padding:130px clamp(20px,5vw,82px) 150px}.crew-head{max-width:1320px;margin:0 auto 70px;display:flex;justify-content:space-between;align-items:end;gap:35px}.crew-head h2{margin:0;font:900 clamp(58px,9vw,132px)/.8 Arial;letter-spacing:-.08em}.crew-head p{max-width:470px;margin:0;font:11px/1.65 monospace;color:#82958e}.id-table{max-width:1450px;min-height:770px;margin:auto;position:relative;border-block:1px solid #ffffff18;background:radial-gradient(circle at 50% 48%,#173235,#0b191a 44%,#051012 76%)}.id-table:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#ffffff04 1px,transparent 1px),linear-gradient(#ffffff04 1px,transparent 1px);background-size:72px 72px;mask-image:radial-gradient(circle,#000 0,transparent 73%);pointer-events:none}.idcard{position:absolute;z-index:2;width:min(310px,24vw);border:0;background:transparent;padding:0;transform-style:preserve-3d;transition:transform .23s ease,filter .23s ease;cursor:pointer}.idcard img{width:100%;filter:drop-shadow(0 27px 30px #000b)}.idcard:hover{z-index:10;filter:brightness(1.08)}.idcard span{position:absolute;left:50%;bottom:-32px;translate:-50% 0;font:8px monospace;letter-spacing:.17em;color:#81928c;white-space:nowrap}.idcard:nth-child(1){left:4%;top:17%;rotate:-10deg}.idcard:nth-child(2){left:21%;top:43%;rotate:7deg}.idcard:nth-child(3){left:41%;top:10%;rotate:-3deg}.idcard:nth-child(4){left:60%;top:39%;rotate:9deg}.idcard:nth-child(5){left:78%;top:16%;rotate:-8deg}.id-caption{position:absolute;left:2%;bottom:3%;font:8px/1.65 monospace;color:#61736c}.id-caption b{font-weight:400;color:var(--gold)}
 
-.signal{
-  min-height:110vh;padding:150px clamp(22px,5vw,80px) 70px;
-  background:#020606;display:grid;grid-template-columns:1fr 1fr;gap:8vw;align-items:center
-}
-.signal-art{position:relative;display:grid;place-items:center;min-height:65vh}
-.signal-art:before,.signal-art:after{
-  content:"";position:absolute;border:1px solid #d7bd6330;border-radius:50%
-}
-.signal-art:before{width:75%;aspect-ratio:1}
-.signal-art:after{width:45%;aspect-ratio:1}
-.signal-art img{position:relative;z-index:2;width:min(560px,90%);filter:drop-shadow(0 0 80px #3eb2c348)}
-.signal-copy small{font:8px monospace;letter-spacing:.18em;color:#73867e}
-.signal-copy h2{font:400 clamp(52px,7vw,100px)/.92 Georgia,serif;letter-spacing:-.05em;margin:22px 0}
-.signal-copy p{font:13px/1.7 monospace;color:#8ea099;max-width:560px}
-.signal-copy .line{
-  margin-top:44px;border-top:1px solid #33423c;padding-top:12px;
-  display:flex;justify-content:space-between;font:8px monospace;color:#687b74
-}
-.signal-copy .line b{color:var(--gold);font-weight:400}
-.final{
-  min-height:100svh;background:var(--paper);color:#101714;display:grid;place-items:center;
-  padding:90px 5vw;overflow:hidden
-}
-.final-inner{width:min(1400px,100%);text-align:center}
-.final-logo{width:min(1100px,95%);margin:auto;filter:contrast(1.06)}
-.final p{margin:45px auto 0;max-width:720px;font:14px/1.6 Georgia,serif;color:#4f5952}
-.final .credits{
-  margin-top:70px;padding-top:15px;border-top:1px solid #1d26211d;
-  display:flex;justify-content:space-between;font:8px monospace;letter-spacing:.12em;color:#687269
-}
+/* cockpit only once */
+.cockpit{min-height:124vh;background:#020809}.cockpit-sticky{position:sticky;top:0;height:100svh;overflow:hidden}.cockpit-img{position:absolute;inset:-7%;background:url("assets/cockpit-abisal.png") center/cover no-repeat;filter:brightness(.47) saturate(1.08) contrast(1.08);transform:scale(calc(1.07 + var(--depth)*.03))}.cockpit-sticky:after{content:"";position:absolute;inset:0;background:radial-gradient(circle 300px at var(--mx) var(--my),transparent,#02080952 58%,#020809e9 92%),linear-gradient(180deg,#02080920,#020809e5 85%)}.cockpit-copy{position:absolute;z-index:3;left:clamp(20px,6vw,94px);bottom:8vh;max-width:850px}.cockpit-copy small{font:8px monospace;letter-spacing:.17em;color:#81958d}.cockpit-copy h2{font:900 clamp(52px,8.5vw,125px)/.82 Arial;letter-spacing:-.075em;margin:17px 0}.cockpit-copy p{max-width:620px;font:15px/1.58 Georgia;color:#b9c1ba}.telemetry{position:absolute;z-index:4;right:clamp(18px,5vw,76px);top:13vh;width:min(280px,38vw);border:1px solid #6f81792e;background:#031011aa;backdrop-filter:blur(8px)}.telemetry div{display:flex;justify-content:space-between;padding:10px 12px;border-bottom:1px solid #ffffff10;font:8px monospace}.telemetry div:last-child{border-bottom:0}.telemetry span{color:#778b84}.telemetry b{font-weight:400;color:var(--gold)}
 
-.modal-scrim{position:fixed;z-index:120;inset:0;background:#000c;opacity:0;pointer-events:none;transition:.3s}
-.modal-scrim.open{opacity:1;pointer-events:auto}
-.person{
-  position:fixed;z-index:121;inset:6vh 5vw;background:#d8d0b9;color:#131a16;
-  display:grid;grid-template-columns:minmax(280px,.8fr) 1.2fr;
-  transform:translateY(110%);transition:.45s cubic-bezier(.2,.8,.2,1);
-  box-shadow:0 30px 120px #000a
-}
-.person.open{transform:none}
-.person-visual{background:#0b1718;display:grid;place-items:center;padding:5vw}
-.person-visual img{width:min(500px,90%);filter:drop-shadow(0 30px 35px #0008)}
-.person-copy{padding:clamp(35px,7vw,100px);display:flex;flex-direction:column;justify-content:center}
-.person-copy small{font:8px monospace;letter-spacing:.18em;color:#667168}
-.person-copy h3{margin:18px 0 14px;font:900 clamp(54px,8vw,115px)/.82 Arial;letter-spacing:-.07em}
-.person-copy .role{font:700 10px monospace;letter-spacing:.16em;color:var(--red)}
-.person-copy p{font:17px/1.55 Georgia;max-width:600px}
-.close{
-  position:absolute;right:14px;top:10px;border:0;background:transparent;font-size:38px;cursor:pointer;color:#151a17
-}
+/* company only once */
+.signal{min-height:105vh;padding:140px clamp(20px,5vw,82px);background:#020606;display:grid;grid-template-columns:1fr 1fr;gap:8vw;align-items:center}.signal-art{position:relative;display:grid;place-items:center;min-height:60vh}.signal-art:before,.signal-art:after{content:"";position:absolute;border:1px solid #d8bd6230;border-radius:50%}.signal-art:before{width:75%;aspect-ratio:1}.signal-art:after{width:45%;aspect-ratio:1}.signal-art img{position:relative;z-index:2;width:min(560px,90%);filter:drop-shadow(0 0 75px #34b4c23d)}.signal-copy small{font:8px monospace;letter-spacing:.18em;color:#74877f}.signal-copy h2{font:400 clamp(50px,7vw,98px)/.92 Georgia,serif;letter-spacing:-.05em;margin:20px 0}.signal-copy p{max-width:560px;font:13px/1.72 monospace;color:#8ca098}.signal-line{margin-top:42px;border-top:1px solid #34423d;padding-top:12px;display:flex;justify-content:space-between;font:8px monospace;color:#687b74}.signal-line b{font-weight:400;color:var(--gold)}
 
-.reveal{opacity:0;transform:translateY(24px);transition:.85s ease}
-.reveal.in{opacity:1;transform:none}
+/* ending */
+.final{min-height:78svh;background:var(--cream);color:var(--ink);padding:100px clamp(20px,5vw,82px);display:grid;align-items:end}.final-inner{max-width:1450px;width:100%;margin:auto}.final h2{font:900 clamp(65px,12vw,185px)/.72 Arial;letter-spacing:-.085em;margin:0;color:#131814}.final p{max-width:680px;margin:50px 0 0;font:14px/1.6 Georgia;color:#505951}.credits{margin-top:80px;padding-top:14px;border-top:1px solid #1b211d1c;display:flex;justify-content:space-between;font:8px monospace;letter-spacing:.12em;color:#6d756c}
 
-@media(max-width:960px){
-  .top{grid-template-columns:1fr auto}.top nav{display:none}
-  .hero-inner{grid-template-columns:1fr}.hero-copy{padding-top:10vh}.hero-company{min-height:40vh}.hero-company img{width:min(450px,80vw)}
-  .corporate-head{grid-template-columns:1fr}.poster,.poster:nth-child(even){grid-template-columns:1fr}.poster:nth-child(even) .poster-art{order:0}
-  .poster-art{min-height:55vh}
-  .id-table{min-height:1100px}.idcard{width:min(300px,42vw)}
-  .idcard:nth-child(1){left:3%;top:8%}.idcard:nth-child(2){left:48%;top:20%}.idcard:nth-child(3){left:9%;top:40%}.idcard:nth-child(4){left:52%;top:57%}.idcard:nth-child(5){left:16%;top:75%}
-  .signal{grid-template-columns:1fr}.signal-art{min-height:50vh}
-  .person{grid-template-columns:1fr;overflow:auto}.person-visual{min-height:45vh}.person-copy{min-height:50vh}
-}
-@media(max-width:620px){
-  .top{height:56px}.top .brand img{max-width:115px}.top .readout{display:none}
-  .hero{padding-inline:18px}.hero-meta{display:none}.hero-logo{width:100%}
-  .corporate,.crew,.signal{padding-inline:18px}
-  .poster-stack{gap:14vh}.poster{min-height:auto}.poster-art{min-height:47vh}.poster-copy{padding:30px 0 80px}
-  .crew-head{align-items:start;flex-direction:column}.id-table{min-height:1180px}
-  .idcard{width:68vw}.idcard:nth-child(1){left:2%;top:5%}.idcard:nth-child(2){left:27%;top:22%}.idcard:nth-child(3){left:2%;top:40%}.idcard:nth-child(4){left:27%;top:59%}.idcard:nth-child(5){left:4%;top:78%}
-  .telemetry{right:16px;top:10vh;width:55vw}.cockpit-copy{left:18px;right:18px}
-  .signal{padding-top:100px}.final{padding-inline:18px}.final .credits{flex-direction:column;gap:8px}
-  .depth-meter{display:none}.person{inset:0}.person-copy{padding:35px 22px}
-}
-@media(prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}.marquee{animation:none}.reveal{opacity:1;transform:none;transition:none}.person{transition:none}
-}
+/* person modal */
+.scrim{position:fixed;z-index:120;inset:0;background:#000c;opacity:0;pointer-events:none;transition:.3s}.scrim.open{opacity:1;pointer-events:auto}.person{position:fixed;z-index:121;inset:6vh 5vw;background:#d8d0b9;color:#131a16;display:grid;grid-template-columns:minmax(280px,.8fr) 1.2fr;transform:translateY(110%);transition:.45s cubic-bezier(.2,.8,.2,1);box-shadow:0 35px 130px #000a}.person.open{transform:none}.person-visual{background:#0a1718;display:grid;place-items:center;padding:5vw}.person-visual img{width:min(500px,90%);filter:drop-shadow(0 30px 35px #0008)}.person-copy{padding:clamp(34px,7vw,100px);display:flex;flex-direction:column;justify-content:center}.person-copy small{font:8px monospace;letter-spacing:.18em;color:#687169}.person-copy h3{margin:18px 0 12px;font:900 clamp(54px,8vw,112px)/.82 Arial;letter-spacing:-.07em}.person-copy .role{font:700 10px monospace;letter-spacing:.16em;color:var(--red)}.person-copy p{max-width:600px;font:17px/1.55 Georgia}.close{position:absolute;right:14px;top:10px;border:0;background:transparent;font-size:38px;cursor:pointer;color:#151a17}
+.reveal{opacity:0;transform:translateY(22px);transition:.82s ease}.reveal.in{opacity:1;transform:none}
+
+@media(max-width:960px){.top{grid-template-columns:1fr auto}.top nav{display:none}.archive-head{grid-template-columns:1fr}.poster-grid{grid-template-columns:1fr}.poster-card:nth-child(2),.poster-card:nth-child(4){margin-top:0}.id-table{min-height:1120px}.idcard{width:min(300px,42vw)}.idcard:nth-child(1){left:3%;top:8%}.idcard:nth-child(2){left:48%;top:20%}.idcard:nth-child(3){left:9%;top:40%}.idcard:nth-child(4){left:52%;top:58%}.idcard:nth-child(5){left:15%;top:77%}.signal{grid-template-columns:1fr}.person{grid-template-columns:1fr;overflow:auto}.person-visual{min-height:45vh}.person-copy{min-height:50vh}}
+@media(max-width:620px){.top{height:55px}.readout{display:none}.opening-title{width:92vw}.opening-meta{left:16px;right:16px;bottom:18px}.archive,.crew,.signal,.final{padding-left:18px;padding-right:34px}.gameplay-copy{left:18px;right:34px}.gameplay-tag{right:34px;top:11vh}.poster-frame{min-height:52vh}.crew-head{align-items:start;flex-direction:column}.id-table{min-height:1200px}.idcard{width:68vw}.idcard:nth-child(1){left:2%;top:5%}.idcard:nth-child(2){left:27%;top:22%}.idcard:nth-child(3){left:2%;top:40%}.idcard:nth-child(4){left:27%;top:59%}.idcard:nth-child(5){left:4%;top:78%}.telemetry{right:34px;top:10vh;width:58vw}.cockpit-copy{left:18px;right:34px}.depth-meter{display:none}.person{inset:0}.person-copy{padding:34px 22px}.credits{flex-direction:column;gap:8px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.presenter{display:none}.opening-title,.opening-meta{opacity:1;animation:none;transform:none}.reveal{opacity:1;transform:none;transition:none}.person{transition:none}}
 </style>
 </head>
 <body>
-<div class="noise"></div><div class="vignette"></div><div class="pointer-light"></div>
-<header class="top">
-  <a class="brand" href="#top"><img src="assets/zrakoperka-logo.png" alt="ZRAKOPERKA"><span>/ KARLOLEGEND</span></a>
-  <nav><a href="#nova">NOVA</a><a href="#posada">POSADA</a><a href="#most">MOST</a><a href="#signal">SIGNAL</a></nav>
-  <div class="readout">DUBINA <b id="depthValue">000 m</b></div>
-</header>
-<div class="depth-meter"><span id="meterValue">000</span><div class="depth-track"><i class="depth-needle" id="needle"></i></div><span class="depth-label">POVRŠINA / DNO</span></div>
+<div class="noise"></div><div class="vignette"></div><div class="pointer"></div>
+<header class="top"><a class="brand" href="#top">ZRAKOPERKA / KARLOLEGEND</a><nav><a href="#igra">IGRA</a><a href="#arhiv">NOVA</a><a href="#posada">POSADA</a><a href="#most">MOST</a></nav><div class="readout">DUBINA <b id="depthValue">000 m</b></div></header>
+<div class="depth-meter"><span id="meterValue">000</span><div class="track"><i class="needle" id="needle"></i></div><span class="depth-label">POVRŠINA / DNO</span></div>
 <button class="sound" id="sound">BRODSKI HUM / OFF</button>
-
 <main id="top">
-<section class="section hero">
-  <div class="hero-bg"></div>
-  <div class="hero-inner">
-    <div class="hero-copy reveal">
-      <div class="kicker">KARLOLEGEND PREDSTAVLJA / ABISAL MARITIMA</div>
-      <img class="hero-logo" src="assets/zrakoperka-logo.png" alt="ZRAKOPERKA">
-      <p>Narativni psihološki horor o posadi, hijerarhiji, tijelu i poslu koji nastavlja funkcionirati čak i kada ljudima više ne ide.</p>
-      <a class="enter" href="#nova"><span>OTVORI KORPORATIVNI MATERIJAL</span><i></i></a>
-    </div>
-    <div class="hero-company reveal">
-      <img src="assets/company.png" alt="ABISAL MARITIMA / NOVA kompanijski vizual">
-    </div>
-  </div>
-  <div class="hero-meta"><span>WEB ARHIV / REV. 02</span><span>ASSETI: AKTUALNI ZRAKOPERKA BUILD</span></div>
+
+<section class="section opening">
+  <div class="presenter"><span>KARLOLEGEND PREDSTAVLJA</span></div>
+  <div class="opening-title"><img src="assets/zrakoperka-logo.png" alt="ZRAKOPERKA"></div>
+  <div class="opening-meta"><span>NARATIVNI PSIHOLOŠKI HOROR / U RAZVOJU</span><a class="scroll-cue" href="#igra"><span>UĐI</span><i></i></a></div>
 </section>
 
-<section class="transition" aria-hidden="true">
-  <div class="marquee">ABISAL MARITIMA · SIGURNOST · DISCIPLINA · POVRATAK · ABISAL MARITIMA · SIGURNOST · DISCIPLINA · POVRATAK · </div>
+<section class="section gameplay" id="igra">
+  <div class="gameplay-sticky">
+    <div class="gameplay-image"></div>
+    <div class="gameplay-tag">STVARNI BUILD<br><b>SCREENSHOT / 19·09·2026</b></div>
+    <div class="gameplay-copy reveal">
+      <small>00 / IGRA / INTERIJER</small>
+      <h2>OVO JE ZRAKOPERKA.</h2>
+      <p>Ne mockup, ne promo-render, ne generirani kadar. Stvarni prostor iz igre: tijelo pod lampom, mrak koji guta većinu prostorije i brod koji izgleda kao mjesto rada prije nego kao mjesto horora.</p>
+    </div>
+  </div>
 </section>
 
-<section class="section corporate" id="nova">
-  <div class="corporate-head reveal">
-    <div><small>01 / NOVA / KORPORATIVNA KOMUNIKACIJA</small><h2>SVE JE U REDU DOK PIŠE DA JE U REDU.</h2></div>
-    <p>Vizualni jezik weba sada dolazi iz stvarnog ABISAL/NOVA rebranda u igri: ista maskota, isti slogan-sustav, ista lažno optimistična korporativna briga.</p>
+<section class="section archive" id="arhiv">
+  <div class="archive-head reveal">
+    <div><small>01 / ABISAL MARITIMA / NOVA</small><h2>KORPORATIVNA BRIGA IMA GRAFIČKI STANDARD.</h2></div>
+    <p>Ovdje više ne vrtim isti company asset četiri puta. Svaki panel koristi drugi stvarni propagandni materijal iz projekta; zajedno čine jezik tvrtke, ne galeriju jednog logotipa.</p>
   </div>
-  <div class="poster-stack">
-    <article class="poster reveal">
-      <div class="poster-art"><img src="assets/company.png" alt=""></div>
-      <div class="poster-copy"><span class="nr">NOVA / 01</span><h3>PAMET U GLAVU!</h3><p class="body">Pravilna priprema sprječava nezgode. Vaša je odgovornost zaštititi sebe i posadu.</p><p class="warning">Troškovi liječenja odbit će se od osobnih kredita.</p></div><div class="ghost">SIGURNOST</div>
+  <div class="poster-grid">
+    <article class="poster-card reveal">
+      <div class="poster-frame"><img loading="lazy" src="https://raw.githubusercontent.com/karlokalinic/Mouthwashing/main/Assets/Texture2D/DontBeDaftPoster%20High-res.png" alt="NOVA poster — Pamet u glavu"></div>
+      <div class="poster-caption"><span>NOVA / 01</span><strong>PAMET U GLAVU!</strong><div class="poster-warning">Troškovi liječenja odbit će se od osobnih kredita.</div></div>
     </article>
-    <article class="poster reveal">
-      <div class="poster-art"><img src="assets/company.png" alt=""></div>
-      <div class="poster-copy"><span class="nr">NOVA / 02</span><h3>DRŽI KURS!</h3><p class="body">Dostava na vrijeme naš je ponos i obećanje — gdje god bili.</p><p class="warning">Kašnjenje dostave naplaćuje se iz osobnih kredita.</p></div><div class="ghost">KURS</div>
+    <article class="poster-card reveal">
+      <div class="poster-frame"><img loading="lazy" src="https://raw.githubusercontent.com/karlokalinic/Mouthwashing/main/Assets/Texture2D/GiddyUpPoster%20High-res.png" alt="NOVA poster — Drži kurs"></div>
+      <div class="poster-caption"><span>NOVA / 02</span><strong>DRŽI KURS!</strong><div class="poster-warning">Kašnjenje dostave naplaćuje se iz osobnih kredita.</div></div>
     </article>
-    <article class="poster reveal">
-      <div class="poster-art"><img src="assets/company.png" alt=""></div>
-      <div class="poster-copy"><span class="nr">NOVA / 03</span><h3>SVI U ISTOM BRODU!</h3><p class="body">Timski je rad temelj uspjeha. Kad dovršite svoje zadatke, provjerite treba li pomoći drugima.</p><p class="warning">Slaba suradnja može rezultirati kolektivnom kaznom.</p></div><div class="ghost">POSADA</div>
+    <article class="poster-card reveal">
+      <div class="poster-frame"><img loading="lazy" src="https://raw.githubusercontent.com/karlokalinic/Mouthwashing/main/Assets/Texture2D/LendaHandPoster.png" alt="NOVA poster — Svi u istom brodu"></div>
+      <div class="poster-caption"><span>NOVA / 03</span><strong>SVI U ISTOM BRODU!</strong><div class="poster-warning">Slaba suradnja može rezultirati kolektivnom kaznom.</div></div>
     </article>
-    <article class="poster reveal">
-      <div class="poster-art"><img src="assets/company.png" alt=""></div>
-      <div class="poster-copy"><span class="nr">NOVA / 04</span><h3>ODMOR SE ZASLUŽUJE.</h3><p class="body">San je najbolji odmor nakon dugog radnog dana. Zaslužite ga. Ne pretjerujte i ne zaostajte.</p><p class="warning">Ne odmarajte se dulje od 5 sati, uključujući slobodno vrijeme.</p></div><div class="ghost">ODMOR</div>
+    <article class="poster-card reveal">
+      <div class="poster-frame"><img loading="lazy" src="https://raw.githubusercontent.com/karlokalinic/Mouthwashing/main/Assets/Texture2D/RiseandShinePoster.png" alt="NOVA poster — Odmor se zaslužuje"></div>
+      <div class="poster-caption"><span>NOVA / 04</span><strong>ODMOR SE ZASLUŽUJE.</strong><div class="poster-warning">Ne odmarajte se dulje od 5 sati, uključujući slobodno vrijeme.</div></div>
     </article>
   </div>
 </section>
 
 <section class="section crew" id="posada">
-  <div class="crew-head reveal">
-    <h2>POSADA</h2>
-    <p>Ne generirani portreti. Stvarne lokalizirane ID kartice iz aktualnog Unity projekta. Klikni karticu; oštećenje i tisak ostaju dio samog asseta.</p>
-  </div>
+  <div class="crew-head reveal"><h2>POSADA</h2><p>Pet stvarnih lokaliziranih ID kartica iz aktualnog projekta. Kartice su tretirane kao predmeti, ne kao “character cards”. Klikni bilo koju.</p></div>
   <div class="id-table reveal">
     <button class="idcard" data-person="nives"><img src="assets/id-nives.png" alt="Nives — ID kartica"><span>NIVES / MEDICINSKA SESTRA</span></button>
-    <button class="idcard" data-person="branimir"><img src="assets/id-branimir.png" alt="Branimir — oštećena ID kartica"><span>BRANIMIR / KAPETAN</span></button>
-    <button class="idcard" data-person="denis"><img src="assets/id-denis.png" alt="Denis — oštećena ID kartica"><span>DENIS / PRIPRAVNIK</span></button>
-    <button class="idcard" data-person="viktor"><img src="assets/id-viktor.png" alt="Viktor — oštećena ID kartica"><span>VIKTOR / KOPILOT</span></button>
-    <button class="idcard" data-person="stipe"><img src="assets/id-stipe.png" alt="Stipe — oštećena ID kartica"><span>STIPE / MEHANIČAR</span></button>
-    <div class="caption">ABISAL MARITIMA / PERSONAL FILE<br><b>5 KARTICA / 1 AKTIVNA, 4 OŠTEĆENE</b></div>
+    <button class="idcard" data-person="branimir"><img src="assets/id-branimir.png" alt="Branimir — ID kartica"><span>BRANIMIR / KAPETAN</span></button>
+    <button class="idcard" data-person="denis"><img src="assets/id-denis.png" alt="Denis — ID kartica"><span>DENIS / PRIPRAVNIK</span></button>
+    <button class="idcard" data-person="viktor"><img src="assets/id-viktor.png" alt="Viktor — ID kartica"><span>VIKTOR / KOPILOT</span></button>
+    <button class="idcard" data-person="stipe"><img src="assets/id-stipe.png" alt="Stipe — ID kartica"><span>STIPE / MEHANIČAR</span></button>
+    <div class="id-caption">ABISAL MARITIMA / PERSONAL FILE<br><b>5 KARTICA / 1 AKTIVNA, 4 OŠTEĆENE</b></div>
   </div>
 </section>
 
 <section class="section cockpit" id="most">
   <div class="cockpit-sticky">
     <div class="cockpit-img"></div>
-    <div class="telemetry">
-      <div><span>ABISAL LINK</span><b>ACTIVE</b></div>
-      <div><span>NOVA</span><b>ONLINE</b></div>
-      <div><span>POSADA</span><b>05</b></div>
-      <div><span>STATUS</span><b>NEPOTPUN</b></div>
-    </div>
-    <div class="cockpit-copy reveal">
-      <small>02 / MOST / STVARNI COCKPIT ASSET</small>
-      <h2>OVDJE JE BRAND PRESTAO BITI BRAND.</h2>
-      <p>ABISAL više nije ukras stranice. Isti vizual koji postoji na brodu sada zauzima sam prostor weba. Pomicanjem pokazivača ne “otkrivaš lore”; samo vidiš koliko je kompanija fizički prisutna u prostoru u kojem ljudi moraju živjeti i raditi.</p>
-    </div>
+    <div class="telemetry"><div><span>ABISAL LINK</span><b>ACTIVE</b></div><div><span>NOVA</span><b>ONLINE</b></div><div><span>POSADA</span><b>05</b></div><div><span>STATUS</span><b>NEPOTPUN</b></div></div>
+    <div class="cockpit-copy reveal"><small>02 / MOST / COCKPIT ASSET</small><h2>TVRTKA JE UŠLA U PROSTOR.</h2><p>Ovo je jedino mjesto na kojem cockpit asset preuzima cijelu stranicu. Ne ponavlja se dalje. Pomicanjem pokazivača svjetlo samo otkriva detalje postojećeg materijala.</p></div>
   </div>
 </section>
 
-<section class="section signal" id="signal">
-  <div class="signal-art reveal"><img src="assets/company.png" alt="NOVA / ABISAL MARITIMA"></div>
-  <div class="signal-copy reveal">
-    <small>03 / SIGNAL / ABISAL MARITIMA</small>
-    <h2>Prijateljski glas nije isto što i prijatelj.</h2>
-    <p>NOVA ostaje korisna, ugodna i korporativno sigurna. Upravo zato je zanimljivija kada se oko nje raspadaju odnosi među ljudima. Web se više ne trudi dokazati da je “horor”; pušta stvarnim assetima i jeziku tvrtke da naprave taj posao.</p>
-    <div class="line"><span>SUSTAV</span><b>NASTAVLJA RAD</b></div>
-  </div>
+<section class="section signal">
+  <div class="signal-art reveal"><img src="assets/company.png" alt="ABISAL MARITIMA / NOVA"></div>
+  <div class="signal-copy reveal"><small>03 / NOVA / SIGNAL</small><h2>Prijateljski glas nije isto što i prijatelj.</h2><p>Company/NOVA art ovdje se pojavljuje jednom, kao zaseban korporativni identitet. Ne kao tapeta. Sustav ostaje vedar, pristupačan i koristan čak i kad odnosi među ljudima prestanu biti išta od toga.</p><div class="signal-line"><span>SUSTAV</span><b>NASTAVLJA RAD</b></div></div>
 </section>
 
 <section class="section final">
-  <div class="final-inner reveal">
-    <img class="final-logo" src="assets/zrakoperka-logo.png" alt="ZRAKOPERKA">
-    <p>Psihološki horor u razvoju. KARLOLEGEND. Store, trailer i javni build pojavit će se ovdje kada budu dovoljno stvarni da ne trebaju placeholder.</p>
-    <div class="credits"><span>© <b id="year"></b> KARLOLEGEND</span><span>ABISAL MARITIMA / NOVA / ZRAKOPERKA</span><a href="#top">POVRŠINA ↑</a></div>
-  </div>
+  <div class="final-inner reveal"><h2>ZRAKOPERKA</h2><p>Psihološki horor u razvoju. KARLOLEGEND. Store, trailer i javni build pojavit će se kada budu stvarni materijali, ne placeholderi.</p><div class="credits"><span>© <b id="year"></b> KARLOLEGEND</span><span>ABISAL MARITIMA / NOVA</span><a href="#top">POVRŠINA ↑</a></div></div>
 </section>
 </main>
 
-<div class="modal-scrim" id="scrim"></div>
-<aside class="person" id="person">
-  <button class="close" id="close">×</button>
-  <div class="person-visual"><img id="personImg" src="assets/id-nives.png" alt=""></div>
-  <div class="person-copy"><small id="personCode">PERSONAL FILE</small><h3 id="personName">NIVES</h3><div class="role" id="personRole">MEDICINSKA SESTRA</div><p id="personText"></p></div>
-</aside>
+<div class="scrim" id="scrim"></div>
+<aside class="person" id="person"><button class="close" id="close">×</button><div class="person-visual"><img id="personImg" src="assets/id-nives.png" alt=""></div><div class="person-copy"><small>ABISAL MARITIMA / PERSONAL FILE</small><h3 id="personName">NIVES</h3><div class="role" id="personRole">MEDICINSKA SESTRA</div><p id="personText"></p></div></aside>
 
 <script>
 (function(){
-  var root=document.documentElement;
-  var depthValue=document.getElementById("depthValue");
-  var meterValue=document.getElementById("meterValue");
-  var needle=document.getElementById("needle");
-  function updateDepth(){
-    var max=Math.max(1,document.documentElement.scrollHeight-innerHeight);
-    var p=Math.max(0,Math.min(1,scrollY/max));
-    root.style.setProperty("--depth",p.toFixed(3));
-    var metres=Math.round(p*900);
-    depthValue.textContent=String(metres).padStart(3,"0")+" m";
-    meterValue.textContent=String(metres).padStart(3,"0");
-    needle.style.top=(p*100)+"%";
-  }
-  addEventListener("scroll",updateDepth,{passive:true});updateDepth();
-
-  if(!matchMedia("(prefers-reduced-motion: reduce)").matches){
-    addEventListener("pointermove",function(e){
-      root.style.setProperty("--mx",(e.clientX/innerWidth*100).toFixed(2)+"%");
-      root.style.setProperty("--my",(e.clientY/innerHeight*100).toFixed(2)+"%");
-    },{passive:true});
-  }
-
-  var observer=new IntersectionObserver(function(entries){
-    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");observer.unobserve(e.target)}});
-  },{threshold:.08});
-  document.querySelectorAll(".reveal").forEach(function(el){observer.observe(el)});
-
-  document.querySelectorAll(".idcard").forEach(function(card){
-    card.addEventListener("pointermove",function(e){
-      if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
-      var r=card.getBoundingClientRect();
-      var x=(e.clientX-r.left)/r.width-.5;
-      var y=(e.clientY-r.top)/r.height-.5;
-      card.style.transform="perspective(700px) rotateX("+(-y*7)+"deg) rotateY("+(x*9)+"deg) translateY(-8px)";
-    });
-    card.addEventListener("pointerleave",function(){card.style.transform=""});
-  });
-
+  var root=document.documentElement,depthValue=document.getElementById("depthValue"),meterValue=document.getElementById("meterValue"),needle=document.getElementById("needle");
+  function depth(){var max=Math.max(1,document.documentElement.scrollHeight-innerHeight),p=Math.max(0,Math.min(1,scrollY/max)),m=Math.round(p*900);root.style.setProperty("--depth",p.toFixed(3));depthValue.textContent=String(m).padStart(3,"0")+" m";meterValue.textContent=String(m).padStart(3,"0");needle.style.top=(p*100)+"%"}addEventListener("scroll",depth,{passive:true});depth();
+  if(!matchMedia("(prefers-reduced-motion: reduce)").matches){addEventListener("pointermove",function(e){root.style.setProperty("--mx",(e.clientX/innerWidth*100).toFixed(2)+"%");root.style.setProperty("--my",(e.clientY/innerHeight*100).toFixed(2)+"%")},{passive:true})}
+  var observer=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");observer.unobserve(e.target)}})},{threshold:.08});document.querySelectorAll(".reveal").forEach(function(el){observer.observe(el)});
+  document.querySelectorAll(".idcard").forEach(function(card){card.addEventListener("pointermove",function(e){if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;var r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.transform="perspective(700px) rotateX("+(-y*7)+"deg) rotateY("+(x*9)+"deg) translateY(-8px)"});card.addEventListener("pointerleave",function(){card.style.transform=""})});
   var people={
-    nives:{name:"NIVES",role:"MEDICINSKA SESTRA",img:"assets/id-nives.png",text:"Jedina kartica koja nije spaljena. Čista korporativna fotografija, čisti formular, uredan identitet — i osoba koja u priči mora raditi u uvjetima koji ništa od toga ne poštuju."},
-    branimir:{name:"BRANIMIR",role:"KAPETAN",img:"assets/id-branimir.png",text:"Kapetan postoji na kartici tek djelomično. Oštećenje nije web-efekt; nalazi se u stvarnom assetu iz igre i zato ga stranica ne pokušava uljepšati."},
-    denis:{name:"DENIS",role:"PRIPRAVNIK",img:"assets/id-denis.png",text:"Najmlađi član posade i najlakša meta tuđih projekcija. Na webu nema hero portret: ostaje administrativni komad plastike koji ga svodi na funkciju."},
-    viktor:{name:"VIKTOR",role:"KOPILOT",img:"assets/id-viktor.png",text:"Korporativni identitet i privatno ponašanje nisu ista stvar. Kartica može potvrditi tko je zaposlenik; ne može potvrditi tko je čovjek."},
-    stipe:{name:"STIPE",role:"MEHANIČAR",img:"assets/id-stipe.png",text:"Radnik koji zna da se brod održava improvizacijom, vremenom i tijelom. Oštećena kartica vizualno radi više od još jednog izmišljenog bio-panela."}
+    nives:{name:"NIVES",role:"MEDICINSKA SESTRA",img:"assets/id-nives.png",text:"Jedina kartica koja nije spaljena. Uredan administrativni identitet osobe koja radi u prostoru koji urednost ne može održati."},
+    branimir:{name:"BRANIMIR",role:"KAPETAN",img:"assets/id-branimir.png",text:"Oštećenje je dio stvarnog asseta iz igre. Web ga ne retušira i ne pretvara u još jedan glamurozni character portrait."},
+    denis:{name:"DENIS",role:"PRIPRAVNIK",img:"assets/id-denis.png",text:"Najmlađi član posade ostaje dokumentiran prvenstveno kao zaposlenik. Upravo ta hladnoća administrativnog formata nosi veći dio nelagode."},
+    viktor:{name:"VIKTOR",role:"KOPILOT",img:"assets/id-viktor.png",text:"Kartica može potvrditi položaj u hijerarhiji. Ne može potvrditi karakter, odnos ni ono što drugi ljudi moraju podnijeti."},
+    stipe:{name:"STIPE",role:"MEHANIČAR",img:"assets/id-stipe.png",text:"Radnik čija je funkcija održavati sustav koji se ne smije zaustaviti. Oštećena plastika govori dovoljno bez dodatnog pseudo-lorea."}
   };
   var modal=document.getElementById("person"),scrim=document.getElementById("scrim");
-  function openPerson(key){
-    var p=people[key];if(!p)return;
-    document.getElementById("personImg").src=p.img;
-    document.getElementById("personImg").alt=p.name+" — ID kartica";
-    document.getElementById("personName").textContent=p.name;
-    document.getElementById("personRole").textContent=p.role;
-    document.getElementById("personText").textContent=p.text;
-    document.getElementById("personCode").textContent="ABISAL MARITIMA / PERSONAL FILE";
-    modal.classList.add("open");scrim.classList.add("open");document.body.style.overflow="hidden";
-  }
+  function openPerson(k){var p=people[k];if(!p)return;document.getElementById("personImg").src=p.img;document.getElementById("personImg").alt=p.name+" — ID kartica";document.getElementById("personName").textContent=p.name;document.getElementById("personRole").textContent=p.role;document.getElementById("personText").textContent=p.text;modal.classList.add("open");scrim.classList.add("open");document.body.style.overflow="hidden"}
   function closePerson(){modal.classList.remove("open");scrim.classList.remove("open");document.body.style.overflow=""}
-  document.querySelectorAll("[data-person]").forEach(function(b){b.addEventListener("click",function(){openPerson(b.dataset.person)})});
-  document.getElementById("close").addEventListener("click",closePerson);scrim.addEventListener("click",closePerson);
-  addEventListener("keydown",function(e){if(e.key==="Escape")closePerson()});
-
-  var audioCtx,osc,osc2,gain;
-  document.getElementById("sound").addEventListener("click",function(){
-    if(audioCtx){audioCtx.close();audioCtx=null;this.classList.remove("on");this.textContent="BRODSKI HUM / OFF";return}
-    audioCtx=new(window.AudioContext||window.webkitAudioContext)();
-    gain=audioCtx.createGain();gain.gain.value=.022;gain.connect(audioCtx.destination);
-    osc=audioCtx.createOscillator();osc.type="sine";osc.frequency.value=42;osc.connect(gain);osc.start();
-    osc2=audioCtx.createOscillator();osc2.type="triangle";osc2.frequency.value=84.7;var g2=audioCtx.createGain();g2.gain.value=.004;osc2.connect(g2);g2.connect(audioCtx.destination);osc2.start();
-    this.classList.add("on");this.textContent="BRODSKI HUM / ON";
-  });
+  document.querySelectorAll("[data-person]").forEach(function(b){b.addEventListener("click",function(){openPerson(b.dataset.person)})});document.getElementById("close").onclick=closePerson;scrim.onclick=closePerson;addEventListener("keydown",function(e){if(e.key==="Escape")closePerson()});
+  var ctx,o1,o2;document.getElementById("sound").onclick=function(){if(ctx){ctx.close();ctx=null;this.classList.remove("on");this.textContent="BRODSKI HUM / OFF";return}ctx=new(window.AudioContext||window.webkitAudioContext)();var g=ctx.createGain();g.gain.value=.022;g.connect(ctx.destination);o1=ctx.createOscillator();o1.type="sine";o1.frequency.value=42;o1.connect(g);o1.start();var g2=ctx.createGain();g2.gain.value=.004;g2.connect(ctx.destination);o2=ctx.createOscillator();o2.type="triangle";o2.frequency.value=84.7;o2.connect(g2);o2.start();this.classList.add("on");this.textContent="BRODSKI HUM / ON"};
   document.getElementById("year").textContent=new Date().getFullYear();
 })();
 </script>
