@@ -1,0 +1,29 @@
+name: Inspect current ZRAKOPERKA live site
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/inspect-zrakoperka-live.yml'
+permissions:
+  contents: write
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect public page
+        run: |
+          set -euxo pipefail
+          mkdir -p diagnostics
+          curl -fL --retry 4 -A 'Mozilla/5.0' https://zrakoperka.karlolegend.workers.dev/ -o /tmp/zrak.html
+          cp /tmp/zrak.html diagnostics/zrakoperka-live.html
+          grep -Ein 'Pogledaj|najav|trailer|video|mp4|webm|source|href' /tmp/zrak.html > diagnostics/zrakoperka-live-media.txt || true
+      - name: Commit diagnostic
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add diagnostics/zrakoperka-live.html diagnostics/zrakoperka-live-media.txt
+          if ! git diff --cached --quiet; then
+            git commit -m "diagnostics: capture live ZRAKOPERKA media refs [skip ci]"
+            git push
+          fi
