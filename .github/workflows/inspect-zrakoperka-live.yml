@@ -1,39 +1,27 @@
-name: Inspect current ZRAKOPERKA live site
+name: Fetch current ZRAKOPERKA trailer
 on:
   push:
     branches: [main]
     paths:
       - '.github/workflows/inspect-zrakoperka-live.yml'
 permissions:
-  contents: write
+  contents: read
 jobs:
-  inspect:
+  fetch:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Inspect public page and runtime
+      - name: Download exact live trailer
         shell: bash
         run: |
           set -euxo pipefail
-          BASE='https://zrakoperka.karlolegend.workers.dev'
-          mkdir -p diagnostics
-          curl -fL --retry 4 -A 'Mozilla/5.0' "$BASE/" -o /tmp/zrak.html
-          cp /tmp/zrak.html diagnostics/zrakoperka-live.html
-          JS_PATH="$(grep -oE 'src="/assets/index-[^"]+\.js"' /tmp/zrak.html | head -1 | cut -d'"' -f2)"
-          echo "JS_PATH=$JS_PATH" > diagnostics/zrakoperka-runtime.txt
-          if test -n "$JS_PATH"; then
-            curl -fL --retry 4 -A 'Mozilla/5.0' "$BASE$JS_PATH" -o /tmp/zrak.js
-            cp /tmp/zrak.js diagnostics/zrakoperka-live-runtime.js
-            grep -Eo 'https?://[^"'"'"'[:space:]]+|/[^"'"'"'[:space:]]+\.(mp4|webm)(\?[^"'"'"'[:space:]]*)?|/[^"'"'"'[:space:]]*(trailer|video|media|api)[^"'"'"'[:space:]]*' /tmp/zrak.js | sort -u >> diagnostics/zrakoperka-runtime.txt || true
-            grep -Ein 'trailer|video|mp4|webm|manifest|media|api|najav' /tmp/zrak.js | head -300 >> diagnostics/zrakoperka-runtime.txt || true
-          fi
-          grep -Ein 'Pogledaj|najav|trailer|video|mp4|webm|source|href' /tmp/zrak.html > diagnostics/zrakoperka-live-media.txt || true
-      - name: Commit diagnostic
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add diagnostics/zrakoperka-live.html diagnostics/zrakoperka-live-media.txt diagnostics/zrakoperka-runtime.txt diagnostics/zrakoperka-live-runtime.js
-          if ! git diff --cached --quiet; then
-            git commit -m "diagnostics: inspect live ZRAKOPERKA trailer runtime [skip ci]"
-            git push
-          fi
+          mkdir -p out
+          curl -fL --retry 5 --retry-delay 2 -A 'Mozilla/5.0' 'https://zrakoperka.karlolegend.workers.dev/media/zrakoperka-trailer.mp4' -o out/zrakoperka-trailer.mp4
+          test "$(stat -c%s out/zrakoperka-trailer.mp4)" -eq 20329757
+          ffprobe -v error -show_entries format=duration,size -show_entries stream=codec_name,width,height,r_frame_rate -of json out/zrakoperka-trailer.mp4 > out/ffprobe.json
+          sha256sum out/zrakoperka-trailer.mp4 > out/sha256.txt
+          ffmpeg -y -sseof -8 -i out/zrakoperka-trailer.mp4 -vf fps=2 out/end-%02d.jpg
+      - uses: actions/upload-artifact@v4
+        with:
+          name: zrakoperka-live-trailer
+          path: out/
+          compression-level: 0
