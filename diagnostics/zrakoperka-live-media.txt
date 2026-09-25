@@ -1,0 +1,38 @@
+9:    <link rel="canonical" href="https://zrakoperka.karlolegend.workers.dev/" />
+15:    <link rel="icon" href="/app-icon.png" type="image/png" sizes="1024x1024" />
+16:    <link rel="preload" href="/media/bridge.png" as="image" fetchpriority="high" />
+18:    <link rel="stylesheet" crossorigin href="/assets/index-C4HZQyhf.css">
+21:    <a class="skip-link" href="#kadrovi">Prije&#273;i na sadr&#382;aj</a>
+28:          <video class="hero-film" id="hero-film" muted playsinline preload="none" hidden></video>
+32:          <a class="identity" href="#pocetak" aria-label="Zrakoperka, po&#269;etak">
+37:            <a href="#najava" hidden>Video</a>
+38:            <a href="#kadrovi">Prizori</a>
+39:            <a href="#prica">Pri&#269;a</a>
+40:            <a class="nav-download" href="#preuzmi">Preuzmi <i data-lucide="arrow-down-right" aria-hidden="true"></i></a>
+48:            <a class="action-button hero-download" href="/preuzmi/windows"><i data-lucide="monitor" aria-hidden="true"></i><span><span class="desktop-prefix">Preuzmi za </span>Windows</span><i data-lucide="arrow-down-right" aria-hidden="true"></i></a>
+49:            <a class="action-button action-secondary hero-download" href="/preuzmi/android"><i data-lucide="smartphone" aria-hidden="true"></i><span>Android APK</span><i data-lucide="arrow-down" aria-hidden="true"></i></a>
+50:            <button class="action-button" type="button" data-trailer-open disabled hidden>
+52:              <span data-trailer-label>Pogledaj najavu</span>
+54:            <a class="hero-norma" href="/preuzmi/norma" data-norma-shortcut hidden><i data-lucide="laptop" aria-hidden="true"></i><span>NORMA <span class="norma-caption">/ laptop izdanje</span></span><i data-lucide="arrow-up-right" aria-hidden="true"></i></a>
+57:        <div class="hero-coordinate" aria-hidden="true"><span>ZAPIS / 001</span><span class="coordinate-cross"></span><strong>POGLEDAJ<br />ISPOD POVR&#352;INE.</strong><span>ZRAKOPERKA &middot; 2026</span></div>
+64:            <a href="#kadrovi" class="descend-link" aria-label="Galerija" title="Galerija"><i data-lucide="arrow-down" aria-hidden="true"></i></a>
+69:      <section class="trailer-section" id="najava" aria-labelledby="trailer-title" hidden>
+72:            <div><span class="section-kicker"><span>01 /</span> VIDEOZAPISI</span><h2 id="trailer-title">Igra u <em>pokretu.</em></h2></div>
+75:          <div class="video-collection">
+76:            <button class="trailer-preview" id="video-preview" type="button" disabled aria-label="Pogledaj najavu" aria-haspopup="dialog">
+78:              <span class="trailer-play"><i data-lucide="play" aria-hidden="true"></i></span>
+79:              <span class="trailer-caption"><span id="selected-video-title">Najava</span><span id="selected-video-duration"></span></span>
+81:            <div id="video-list" role="group" aria-label="Odabir videa"></div>
+97:              <a class="frame-link" href="/media/bridge.png" data-gallery="bridge" aria-label="Otvori kadar: Upravlja&#269;ki most" title="Uve&#263;aj: Upravlja&#269;ki most" aria-haspopup="dialog">
+104:              <a class="frame-link" href="/media/infirmary.png" data-gallery="infirmary" aria-label="Otvori kadar: Ambulanta" title="Uve&#263;aj: Ambulanta" aria-haspopup="dialog">
+111:              <a class="frame-link" href="/media/stairwell.png" data-gallery="stairwell" aria-label="Otvori kadar: Izme&#273;u paluba" title="Uve&#263;aj: Izme&#273;u paluba" aria-haspopup="dialog">
+118:              <a class="frame-link" href="/media/posters.png" data-gallery="posters" aria-label="Otvori kadar: Poruke posadi" title="Uve&#263;aj: Poruke posadi" aria-haspopup="dialog">
+156:              <a class="action-button" href="/preuzmi/windows" data-download="windows"><span class="download-label"><strong>Preuzmi Windows</strong><small>Installer &middot; 1,47 GB</small></span><i data-lucide="arrow-down-right" aria-hidden="true"></i></a>
+162:              <a class="action-button action-secondary" href="/preuzmi/android" data-download="android"><span class="download-label"><strong>Preuzmi Android</strong><small>APK v21 &middot; 1,74 GB</small></span><i data-lucide="arrow-down-right" aria-hidden="true"></i></a>
+168:              <a class="action-button action-secondary" href="/preuzmi/norma" data-download="norma" aria-describedby="norma-note" hidden><span class="download-label"><strong>Preuzmi NORMA</strong><small>Windows 64-bit</small></span><i data-lucide="arrow-down-right" aria-hidden="true"></i></a>
+172:          <div class="download-baseline"><span>KARLOLEGEND / ZRAKOPERKA</span><a href="https://github.com/karlokalinic/zrakoperka-downloads/releases" target="_blank" rel="noopener noreferrer">Verzije i SHA-256 <i data-lucide="arrow-up-right" aria-hidden="true"></i></a></div>
+180:      <a class="original-link" href="#pocetak">Na vrh <i data-lucide="arrow-up-right" aria-hidden="true"></i></a>
+190:    <dialog class="media-dialog" id="trailer-dialog" aria-labelledby="trailer-dialog-title">
+191:      <div class="dialog-header"><h2 id="trailer-dialog-title">Zrakoperka / video</h2><button class="icon-button" type="button" data-close title="Zatvori video" aria-label="Zatvori video" autofocus><i data-lucide="x" aria-hidden="true"></i></button></div>
+192:      <video id="trailer-video" controls playsinline preload="none" poster="/media/bridge.png" aria-label="Najava igre Zrakoperka" tabindex="0"></video>
+193:      <p id="video-error" role="status" hidden>Video trenuta&#269;no nije dostupan. Poku&#353;aj ponovno kasnije.</p>
