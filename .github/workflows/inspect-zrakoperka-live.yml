@@ -17,9 +17,7 @@ jobs:
           mkdir -p out
           curl -fL --retry 5 --retry-delay 2 -A 'Mozilla/5.0' 'https://zrakoperka.karlolegend.workers.dev/media/zrakoperka-trailer.mp4' -o out/zrakoperka-trailer.mp4
           test "$(stat -c%s out/zrakoperka-trailer.mp4)" -eq 20329757
-          ffprobe -v error -show_entries format=duration,size -show_entries stream=codec_name,width,height,r_frame_rate -of json out/zrakoperka-trailer.mp4 > out/ffprobe.json
           sha256sum out/zrakoperka-trailer.mp4 > out/sha256.txt
-          ffmpeg -y -sseof -8 -i out/zrakoperka-trailer.mp4 -vf fps=2 out/end-%02d.jpg
       - uses: actions/upload-artifact@v4
         with:
           name: zrakoperka-live-trailer
